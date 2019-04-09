@@ -1,0 +1,1 @@
+This folder is for project organisational artifacts, like meeting minutes, photos of tasks. Please label all contents with a description which includes the date
