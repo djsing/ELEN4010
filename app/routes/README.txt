@@ -1,0 +1,1 @@
+This folder is for routing by HTTP methods

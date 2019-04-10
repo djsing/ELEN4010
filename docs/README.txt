@@ -1,0 +1,1 @@
+This folder is for project documentation, specifications and organisational artifacts

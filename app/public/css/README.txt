@@ -1,0 +1,1 @@
+All static css resouces go here
