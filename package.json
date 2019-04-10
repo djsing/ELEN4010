@@ -1,0 +1,38 @@
+{
+  "name": "trip_planner",
+  "version": "1.0.0",
+  "description": "ELEN4010 Group 5 Group Project",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs",
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/witseie-elen4010/2019-005-project.git"
+  },
+  "keywords": [
+    "elen4010",
+    "software",
+    "group",
+    "project",
+    "trip",
+    "maps",
+    "azure",
+    "travis",
+    "node"
+  ],
+  "author": "Tyson Cross",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/witseie-elen4010/2019-005-project/issues"
+  },
+  "homepage": "https://github.com/witseie-elen4010/2019-005-project#readme",
+  "dependencies": {
+    "express": "4.16.4"
+  }
+}
