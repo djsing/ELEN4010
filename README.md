@@ -1,11 +1,13 @@
-#Trip Planner# 
-## A web application for planning holiday trips.##
-### ELEN4010 Group Project###
+[![Build Status](https://travis-ci.com/witseie-elen4010/2019-005-project.svg?token=52xQs3WNRQyhnpMyQJpC&branch=master)](https://travis-ci.com/witseie-elen4010/2019-005-project)
+
+# Away We Go # 
+## A group travel trip planning web application.##
+### ELEN4010 Group Project ###
 ###### Tyson Cross 1239448 ######
 ###### Rebecca Jasper 1066586 ######
 ###### Thabang Mabula 1364103 #####
 ###### Darrion Singh 1056673 ######
--
+---
 
 This application has to meet the following core requirements to be deemed acceptable: <br><br>
 * Trip itineraries need to be visually represented on a map. <br>
