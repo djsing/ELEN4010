@@ -8,7 +8,7 @@
     "test": "test"
   },
   "scripts": {
-    "test": "echo \"No tests specified\" && exit 0",
+    "test": "jest",
     "start": "node index"
   },
   "repository": {
@@ -34,5 +34,8 @@
   "homepage": "https://github.com/witseie-elen4010/2019-005-project#readme",
   "dependencies": {
     "express": "4.16.4"
+  },
+  "devDependencies": {
+    "jest": "^24.7.1"
   }
 }
