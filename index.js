@@ -10,6 +10,6 @@ app.set('view engine', 'html')
 app.use(express.static(path.join(__dirname, './app/public')))
 
 app.use('/', mainRouter)
-let portNum = 3000
-app.listen(process.env.port || portNum)
-console.log('Express server running on port', portNum)
+let port = process.env.PORT || 3000
+app.listen(port)
+console.log('Express server running on port', port)
