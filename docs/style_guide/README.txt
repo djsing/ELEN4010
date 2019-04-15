@@ -1,16 +1,19 @@
 StandardJS will be the style guide used.
 
-Firstly, install the Babel ES6/ES7 extension from the VS Code extensions marketplace. This improves syntax highlighting.
+Firstly, install the Babel ES6/ES7 extension from the VS Code extensions marketplace.
+This improves syntax highlighting.
 
 To install the standardjs extension, run the following command:
 
     npm install standard --global
 
-Next, install the StandardJS extension on the VS Code marketplace. This will show formatting anomalies in the Problems tab.
+Next, install the StandardJS extension on the VS Code marketplace.
+This will show formatting anomalies in the Problems tab.
 
-Go to File|Preferences|Settings
-and type “standard” in the search box. Look for the setting "Auto Fix On Save" and check
-the tick box. This will autoformat all files upon saving.
+Go to File|Preferences|Settings and type “standard” in the search box.
+Look for the setting "Standard: Auto Fix On Save" and check the tick box. This will autoformat all files upon saving.
+In the same menu, search 'auto fix on save' and make sure that only 'Standard' has the 'Auto fix on save' option ticked.
+Next, search 'javascript: validate' and under the heading 'Javascript > Validate', tick the box labelled 'Enable/disable Javascript validation.'
 
 The StandardJS module will be added to the 'test' scripts, which will trigger format and error checking.
 
