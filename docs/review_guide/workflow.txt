@@ -1,0 +1,36 @@
+PULLING CHANGES:
+1. Make sure your working directory is clear by discarding changes to files (permanent) or stashing the changes (temporary).
+2. Using GitKraken, click the dropdown under "Pull" and select 'Pull, fast forward if possible'.
+3. Click 'Pull' to update your local repo with changes published to GitHub.
+4. Restore your changes by restoring your stash (or begin working as if from scratch).
+
+FETCHING CHANGES:
+1. When switching to a new branch, or creating a new branch, it is possible that you only pulled the branches you've worked on, and not updated other branches.
+This is seen by the icons on GitKraken.
+Branches with the laptop icon imply that the local repo is only up to date with that particular commit.
+Branches with the github user icon imply that the remote repo has been updated with that particular commit.
+Branches with both icons imply that the local repo is up to date with the remote repo.
+2. Using GitKraken, click the dropdown under "Pull" and select "Fetch all".
+If that icon does not exist, it has been replaced with "Fetch".
+3. Click the "Fetch" button, and all local branches will be up to date with the remote branches.
+Note that if the local repo is ahead of the online repo, the branch will be considered as up to date, and in order to update the online repo branch, you must Push your code to GitHub.
+4. If the branch you require to checkout is not on your local repo but is in the remote repo,  as shown in the left hand pane, double click to checkout that branch.
+
+PUSHING CHANGES:
+1. After committing, use GitKraken 'Pull' to update your local repo and perform a fast forward merge.
+2. Use GitKraken 'Push' to update the remote repo with your changes.
+
+PULL REQUESTS:
+1. This must be performed by the LAST person to work on the feature branch.
+2. In the pull request, summarise the functionality you've implemented, and link the issue (task) that was completed, for exmaple, "#4 View for T's and C's page"
+3.Tag all other collaborators on the branch, for example, "Other changes were also made by @djsing"
+4. Request all other team members who did not work on the branch to review the request by clicking 'Reviewers' on the right side of the screen.
+After clicking their name, a tick will appear alongside it.
+5. Upon receiving the notification, the collaborator who did not make the pull request must comment on the request, following the same steps as above.
+6. If the pull request being made is a new request following a previously closed request, reference that request, for example, "#19 Azure Setup", so that the reviewer may see all changes requested when the previous pull request was denied.
+
+CODE REVIEW GUIDE:
+1. When addressing an issue found in a commit made by a specific collaborator, always tag that collaborator in any comments made about that issue.
+2. Be clear and concise about the issue you are encountering, and specify the file and line you are questioning (if possible, also attach the full commit hash if the problem originates in a particular commit).
+3. Attach screenshots of visible problems, as well as any console errors displayed.
+4. Adhere to the tone and atmosphere found in https://github.com/thoughtbot/guides/tree/master/code-review
