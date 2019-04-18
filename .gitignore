@@ -151,3 +151,7 @@ $RECYCLE.BIN/
 *.lnk
 
 # End of https://www.gitignore.io/api/osx,node,windows,visualstudiocode
+#
+# Local stuff for each developer
+local_only
+
