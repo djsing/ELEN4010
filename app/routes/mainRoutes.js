@@ -13,6 +13,10 @@ mainRouter.get('/about/', function (req, res) {
   res.sendFile(path.join(__dirname, '../views', 'about.html'))
 })
 
+mainRouter.get('/T&Cs/', function (req, res) {
+  res.sendFile(path.join(__dirname, '../views', 'T&Cs.html'))
+})
+
 mainRouter.get('/database/', function (req, res) {
   // Make a query to the database
   db.pools
