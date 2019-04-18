@@ -13,8 +13,8 @@ mainRouter.get('/about/', function (req, res) {
   res.sendFile(path.join(__dirname, '../views', 'about.html'))
 })
 
-mainRouter.get('/T&Cs/', function (req, res) {
-  res.sendFile(path.join(__dirname, '../views', 'T&Cs.html'))
+mainRouter.get('/terms_and_conditions/', function (req, res) {
+  res.sendFile(path.join(__dirname, '../views', 'terms_and_conditions.html'))
 })
 
 mainRouter.get('/database/', function (req, res) {
