@@ -1,19 +1,18 @@
 'use strict'
 
-let path = require('path')
 let express = require('express')
 let mainRouter = express.Router()
 let db = require('../models/db.js')
 
 mainRouter.get('/', function (req, res) {
-  res.sendFile(path.join(__dirname, '../views', 'index.html'))
+  res.sendFile('/index.html', { root: req.app.get('views') })
 })
 
-mainRouter.get('/about/', function (req, res) {
-  res.sendFile(path.join(__dirname, '../views', 'about.html'))
+mainRouter.get('/about', function (req, res) {
+  res.sendFile('/about.html', { root: req.app.get('views') })
 })
 
-mainRouter.get('/database/', function (req, res) {
+mainRouter.get('/database', function (req, res) {
   // Make a query to the database
   db.pools
     // Run query
@@ -24,18 +23,16 @@ mainRouter.get('/database/', function (req, res) {
     })
     // Send back the result
     .then(result => {
-      res.send(result)
+      res.status(200).send(result)
     })
     // If there's an error, return that with some description
     .catch(err => {
-      res.send({
-        Error: err
-      })
+      res.status(500).send(err)
     })
 })
 
 mainRouter.get('*', function (req, res) {
-  res.render('error')
+  res.status(404).send('404 Error: page not found')
 })
 
 module.exports = mainRouter

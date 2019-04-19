@@ -1,13 +1,12 @@
 const mssql = require('mssql')
-console.log(process.env.DB_SERVER)
-// Make sure this is private to this module
+require('dotenv').config() // grab the ENV variables
 let config = {
   // Put login details in env. variables for security
   server: process.env.DB_SERVER,
   database: process.env.DB_NAME,
   user: process.env.DB_ADMIN,
   password: process.env.DB_PASSWORD,
-  port: process.env.DB_PORT,
+  port: Number(process.env.DB_PORT),
   // Required for Azure
   options: {
     encrypt: true
