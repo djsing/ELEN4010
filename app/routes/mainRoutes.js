@@ -12,6 +12,10 @@ mainRouter.get('/about', function (req, res) {
   res.sendFile('/about.html', { root: req.app.get('views') })
 })
 
+mainRouter.get('/sign-in', function (req, res) {
+  res.sendFile('/sign-in.html', { root: req.app.get('views') })
+})
+
 mainRouter.get('/database', function (req, res) {
   // Make a query to the database
   db.pools
@@ -29,10 +33,6 @@ mainRouter.get('/database', function (req, res) {
     .catch(err => {
       res.status(500).send(err)
     })
-})
-
-mainRouter.get('/sign-in/', function (req, res) {
-  res.sendFile(path.join(__dirname, '../views', 'sign-in.html'))
 })
 
 mainRouter.get('*', function (req, res) {
