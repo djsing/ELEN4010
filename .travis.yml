@@ -2,7 +2,8 @@ language: node_js
 node_js:
 - "10.14"
 deploy:
-  provider: azure_web_apps
+- provider: azure_web_apps
+  on: master
 before script: 
   - npm install coveralls --save-dev
 script:
