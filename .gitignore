@@ -154,4 +154,4 @@ $RECYCLE.BIN/
 #
 # Local stuff for each developer
 local_only
-
+.vscode
