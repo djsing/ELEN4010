@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title>Log In</title>
+    <meta name="google-signin-client_id"
+        content="770023573168-8lo6smmhtuifqt6enlcnsulssucf2eb0.apps.googleusercontent.com" />
+    <!-- Google API -->
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <!-- Scripts -->
+    <script src="/js/authentication.js"></script>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+</head>
+
+<body>
+    <div class="g-signin2" data-onsuccess="onSignIn"></div>
+    <button onclick="signOut()" class="btn btn-danger">Sign out</button>
+</body>
+
+</html>
