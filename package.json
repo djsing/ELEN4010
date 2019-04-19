@@ -34,6 +34,7 @@
   },
   "homepage": "https://github.com/witseie-elen4010/2019-005-project#readme",
   "dependencies": {
+    "bootstrap": "^4.3.1",
     "dotenv": "^7.0.0",
     "express": "4.16.4",
     "mssql": "5.0.5"
