@@ -1,5 +1,6 @@
-module.exports = function (app) {
-  app.get('/terms_and_conditions', function (req, res) {
-    res.render('terms_and_conditions')
-  })
+'use strict'
+let path = require('path')
+
+module.exports = function (req, res) {
+  res.sendFile(path.join(__dirname, '../views', 'terms_and_conditions.html'))
 }

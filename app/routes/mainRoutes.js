@@ -4,6 +4,7 @@ let path = require('path')
 let express = require('express')
 let mainRouter = express.Router()
 let db = require('../models/db.js')
+let termsAndConditionsController = require('../controllers/termsAndConditionsController')
 
 mainRouter.get('/', function (req, res) {
   res.sendFile(path.join(__dirname, '../views', 'index.html'))
@@ -13,8 +14,8 @@ mainRouter.get('/about/', function (req, res) {
   res.sendFile(path.join(__dirname, '../views', 'about.html'))
 })
 
-mainRouter.get('/terms_and_conditions/', function (req, res) {
-  res.sendFile(path.join(__dirname, '../views', 'terms_and_conditions.html'))
+mainRouter.get('/terms_and_conditions', function (req, res) {
+  termsAndConditionsController(req, res)
 })
 
 mainRouter.get('/database/', function (req, res) {
