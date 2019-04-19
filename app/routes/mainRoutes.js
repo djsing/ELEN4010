@@ -34,6 +34,10 @@ mainRouter.get('/database/', function (req, res) {
     })
 })
 
+mainRouter.get('/sign-in/', function (req, res) {
+  res.sendFile(path.join(__dirname, '../views', 'sign-in.html'))
+})
+
 mainRouter.get('*', function (req, res) {
   res.render('error')
 })
