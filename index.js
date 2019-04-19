@@ -4,6 +4,8 @@ let express = require('express')
 let path = require('path')
 let app = express()
 let mainRouter = require('./app/routes/mainRoutes')
+let dotenv = require('dotenv')
+dotenv.config()
 
 app.set('views', path.join(__dirname, './app/views'))
 app.set('view engine', 'html')
