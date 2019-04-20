@@ -9,15 +9,74 @@ document.addEventListener('DOMContentLoaded', function () {
 
     var jsFile = document.createElement('script')
     jsFile.type = 'text/javascript'
-    jsFile.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyCgnuMPrM3Yha6Y9K6f_XkdifRrE2t33Z4&libraries=places&callback=initMap&signed_in=true&language=' + lang
+    jsFile.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyCgnuMPrM3Yha6Y9K6f_XkdifRrE2t33Z4&libraries=places&callback=initMap&language=' + lang
     document.getElementsByTagName('head')[0].appendChild(jsFile)
   }
 })
 
 var map, infoWindow, service
+var worldView = { lat: 10, lng: 350 }
+var markerInfo = []
+var markersOnMap = []
+
+function addMarkerInfo () {
+  for (var i = 0; i < markersOnMap.length; i++) {
+    var contentString = '<div id="content"><h1>' + markersOnMap[i].placeName
+
+    const marker = new google.maps.Marker({
+      position: markersOnMap[i].LatLng[0],
+      map: map
+    })
+
+    const infowindow = new google.maps.InfoWindow({
+      content: contentString,
+      maxWidth: 200
+    })
+
+    marker.addListener('click', function () {
+      closeOtherInfo()
+      infowindow.open(marker.get('map'), marker)
+      markerInfo[0] = infowindow
+    })
+    // marker.addListener('mouseover', function () {
+    //   closeOtherInfo()
+    //   infowindow.open(marker.get('map'), marker)
+    //   markerInfo[0] = infowindow
+    // })
+    // marker.addListener('mouseout', function () {
+    //   closeOtherInfo()
+    //   infowindow.close()
+    //   markerInfo[0] = infowindow
+    // })
+  }
+}
+
+function closeOtherInfo () {
+  if (markerInfo.length > 0) {
+    /* detach the info-window from the marker */
+    markerInfo[0].set('marker', null)
+    /* close it */
+    markerInfo[0].close()
+    /* blank the array */
+    markerInfo.length = 0
+  }
+}
+
+function placeMarkerAndPanTo (latLng, map) {
+  // var marker = new google.maps.Marker({
+  //   position: latLng,
+  //   map: map
+  // })
+  var newMarker = {
+    placeName: 'Destination' + Number(markersOnMap.length + 1),
+    LatLng: [latLng]
+  }
+  markersOnMap.push(newMarker)
+  map.panTo(latLng)
+  addMarkerInfo()
+}
 
 function initMap () {
-  let worldView = { lat: 10, lng: 340 }
   map = new google.maps.Map(document.getElementById('map'), {
     center: worldView,
     zoom: 3,
@@ -43,25 +102,22 @@ function initMap () {
   autocomplete.setFields(
     ['address_components', 'geometry', 'icon', 'name'])
 
-  service = new google.maps.places.PlacesService(map)
-
   infoWindow = new google.maps.InfoWindow()
   var infoWindowContent = document.getElementById('infowindow-content')
   infoWindow.setContent(infoWindowContent)
 
   var marker = new google.maps.Marker({
     map: map,
-    anchorPoint: new google.maps.Point(0, -29)
+    anchorPoint: new google.maps.Point(0, 0)
   })
 
   map.addListener('click', function (e) {
     placeMarkerAndPanTo(e.latLng, map)
-    addTripDestination()
   })
 
   autocomplete.addListener('place_changed', function () {
     infoWindow.close()
-    marker.setVisible(false)
+    marker.setVisible(true)
     var place = autocomplete.getPlace()
     if (!place.geometry) {
     // User entered the name of a Place that was not suggested and
@@ -94,12 +150,27 @@ function initMap () {
     infoWindowContent.children['place-address'].textContent = address
     infoWindow.open(map, marker)
   })
-}
 
-function placeMarkerAndPanTo (latLng, map) {
-  var marker = new google.maps.Marker({
-    position: latLng,
-    map: map
-  })
-  map.panTo(latLng)
+  // var place = autocomplete.getPlace()
+
+  // var request = {
+  //   placeId: place.place_id,
+  //   fields: ['name', 'formatted_address', 'place_id', 'geometry']
+  // }
+
+//   service = new google.maps.places.PlacesService(map)
+//   service.getDetails(request, function (place, status) {
+//     if (status === google.maps.places.PlacesServiceStatus.OK) {
+//       var marker = new google.maps.Marker({
+//         map: map,
+//         position: place.geometry.location
+//       })
+//       google.maps.event.addListener(marker, 'click', function () {
+//         infoWindow.setContent('<div><strong>' + place.name + '</strong><br>' +
+//           'Place ID: ' + place.place_id + '<br>' +
+//           place.formatted_address + '</div>')
+//         infoWindow.open(map, this)
+//       })
+//     }
+//   })
 }
