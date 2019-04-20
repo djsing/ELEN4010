@@ -1,0 +1,14 @@
+/*
+* Tyson Cross, 2019-04-20
+*/
+
+// setting up static paths to serve resources (makes everything below public easily accessible)
+app.use(express.static(path.join(__dirname, './app/public')))
+
+// setting up mount points to simplify accessing a path:
+app.set('views', path.join(__dirname, './app/views'))
+
+// Using these mounts instead of the 'path' module:
+mainRouter.get('/about', function (req, res) {
+   res.sendFile('/about.html', { root: req.app.get('views') })
+})
