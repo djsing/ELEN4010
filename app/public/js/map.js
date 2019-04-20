@@ -108,14 +108,33 @@ function placeMarkerAndPanTo (latLng, map) {
     position: latLng,
     map: map
   })
-  var place = marker.getPlace()
-  var newMarker = {
-    placeName: 'Destination ' + Number(markersOnMap.length + 1),
-    LatLng: [latLng]
+
+  // var place = marker.getPlace()
+
+  var request = {
+    bounds: latLng.bounds * 10,
+    location: latLng,
+    rankBy: google.maps.places.RankBy.DISTANCE,
+    type: ['sublocality'],
+    fields: ['name', 'formatted_address', 'place_id', 'geometry']
   }
-  markersOnMap.push(newMarker)
-  map.panTo(latLng)
-  addMarkerInfo()
+
+  let destinationName = ''
+  service = new google.maps.places.PlacesService(map)
+  // service.getDetails(request, function (place, status) {
+  service.nearbySearch(request, function (results, status) {
+    if (status == google.maps.places.PlacesServiceStatus.OK) {
+      // Do some checks for valid info here
+      destinationName = ': ' + results[0].name
+    }
+    var newMarker = {
+      placeName: 'Destination ' + Number(markersOnMap.length + 1) + destinationName,
+      LatLng: [latLng]
+    }
+    markersOnMap.push(newMarker)
+    map.panTo(latLng)
+    addMarkerInfo()
+  })
 }
 
 function initMap () {
@@ -169,25 +188,4 @@ function initMap () {
     var place = autocomplete.getPlace()
     placeDestination(place, marker, infoWindow, infoWindowContent)
   })
-
-  // var request = {
-  //   placeId: place.place_id,
-  //   fields: ['name', 'formatted_address', 'place_id', 'geometry']
-  // }
-
-//   service = new google.maps.places.PlacesService(map)
-//   service.getDetails(request, function (place, status) {
-//     if (status === google.maps.places.PlacesServiceStatus.OK) {
-//       var marker = new google.maps.Marker({
-//         map: map,
-//         position: place.geometry.location
-//       })
-//       google.maps.event.addListener(marker, 'click', function () {
-//         infoWindow.setContent('<div><strong>' + place.name + '</strong><br>' +
-//           'Place ID: ' + place.place_id + '<br>' +
-//           place.formatted_address + '</div>')
-//         infoWindow.open(map, this)
-//       })
-//     }
-//   })
 }
