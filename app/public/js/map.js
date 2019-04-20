@@ -109,8 +109,6 @@ function placeMarkerAndPanTo (latLng, map) {
     map: map
   })
 
-  // var place = marker.getPlace()
-
   var request = {
     bounds: latLng.bounds * 10,
     location: latLng,
