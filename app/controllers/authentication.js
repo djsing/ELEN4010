@@ -1,3 +1,5 @@
+'use strict'
+
 function signInInit () {
   gapi.load('auth2', function () {
     // initialise type 'gapi.auth2.GoogleAuth' object
@@ -9,16 +11,9 @@ function signInInit () {
       console.log('GoogleAuth object initialised.')
       // click handler
       let onLoginSuccess = function (googleUser) {
+        saveGoogleProfile(googleUser)
         // redirect to home page, currently the map page
-        window.location = '/map'
-        let profile = googleUser.getBasicProfile()
-        console.log('ID: ' + profile.getId()) // Do not send to your backend! Use an ID token instead.
-        console.log('Name: ' + profile.getName())
-        console.log('Image URL: ' + profile.getImageUrl())
-        console.log('Email: ' + profile.getEmail()) // This is null if the 'email' scope is not present.
-        // The ID token to pass to backend:
-        var idToken = googleUser.getAuthResponse().id_token
-        console.log('ID Token: ' + idToken)
+        window.location = '/profile'
       }
 
       let onLoginFail = function (error) {
@@ -44,4 +39,13 @@ function signOut () {
   authInstance.signOut().then(function () {
     console.log('User signed out.')
   })
+}
+
+function saveGoogleProfile (googleUser) {
+  let profile = googleUser.getBasicProfile()
+  window.localStorage.setItem('ID', JSON.stringify(profile.getId()))
+  window.localStorage.setItem('Name', JSON.stringify(profile.getName()))
+  window.localStorage.setItem('ImageURI', JSON.stringify(profile.getImageUrl()))
+  window.localStorage.setItem('getEmail', JSON.stringify(profile.getEmail()))
+  window.localStorage.setItem('AuthToken', JSON.stringify(googleUser.getAuthResponse().id_token))
 }
