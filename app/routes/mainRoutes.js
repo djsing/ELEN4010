@@ -16,6 +16,14 @@ mainRouter.get('/sign-in', function (req, res) {
   res.sendFile('/sign-in.html', { root: req.app.get('views') })
 })
 
+mainRouter.get('/map', function (req, res) {
+  res.sendFile('/map.html', { root: req.app.get('views') })
+})
+
+mainRouter.get('/hotels', function (req, res) {
+  res.sendFile('/hotels.html', { root: req.app.get('views') })
+})
+
 mainRouter.get('/database', function (req, res) {
   // Make a query to the database
   db.pools
