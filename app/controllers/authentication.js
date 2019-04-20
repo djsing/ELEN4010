@@ -43,9 +43,9 @@ function signOut () {
 
 function saveGoogleProfile (googleUser) {
   let profile = googleUser.getBasicProfile()
-  window.localStorage.setItem('ID', JSON.stringify(profile.getId()))
-  window.localStorage.setItem('Name', JSON.stringify(profile.getName()))
-  window.localStorage.setItem('ImageURI', JSON.stringify(profile.getImageUrl()))
-  window.localStorage.setItem('getEmail', JSON.stringify(profile.getEmail()))
-  window.localStorage.setItem('AuthToken', JSON.stringify(googleUser.getAuthResponse().id_token))
+  window.sessionStorage.setItem('ID', JSON.stringify(profile.getId()))
+  window.sessionStorage.setItem('Name', JSON.stringify(profile.getName()))
+  window.sessionStorage.setItem('ImageURI', JSON.stringify(profile.getImageUrl()))
+  window.sessionStorage.setItem('Email', JSON.stringify(profile.getEmail()))
+  window.sessionStorage.setItem('AuthToken', JSON.stringify(googleUser.getAuthResponse().id_token))
 }
