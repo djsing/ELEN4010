@@ -62,13 +62,55 @@ function closeOtherInfo () {
   }
 }
 
-function placeMarkerAndPanTo (latLng, map) {
-  // var marker = new google.maps.Marker({
-  //   position: latLng,
-  //   map: map
-  // })
+function placeDestination (place, marker, infoWindow, infoWindowContent) {
+  if (!place.geometry) {
+    // User entered the name of a Place that was not suggested and
+    // pressed the Enter key, or the Place Details request failed.
+    window.alert("No details available for input: '" + place.name + "'")
+    return
+  }
+
+  // If the place has a geometry, then present it on a map.
+  if (place.geometry.viewport) {
+    map.fitBounds(place.geometry.viewport)
+  } else {
+    map.setCenter(place.geometry.location)
+    map.setZoom(16)
+  }
+  marker.setPosition(place.geometry.location)
+  marker.setVisible(false)
+
+  var address = ''
+  if (place.address_components) {
+    address = [
+      ((place.address_components[0] && place.address_components[0].short_name) || ''),
+      ((place.address_components[1] && place.address_components[1].short_name) || ''),
+      ((place.address_components[2] && place.address_components[2].short_name) || '')
+    ].join(' ')
+  }
+
+  infoWindowContent.children['place-icon'].src = place.icon
+  infoWindowContent.children['place-name'].textContent = place.name
+  infoWindowContent.children['place-address'].textContent = address
+  infoWindow.open(map, marker)
+
   var newMarker = {
-    placeName: 'Destination' + Number(markersOnMap.length + 1),
+    placeName: 'Destination ' + Number(markersOnMap.length + 1) + ': ' + place.name,
+    LatLng: [place.geometry.location]
+  }
+
+  markersOnMap.push(newMarker)
+  addMarkerInfo()
+}
+
+function placeMarkerAndPanTo (latLng, map) {
+  var marker = new google.maps.Marker({
+    position: latLng,
+    map: map
+  })
+  var place = marker.getPlace()
+  var newMarker = {
+    placeName: 'Destination ' + Number(markersOnMap.length + 1),
     LatLng: [latLng]
   }
   markersOnMap.push(newMarker)
@@ -112,46 +154,21 @@ function initMap () {
   })
 
   map.addListener('click', function (e) {
+    infoWindow.close()
+    marker = new google.maps.Marker({
+      position: e.latLng,
+      map: map
+    })
+    marker.setVisible(false)
     placeMarkerAndPanTo(e.latLng, map)
   })
 
   autocomplete.addListener('place_changed', function () {
     infoWindow.close()
-    marker.setVisible(true)
+    marker.setVisible(false)
     var place = autocomplete.getPlace()
-    if (!place.geometry) {
-    // User entered the name of a Place that was not suggested and
-    // pressed the Enter key, or the Place Details request failed.
-      window.alert("No details available for input: '" + place.name + "'")
-      return
-    }
-
-    // If the place has a geometry, then present it on a map.
-    if (place.geometry.viewport) {
-      map.fitBounds(place.geometry.viewport)
-    } else {
-      map.setCenter(place.geometry.location)
-      map.setZoom(16)
-    }
-    marker.setPosition(place.geometry.location)
-    marker.setVisible(true)
-
-    var address = ''
-    if (place.address_components) {
-      address = [
-        ((place.address_components[0] && place.address_components[0].short_name) || ''),
-        ((place.address_components[1] && place.address_components[1].short_name) || ''),
-        ((place.address_components[2] && place.address_components[2].short_name) || '')
-      ].join(' ')
-    }
-
-    infoWindowContent.children['place-icon'].src = place.icon
-    infoWindowContent.children['place-name'].textContent = place.name
-    infoWindowContent.children['place-address'].textContent = address
-    infoWindow.open(map, marker)
+    placeDestination(place, marker, infoWindow, infoWindowContent)
   })
-
-  // var place = autocomplete.getPlace()
 
   // var request = {
   //   placeId: place.place_id,
