@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 })
 
-var map, infoWindow
+var map, infoWindow, service
 
 function initMap () {
   let worldView = { lat: 10, lng: 340 }
@@ -42,6 +42,8 @@ function initMap () {
   // Set the data fields to return when the user selects a place.
   autocomplete.setFields(
     ['address_components', 'geometry', 'icon', 'name'])
+
+  service = new google.maps.places.PlacesService(map)
 
   infoWindow = new google.maps.InfoWindow()
   var infoWindowContent = document.getElementById('infowindow-content')
