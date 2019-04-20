@@ -1,7 +1,6 @@
 'use strict'
 let path = require('path')
-
-var terms = ['Be nice', 'Be kind', 'Have fun']
+let terms = require('../models/termsAndConditionsModel')
 
 module.exports = function (req, res) {
   res.render(path.join(__dirname, '../views', 'terms_and_conditions'), { termList: terms })
