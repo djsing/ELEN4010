@@ -22,8 +22,6 @@ let markerInfo = []
 let markersOnMap = []
 
 function addMarker (latLng, map, id, label, placeName) {
-  console.log('Created Marker ', label, ' at ', placeName)
-  console.log(markersOnMap)
   let marker = new google.maps.Marker({
     position: latLng,
     map: map,
@@ -36,21 +34,32 @@ function addMarker (latLng, map, id, label, placeName) {
 }
 
 let deleteMarker = function (id) {
+  // remove the marker from the map (a null-map marker)
   try {
     markersOnMap[id].setMap(null)
-  } catch (error) {
-  }
-  let j = 0
-  for (let i = 0; i < markersOnMap.length; i++) {
-    if (markersOnMap[i].map === null) {
-      j++
+  } catch (error) {}
+  // check if the last entr(ies) of the array is a null-map marker
+  let size = markersOnMap.length - 1
+  try {
+    while (markersOnMap[size].map === null) {
+      markersOnMap.pop()
+      size = markersOnMap.length - 1
     }
-  }
-  if (j === markersOnMap.length) {
-    markersOnMap = []
-    markerInfo = []
-    markersOnMap.length = 0
-    markerInfo.length = 0
+  } catch (error) {}
+  // Check that the whole array is not full of null-map markers:
+  if (markersOnMap.length !== 0) {
+    let j = 0
+    for (let i = 0; i < markersOnMap.length; i++) {
+      if (markersOnMap[i].map === null) {
+        j++
+      }
+    }
+    if (j === markersOnMap.length) {
+      markersOnMap = []
+      markerInfo = []
+      markersOnMap.length = 0
+      markerInfo.length = 0
+    }
   }
 }
 
