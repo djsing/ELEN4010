@@ -1,3 +1,5 @@
+'user strict'
+
 document.addEventListener('DOMContentLoaded', function () {
   let lang
   if (document.querySelectorAll('#map').length > 0) {
@@ -7,26 +9,55 @@ document.addEventListener('DOMContentLoaded', function () {
       lang = 'en'
     }
 
-    var jsFile = document.createElement('script')
+    let jsFile = document.createElement('script')
     jsFile.type = 'text/javascript'
     jsFile.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyCgnuMPrM3Yha6Y9K6f_XkdifRrE2t33Z4&libraries=places&callback=initMap&language=' + lang
     document.getElementsByTagName('head')[0].appendChild(jsFile)
   }
 })
 
-var map, infoWindow, service
-var worldView = { lat: 10, lng: 350 }
-var markerInfo = []
-var markersOnMap = []
+let map, infoWindow, service
+let worldView = { lat: 10, lng: 350 }
+let markerInfo = []
+let markersOnMap = []
+
+function addMarker (latLng, map, id, label, placeName) {
+  console.log('Created Marker ', label, ' at ', placeName)
+  console.log(markersOnMap)
+  let marker = new google.maps.Marker({
+    position: latLng,
+    map: map,
+    label: label,
+    id: id,
+    contentString: placeName
+  })
+  markersOnMap.push(marker)
+  addMarkerInfo()
+}
+
+let deleteMarker = function (id) {
+  try {
+    markersOnMap[id].setMap(null)
+  } catch (error) {
+  }
+  let j = 0
+  for (let i = 0; i < markersOnMap.length; i++) {
+    if (markersOnMap[i].map === null) {
+      j++
+    }
+  }
+  if (j === markersOnMap.length) {
+    markersOnMap = []
+    markerInfo = []
+    markersOnMap.length = 0
+    markerInfo.length = 0
+  }
+}
 
 function addMarkerInfo () {
-  for (var i = 0; i < markersOnMap.length; i++) {
-    var contentString = '<div id="content"><h1>' + markersOnMap[i].placeName
-
-    const marker = new google.maps.Marker({
-      position: markersOnMap[i].LatLng[0],
-      map: map
-    })
+  for (let i = 0; i < markersOnMap.length; i++) {
+    let contentString = '<div id="content"><h1>' + markersOnMap[i].contentString
+    let marker = markersOnMap[i]
 
     const infowindow = new google.maps.InfoWindow({
       content: contentString,
@@ -38,16 +69,11 @@ function addMarkerInfo () {
       infowindow.open(marker.get('map'), marker)
       markerInfo[0] = infowindow
     })
-    // marker.addListener('mouseover', function () {
-    //   closeOtherInfo()
-    //   infowindow.open(marker.get('map'), marker)
-    //   markerInfo[0] = infowindow
-    // })
-    // marker.addListener('mouseout', function () {
-    //   closeOtherInfo()
-    //   infowindow.close()
-    //   markerInfo[0] = infowindow
-    // })
+
+    google.maps.event.addListener(marker, 'rightclick', function (e) {
+      let clicked = this
+      deleteMarker(clicked.id)
+    })
   }
 }
 
@@ -80,7 +106,7 @@ function placeDestination (place, marker, infoWindow, infoWindowContent) {
   marker.setPosition(place.geometry.location)
   marker.setVisible(false)
 
-  var address = ''
+  let address = ''
   if (place.address_components) {
     address = [
       ((place.address_components[0] && place.address_components[0].short_name) || ''),
@@ -94,23 +120,15 @@ function placeDestination (place, marker, infoWindow, infoWindowContent) {
   infoWindowContent.children['place-address'].textContent = address
   infoWindow.open(map, marker)
 
-  var newMarker = {
-    placeName: 'Destination ' + Number(markersOnMap.length + 1) + ': ' + place.name,
-    LatLng: [place.geometry.location]
-  }
-
-  markersOnMap.push(newMarker)
-  addMarkerInfo()
+  let id = markersOnMap.length
+  let label = String(id + 1)
+  let placeName = 'Destination ' + label + ': ' + place.name
+  addMarker(place.geometry.location, map, id, label, placeName)
 }
 
 function placeMarkerAndPanTo (latLng, map) {
-  var marker = new google.maps.Marker({
-    position: latLng,
-    map: map
-  })
-
-  var request = {
-    bounds: latLng.bounds * 10,
+  let request = {
+    bounds: map.bounds,
     location: latLng,
     rankBy: google.maps.places.RankBy.DISTANCE,
     type: ['sublocality'],
@@ -119,19 +137,17 @@ function placeMarkerAndPanTo (latLng, map) {
 
   let destinationName = ''
   service = new google.maps.places.PlacesService(map)
-  // service.getDetails(request, function (place, status) {
   service.nearbySearch(request, function (results, status) {
-    if (status == google.maps.places.PlacesServiceStatus.OK) {
-      // Do some checks for valid info here
+    if (status === google.maps.places.PlacesServiceStatus.OK) {
+      // ToDo some checks for valid info here, sort and process for sensible name
       destinationName = ': ' + results[0].name
     }
-    var newMarker = {
-      placeName: 'Destination ' + Number(markersOnMap.length + 1) + destinationName,
-      LatLng: [latLng]
-    }
-    markersOnMap.push(newMarker)
+
+    let id = markersOnMap.length
+    let label = String(id + 1)
+    let placeName = 'Destination ' + label + destinationName
+    addMarker(latLng, map, id, label, placeName)
     map.panTo(latLng)
-    addMarkerInfo()
   })
 }
 
@@ -145,12 +161,12 @@ function initMap () {
     streetViewControl: false
   })
 
-  var card = document.getElementById('pac-card')
-  var input = document.getElementById('pac-input')
+  let card = document.getElementById('pac-card')
+  let input = document.getElementById('pac-input')
 
   map.controls[google.maps.ControlPosition.TOP_RIGHT].push(card)
 
-  var autocomplete = new google.maps.places.Autocomplete(input)
+  let autocomplete = new google.maps.places.Autocomplete(input)
 
   // Bind the map's bounds (viewport) property to the autocomplete object,
   // so that the autocomplete requests use the current map bounds for the
@@ -162,10 +178,10 @@ function initMap () {
     ['address_components', 'geometry', 'icon', 'name'])
 
   infoWindow = new google.maps.InfoWindow()
-  var infoWindowContent = document.getElementById('infowindow-content')
+  let infoWindowContent = document.getElementById('infowindow-content')
   infoWindow.setContent(infoWindowContent)
 
-  var marker = new google.maps.Marker({
+  let marker = new google.maps.Marker({
     map: map,
     anchorPoint: new google.maps.Point(0, 0)
   })
@@ -182,8 +198,8 @@ function initMap () {
 
   autocomplete.addListener('place_changed', function () {
     infoWindow.close()
-    marker.setVisible(false)
-    var place = autocomplete.getPlace()
+    marker.setVisible(true)
+    let place = autocomplete.getPlace()
     placeDestination(place, marker, infoWindow, infoWindowContent)
   })
 }
