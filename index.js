@@ -10,6 +10,8 @@ app.use(express.static(path.join(__dirname, './app/public')))
 app.set('views', path.join(__dirname, './app/views'))
 app.set('view engine', 'html')
 
+app.use(express.static(path.join(__dirname, './app/controllers')))
+
 app.use('/', mainRouter)
 let port = process.env.PORT || 3000
 app.listen(port)

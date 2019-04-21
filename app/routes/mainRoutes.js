@@ -8,6 +8,10 @@ mainRouter.get('/', function (req, res) {
   res.sendFile('/index.html', { root: req.app.get('views') })
 })
 
+mainRouter.get('/profile', function (req, res) {
+  res.sendFile('profile.html', { root: req.app.get('views') })
+})
+
 mainRouter.get('/about', function (req, res) {
   res.sendFile('/about.html', { root: req.app.get('views') })
 })
