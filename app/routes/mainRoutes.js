@@ -55,8 +55,7 @@ mainRouter.get('*', function (req, res) {
 
 // RESTful interface for Trips page
 mainRouter.post('/api/trips/addTrip', function (req, res) {
-  console.log('MainRouter tries to route to controller')
-  // tripsController(req, res)
+  tripsController(req, res)
 })
 
 module.exports = mainRouter

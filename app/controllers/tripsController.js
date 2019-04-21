@@ -3,7 +3,7 @@
 
 module.exports = function (req, res) {
   console.log('tripController happens')
-  storeTripTitles(req)
+  // storeTripTitles(req)
 }
 
 const storeTripTitles = function (req) {
