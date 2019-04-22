@@ -13,8 +13,12 @@
         <button type='button' onclick="addTripTitle()" id='addButton'>Add</button> 
         <div id='tripsList'></div>
         <form action="/api/trips/addTrip" method="POST">
-            <button type="submit" id='saveButton' hidden='true'> Save </button>  
+            <!-- <button type="submit" onclick='saveTripTitle()' id='saveButton' hidden='true'> Save </button>     -->
+            <button type="submit" id='saveButton' hidden='true'> Save </button> 
         </form>
+        
+        <!-- <button type="button" id='editButton' onclick='editTripTitle()' hidden='true'> Edit </button>
+        <button type="button" id='deleteButton' onclick='deleteTripTitle()' hidden='true'> Delete </button> -->
 </body>
 
 </html>
