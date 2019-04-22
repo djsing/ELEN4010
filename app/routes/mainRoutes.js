@@ -26,7 +26,8 @@ mainRouter.get('/hotels', function (req, res) {
 })
 
 mainRouter.get('/trips', function (req, res) {
-  res.sendFile('/trips.ejs', { root: req.app.get('views') })
+  // res.sendFile('/trips.ejs', { root: req.app.get('views') })
+  tripsController.renderTripTitlePage(req, res)
 })
 /*
 mainRouter.get('/database', function (req, res) {
@@ -55,7 +56,7 @@ mainRouter.get('*', function (req, res) {
 
 // RESTful interface for Trips page
 mainRouter.post('/trips', function (req, res) {
-  tripsController(req, res)
+  tripsController.saveTripTitles(req, res)
 })
 
 module.exports = mainRouter
