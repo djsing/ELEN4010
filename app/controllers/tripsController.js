@@ -8,6 +8,7 @@ module.exports = function (req, res) {
 }
 
 const storeTripTitles = function (req, res) {
+  let title = req.body.tripTitleInput
+  console.log(title)
   res.end(JSON.stringify(req.body))
-  console.log(req.body)
 }
