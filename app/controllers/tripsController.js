@@ -1,6 +1,8 @@
 'use strict'
 // let path = require('path')
 let tripModel = require('../models/tripModel')
+let path = require('path')
+const VIEWS = path.join(__dirname, 'views')
 let tripTitles = []
 
 module.exports = function (req, res) {
@@ -8,7 +10,7 @@ module.exports = function (req, res) {
 }
 
 const saveTripTitles = function (req, res) {
-  res.end(JSON.stringify(req.body))
+  res.render(path.join(__dirname, '../views', 'trips'))
   let title = req.body.tripTitleInput
   tripModel.saveTripTitle(title)
 }

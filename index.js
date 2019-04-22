@@ -14,7 +14,7 @@ app.use(bodyParser.urlencoded({
 
 app.use(express.static(path.join(__dirname, './app/public')))
 app.set('views', path.join(__dirname, './app/views'))
-app.set('view engine', 'html')
+app.set('view engine', 'ejs')
 
 app.use(bodyParser())
 
