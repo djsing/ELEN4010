@@ -1,0 +1,25 @@
+  
+<!DOCTYPE html>
+<html lang='eng'>
+
+<head>
+    <title>My Trips</title>
+    <meta charset='utf-8' />    
+    <script defer src='/js/trips.js'></script>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+</head>
+
+<body>
+        <h1 id='heading'>My Trips:</h1>
+        <button type='button' onclick="addTripTitle()" id='addButton'>Add</button> 
+        
+        <form action="/trips" method="POST">
+            <div id='tripsList'></div>
+            <!-- <button type="submit" onclick='saveTripTitle()' id='saveButton' hidden='true'> Save </button>     -->
+            <button type="submit" id='saveButton' hidden='true' onclick="saveTripTitle()"> Save </button> 
+        </form>
+        
+        <!-- <button type="button" id='editButton' onclick='editTripTitle()' hidden='true'> Edit </button>
+        <button type="button" id='deleteButton' onclick='deleteTripTitle()' hidden='true'> Delete </button> -->
+</body>
+
