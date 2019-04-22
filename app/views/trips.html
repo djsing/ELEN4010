@@ -11,10 +11,11 @@
 <body>
         <h1 id='heading'>My Trips:</h1>
         <button type='button' onclick="addTripTitle()" id='addButton'>Add</button> 
-        <div id='tripsList'></div>
+        
         <form action="/api/trips/addTrip" method="POST">
+            <div id='tripsList'></div>
             <!-- <button type="submit" onclick='saveTripTitle()' id='saveButton' hidden='true'> Save </button>     -->
-            <button type="submit" id='saveButton' hidden='true'> Save </button> 
+            <button type="submit" id='saveButton' hidden='true' onclick="saveTripTitle()"> Save </button> 
         </form>
         
         <!-- <button type="button" id='editButton' onclick='editTripTitle()' hidden='true'> Edit </button>

@@ -1,14 +1,13 @@
 'use strict'
 // let path = require('path')
+let tripTitles = []
 
 module.exports = function (req, res) {
   console.log('tripController happens')
-  // storeTripTitles(req)
+  storeTripTitles(req, res)
 }
 
-const storeTripTitles = function (req) {
-  const tripTitleArray = req.query.tripTitle[1]
-  tripTitleArray.array.forEach(element => {
-    console.log(element)
-  })
+const storeTripTitles = function (req, res) {
+  res.end(JSON.stringify(req.body))
+  console.log(req.body)
 }
