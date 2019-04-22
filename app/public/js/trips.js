@@ -5,4 +5,5 @@ let addTripTitle = function () {
   input.name = 'tripTitle[]'
   let tripsList = document.getElementById('tripsList')
   tripsList.appendChild(input)
+  document.getElementById('saveButton').disabled = false
 }
