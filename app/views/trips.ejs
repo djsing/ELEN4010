@@ -26,7 +26,9 @@
             <% for(var i = 0; i < tripTitleList.length; i++){ %>
                 <tr> 
                     <td>
-                       <%= tripTitleList[i] -%>
+                        <form action="/trips/delete" method="POST" id="existingTripTitle">
+                            <input type="text" value='<%= tripTitleList[i] -%>' disabled='true'> 
+                        <form action="/trips/delete" method="POST">
                     </td>
 
                     <td>
@@ -34,7 +36,9 @@
                     </td>
 
                     <td>
-                        <input type = "button" class="DeleteButton" onclick='removeRow(this)' value='Delete' />
+                        <form action="/trips/delete" method="POST">
+                            <button type = "submit" class="DeleteButton" onclick='removeRow(this)' form="existingTripTitle"> Delete </button>
+                        </form>
                     </td>
                 </tr> 
             <% } %>
