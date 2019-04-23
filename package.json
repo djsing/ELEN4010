@@ -37,8 +37,8 @@
     "body-parser": "^1.18.3",
     "bootstrap": "^4.3.1",
     "dotenv": "^7.0.0",
-    "express": "4.16.4",
     "ejs": "^2.6.1",
+    "express": "4.16.4",
     "mssql": "5.0.5"
   },
   "devDependencies": {
