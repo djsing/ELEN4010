@@ -1,15 +1,51 @@
 <!DOCTYPE html>
-<html lang="en"> 
-<head>
-<title>About</title>
-<meta charset="utf-8" />
-<script src="/js/jquery-3.4.0.min.js"></script>
-<script src="profile.js"></script>
-</head>
-<body>
-    <h1 id="profileHeading">Welcome,</h1>
-    <h4 id="emailTag">Email Address:</h4>
-    <button id="mapsButton">Map</button>
-    <button id="hotelsButton">Hotels</button>
-</body> 
+<html lang="en">
+
+    <head>
+        <title>About</title>
+        <meta charset="utf-8" />
+        <script src="/js/jquery-3.4.0.min.js"></script>
+        <script src="profile.js"></script>
+        <link rel="stylesheet" href="/css/bootstrap.min.css">
+        <link rel="stylesheet" href="/css/grayscale.min.css">
+        <link rel="stylesheet" href="/css/general.css">
+    </head>
+
+    <body>
+        <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+            <div class="container">
+                <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
+                    data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                    Menu
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarResponsive">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a id="emailTag" class="nav-link js-scroll-trigger"></a>
+                        </li>
+                        <li class="nav-item">
+                            <a id="tripsButton" class="nav-link js-scroll-trigger">My Trips</a>
+                        </li>
+                        <li class="nav-item">
+                            <a id="mapsButton" class="nav-link js-scroll-trigger">Map</a>
+                        </li>
+                        <li class="nav-item">
+                            <a id="hotelsButton" class="nav-link js-scroll-trigger">Hotels</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <header class="masthead">
+            <div class="container d-flex h-100 align-items-center">
+                <div class="mx-auto text-center">
+                    <h2 id="profileHeading" class="text-white-50 mx-auto mt-2 mb-5">Welcome,</h2>
+                </div>
+            </div>
+        </header>
+    </body>
+
 </html>
