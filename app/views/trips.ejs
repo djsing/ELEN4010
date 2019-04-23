@@ -21,10 +21,24 @@
         
         <!-- <button type="button" id='editButton' onclick='editTripTitle()' hidden='true'> Edit </button>
         <button type="button" id='deleteButton' onclick='deleteTripTitle()' hidden='true'> Delete </button> -->
-        <ul> 
-             <% for(var i = 0; i < tripTitleList.length; i++){ %>
-            <li> <%= tripTitleList[i] -%></li>
+        <table> 
+            <tbody>
+            <% for(var i = 0; i < tripTitleList.length; i++){ %>
+                <tr> 
+                    <td>
+                       <%= tripTitleList[i] -%>
+                    </td>
+
+                    <td>
+                        <button type="button" id="editButton"> Edit </button>
+                    </td>
+
+                    <td>
+                        <button type="button" id="deleteButton"> Delete </button>
+                    </td>
+                </tr> 
             <% } %>
-        </ul>
+            </tbody>
+        </table>
 </body>
 
