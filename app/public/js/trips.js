@@ -36,17 +36,24 @@ let removeRow = function (buttonElem) {
   row.parentNode.removeChild(row)
 }
 
-let editTitle = function (editButtonName, inputElemName) {
+let editTitle = function (editButtonName, inputElemName, tripTitle) {
   document.getElementById(inputElemName).disabled = false
   // create save button
   let editButton = document.getElementById(editButtonName)
-  editButton.parentNode.appendChild(createSaveButton())
+  editButton.parentNode.appendChild(createSaveButton(tripTitle, inputElemName))
   editButton.parentNode.removeChild(editButton)
 }
 
-let createSaveButton = function () {
+let createSaveButton = function (tripTitle, inputElemName) {
   let saveButton = document.createElement('Input')
   saveButton.value = 'Save'
   saveButton.type = 'submit'
+  saveButton.id = tripTitle + 'Save'
+  saveButton.addEventListener('click', () => {
+    // Make the field not editable
+    let inputField = document.getElementById(inputElemName)
+    inputField.disabled = true
+    inputField.id = inputField.value + 'Input'
+  })
   return saveButton
 }
