@@ -5,6 +5,8 @@ let mainRouter = express.Router()
 // let db = require('../models/db.js')
 let tripsController = require('../controllers/tripsController')
 let termsAndConditionsController = require('../controllers/termsAndConditionsController')
+const http = require('http')
+
 
 mainRouter.get('/', function (req, res) {
   res.sendFile('/index.html', { root: req.app.get('views') })
@@ -65,6 +67,10 @@ mainRouter.get('*', function (req, res) {
 // RESTful interface for Trips page
 mainRouter.post('/trips', function (req, res) {
   tripsController.saveTripTitles(req, res)
+})
+
+mainRouter.post('/terms_and_conditions/agree', function (req, res) {
+  res.sendFile('profile.html', { root: req.app.get('views') })
 })
 
 module.exports = mainRouter
