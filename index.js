@@ -4,11 +4,21 @@ let express = require('express')
 let path = require('path')
 let app = express()
 let mainRouter = require('./app/routes/mainRoutes')
+require('dotenv').config()
+let bodyParser = require('body-parser')
 
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({
+  extended: true
+}))
+
+app.use(express.static(path.join(__dirname, './app/public')))
 app.set('views', path.join(__dirname, './app/views'))
 app.set('view engine', 'ejs')
 
-app.use(express.static(path.join(__dirname, './app/public')))
+app.use(bodyParser())
+
+app.use(express.static(path.join(__dirname, './app/controllers')))
 
 app.use('/', mainRouter)
 

@@ -1,12 +1,12 @@
-let mssql = require('mssql')
-// Make sure this is private to this module
+const mssql = require('mssql')
+require('dotenv').config() // grab the ENV variables
 let config = {
-  server: 'awaywegoserver.database.windows.net',
-  database: 'AwayWeGoDatabase',
   // Put login details in env. variables for security
-  user: process.env.ADMIN,
-  password: process.env.PASSWORD,
-  port: 1433,
+  server: process.env.DB_SERVER,
+  database: process.env.DB_NAME,
+  user: process.env.DB_ADMIN,
+  password: process.env.DB_PASSWORD,
+  port: Number(process.env.DB_PORT),
   // Required for Azure
   options: {
     encrypt: true

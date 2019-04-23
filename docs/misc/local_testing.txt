@@ -1,0 +1,43 @@
+You can run a local live-server using 'node index' and pointing your browser towards
+http://127.0.0.1:3000
+In order to connect to the test database, you should create a file called .env in the
+project root folder. Populate this file with environmental variables that provide the
+db.js file with the values it needs to connect to the DB server, and for the main website
+to know which port it should connect to the app service on. Azure has these same variables 
+set up on the portal for both the release server and the test site. You can find the values
+you need in the config options.
+
+for example...
+
+.env:
+-------------------------------------------------------------------------------------------
+DB_SERVER=testawaywegoserver.database.windows.net
+DB_NAME=TestAwayWeGoDatabase
+DB_ADMIN=<put the server login here>
+DB_PASSWORD=<put the server password here>
+DB_PORT=1433
+PORT=3000
+
+-------------------------------------------------------------------------------------------
+
+You could put any other environment variables you need your local copy of the site to have 
+access to. In the your Javascripts, a node movule called 'dotenv' can be called to get access
+to the variables:
+
+    require('dotenv').config()
+
+This makes the variables availible in your environment. You can then access the individual
+variables using node's 'process.env.VARIABLE' syntax:
+
+    let aVariable = process.env.DB_SERVER
+
+would assign aVariable with the string value in the $DB_SERVER environment variable, for example.
+
+If you require a Number type variable, you can use:
+
+    let aNumberVariable = Number(process.env.DB_PORT)
+
+for more info on dotenv:
+https://www.npmjs.com/package/dotenv
+https://medium.com/@thejasonfile/using-dotenv-package-to-create-environment-variables-33da4ac4ea8f
+
