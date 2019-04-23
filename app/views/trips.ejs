@@ -1,0 +1,45 @@
+  
+<!DOCTYPE html>
+<html lang='eng'>
+
+<head>
+    <title>My Trips</title>
+    <meta charset='utf-8' />    
+    <script defer src='/js/trips.js'></script>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+</head>
+
+<body>
+        <h1 id='heading'>My Trips:</h1>
+        <button type='button' onclick="addTripTitle()" id='addButton'>Add</button> 
+        
+        <form action="/trips" method="POST">
+            <div id='tripsList'></div>
+            <button type="submit" id='saveButton' hidden='true' onclick="saveTripTitle()"> Save </button> 
+        </form>
+        
+        <table id='tripTitleTable'> 
+            <tbody>
+            <% for(var i = 0; i < tripTitleList.length; i++){ %>
+                <tr> 
+                    <td>
+                        <form action="/trips/delete" method="POST" id="existingTripTitle">
+                            <input type="text" value='<%= tripTitleList[i] -%>' id='<%= tripTitleList[i] %>Input' disabled='true'> 
+                        <form action="/trips/delete" method="POST">
+                    </td>
+
+                    <td>
+                        <button id='<%= tripTitleList[i] %>Edit' type="button" class= "EditButton" onclick="editTitle('<%= tripTitleList[i] %>Edit','<%= tripTitleList[i] %>Input', '<%= tripTitleList[i] %>')" > Edit </button>
+                    </td>
+
+                    <td>
+                        <form action="/trips/delete" method="POST">
+                            <button type = "submit" class="DeleteButton" onclick='removeRow(this)' form="existingTripTitle"> Delete </button>
+                        </form>
+                    </td>
+                </tr> 
+            <% } %>
+            </tbody>
+        </table>
+</body>
+
