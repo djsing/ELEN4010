@@ -27,12 +27,12 @@
                 <tr> 
                     <td>
                         <form action="/trips/delete" method="POST" id="existingTripTitle">
-                            <input type="text" value='<%= tripTitleList[i] -%>' disabled='true'> 
+                            <input type="text" value='<%= tripTitleList[i] -%>' id='<%= tripTitleList[i] %>Input' disabled='true'> 
                         <form action="/trips/delete" method="POST">
                     </td>
 
                     <td>
-                        <button type="button" class= "EditButton"> Edit </button>
+                        <button id='<%= tripTitleList[i] %>Edit' type="button" class= "EditButton" onclick="editTitle('<%= tripTitleList[i] %>Input')" > Edit </button>
                     </td>
 
                     <td>

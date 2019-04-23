@@ -35,3 +35,7 @@ let removeRow = function (buttonElem) {
   let row = buttonElem.parentNode.parentNode
   row.parentNode.removeChild(row)
 }
+
+let editTitle = function (inputElemName) {
+  document.getElementById(inputElemName).disabled = false
+}
