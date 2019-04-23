@@ -38,6 +38,11 @@ mainRouter.get('/trips', function (req, res) {
   // res.sendFile('/trips.ejs', { root: req.app.get('views') })
   tripsController.renderTripTitlePage(req, res)
 })
+
+// RESTful interface for Trips page
+mainRouter.post('/trips', function (req, res) {
+  tripsController.saveTripTitles(req, res)
+})
 /*
 mainRouter.get('/database', function (req, res) {
   // Make a query to the database
@@ -61,15 +66,6 @@ mainRouter.get('/database', function (req, res) {
 
 mainRouter.get('*', function (req, res) {
   res.status(404).send('404 Error: page not found')
-})
-
-// RESTful interface for Trips page
-mainRouter.post('/trips', function (req, res) {
-  tripsController.saveTripTitles(req, res)
-})
-
-mainRouter.post('/terms_and_conditions/agree', function (req, res) {
-  res.sendFile('profile.html', { root: req.app.get('views') })
 })
 
 module.exports = mainRouter
