@@ -22,20 +22,20 @@ mainRouter.get('/map', function (req, res) {
 })
 
 mainRouter.get('/about', function (req, res) {
-  res.sendFile('/about.html', { root: req.app.get('views') })
-})
 })
 
-mainRouter.get('/hotels', function (req, res) {
-})
   res.sendFile('/hotels.html', { root: req.app.get('views') })
 
-mainRouter.get('/trips', function (req, res) {
   tripsController.renderTripTitlePage(req, res)
 })
-mainRouter.get('/database', function (req, res) {
 /*
+mainRouter.get('/database', function (req, res) {
   // res.sendFile('/trips.ejs', { root: req.app.get('views') })
+mainRouter.get('/trips', function (req, res) {
+})
+mainRouter.get('/hotels', function (req, res) {
+})
+  res.sendFile('/about.html', { root: req.app.get('views') })
   // Make a query to the database
   db.pools
     // Run query
