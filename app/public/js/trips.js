@@ -1,4 +1,6 @@
 
+let deleteButtons = document.getElementsByClassName('DeleteButtonClass')
+
 let addTripTitle = function () {
   let input = document.createElement('input')
   input.type = 'text'
@@ -26,10 +28,10 @@ let saveTripTitle = function () {
 //   document.getElementById('deleteButton').hidden = true
 // }
 
-// let deleteTripTitle = function () {
-//   // remove the trip title input value from the HTML body
-//   document.getElementById('saveButton').hidden = true
-//   document.getElementById('editButton').hidden = true
-//   document.getElementById('deleteButton').hidden = true
-//   document.getElementById('addButton').disabled = false
-// }
+let deleteTripTitle = function (buttonElem) {
+}
+
+let removeRow = function (buttonElem) {
+  let row = buttonElem.parentNode.parentNode
+  row.parentNode.removeChild(row)
+}
