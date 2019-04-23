@@ -50,10 +50,26 @@ let createSaveButton = function (tripTitle, inputElemName) {
   saveButton.type = 'submit'
   saveButton.id = tripTitle + 'Save'
   saveButton.addEventListener('click', () => {
-    // Make the field not editable
-    let inputField = document.getElementById(inputElemName)
-    inputField.disabled = true
-    inputField.id = inputField.value + 'Input'
+    // Make the trip title to not be editable
+    let inputElem = document.getElementById(inputElemName)
+    inputElem.disabled = true
+    inputElem.id = inputElem.value + 'Input'
+
+    // Remove the save button and put an edit button there instead
+    saveButton.parentNode.appendChild(createEditButton(tripTitle, inputElem.id))
+    saveButton.parentNode.removeChild(saveButton)
   })
   return saveButton
+}
+
+let createEditButton = function (tripTitle, inputElemName) {
+  let editButton = document.createElement('Input')
+  editButton.type = 'button'
+  editButton.value = 'Edit'
+  editButton.id = tripTitle + 'Edit'
+  editButton.addEventListener('click', () => {
+    editTitle(editButton.id, inputElemName, tripTitle)
+  })
+
+  return editButton
 }
