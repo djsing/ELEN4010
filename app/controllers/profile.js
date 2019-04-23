@@ -19,4 +19,8 @@ $(document).ready(function () {
   $('#hotelsButton').click(function () {
     window.location = '/hotels'
   })
+
+  $('#tripsButton').click(function () {
+    window.location = '/trips'
+  })
 })
