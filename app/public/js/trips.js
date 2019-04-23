@@ -36,6 +36,13 @@ let removeRow = function (buttonElem) {
   row.parentNode.removeChild(row)
 }
 
-let editTitle = function (inputElemName) {
+let editTitle = function (editButtonName, inputElemName) {
   document.getElementById(inputElemName).disabled = false
+  // create save button
+  let saveButton = document.createElement('Input')
+  saveButton.value = 'Save'
+  saveButton.type = 'submit'
+  let editButton = document.getElementById(editButtonName)
+  editButton.parentNode.appendChild(saveButton)
+  editButton.parentNode.removeChild(editButton)
 }
