@@ -12,8 +12,7 @@ function signInInit () {
       // click handler
       let onLoginSuccess = function (googleUser) {
         saveGoogleProfile(googleUser)
-        // redirect to home page, currently the map page
-        window.location = '/profile'
+        window.location = '/terms_and_conditions'
       }
 
       let onLoginFail = function (error) {

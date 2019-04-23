@@ -12,11 +12,15 @@ $(document).ready(function () {
     updateProfile()
   }
 
-  $('#mapsButton').click(function (event) {
+  $('#mapsButton').click(function () {
     window.location = '/map'
   })
 
-  $('#hotelsButton').click(function (event) {
+  $('#hotelsButton').click(function () {
     window.location = '/hotels'
+  })
+
+  $('#tripsButton').click(function () {
+    window.location = '/trips'
   })
 })
