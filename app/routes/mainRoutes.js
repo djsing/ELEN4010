@@ -4,25 +4,28 @@ let express = require('express')
 let mainRouter = express.Router()
 // let db = require('../models/db.js')
 let tripsController = require('../controllers/tripsController')
+let termsAndConditionsController = require('../controllers/termsAndConditionsController')
 
 mainRouter.get('/', function (req, res) {
   res.sendFile('/index.html', { root: req.app.get('views') })
+})
+
+mainRouter.get('/terms_and_conditions', function (req, res) {
+  termsAndConditionsController(req, res)
 })
 
 mainRouter.get('/profile', function (req, res) {
   res.sendFile('profile.html', { root: req.app.get('views') })
 })
 
-
 mainRouter.get('/sign-in', function (req, res) {
-mainRouter.get('/map', function (req, res) {
-  res.sendFile('/sign-in.html', { root: req.app.get('views') })
-  res.sendFile('/map.html', { root: req.app.get('views') })
+  mainRouter.get('/map', function (req, res) {
+    res.sendFile('/sign-in.html', { root: req.app.get('views') })
+    res.sendFile('/map.html', { root: req.app.get('views') })
+  })
 
-})
-
-mainRouter.get('/about', function (req, res) {
-})
+  mainRouter.get('/about', function (req, res) {
+  })
 
   res.sendFile('/hotels.html', { root: req.app.get('views') })
 

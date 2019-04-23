@@ -8,11 +8,19 @@
 
 <body>
     <h1>Terms and Conditions</h1>
-    <ol>
-        <% for(var i = 0; i < termList.length; i++){ %>
-            <li> <%- termList[i] -%></li>
-        <% } %>
-    </ol>
+    <% preamble.forEach(paragraph =>{ %>
+        <p> <%= paragraph %> </p>
+    <% }) %>
+
+    
+    <% termList.forEach(subsection => { %>
+         <h2>  <%- subsection.name -%></h2>
+        <ol>
+        <% subsection.terms.forEach(term => { %>
+            <li> <%- term -%></li>
+        <% }) %>
+        </ol>
+     <% }) %>
 </body>
 
 </html>
