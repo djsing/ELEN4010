@@ -15,12 +15,9 @@
         
         <form action="/trips" method="POST">
             <div id='tripsList'></div>
-            <!-- <button type="submit" onclick='saveTripTitle()' id='saveButton' hidden='true'> Save </button>     -->
             <button type="submit" id='saveButton' hidden='true' onclick="saveTripTitle()"> Save </button> 
         </form>
         
-        <!-- <button type="button" id='editButton' onclick='editTripTitle()' hidden='true'> Edit </button>
-        <button type="button" id='deleteButton' onclick='deleteTripTitle()' hidden='true'> Delete </button> -->
         <table id='tripTitleTable'> 
             <tbody>
             <% for(var i = 0; i < tripTitleList.length; i++){ %>
