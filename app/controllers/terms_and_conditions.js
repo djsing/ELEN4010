@@ -16,8 +16,6 @@ let addTermsToSubsection = function (subsection, termsArray, divider) {
 }
 
 $(document).ready(() => {
-  let preamble = ''
-  let accounts = []
   $.ajax({
     url: '/terms_and_conditions/data',
     type: 'GET',
@@ -25,6 +23,11 @@ $(document).ready(() => {
       $('#Preamble').append(data.preamble)
       addTermsToSubsection($('#Preamble'), data.preamble, 'p')
       addTermsToSubsection($('#Accounts'), data.accounts, 'li')
+      addTermsToSubsection($('#OtherSites'), data.otherSites, 'li')
     }
+  })
+
+  $('#agreeButton').click(() => {
+    window.location = '/profile'
   })
 })

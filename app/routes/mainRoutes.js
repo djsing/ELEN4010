@@ -4,7 +4,7 @@ let express = require('express')
 let path = require('path')
 let mainRouter = express.Router()
 // let db = require('../models/db.js')
-let termsController = require('../models/termsAndConditionsModel')
+let termsModel = require('../models/termsAndConditionsModel')
 let tripModel = require('../models/tripModel')
 
 mainRouter.get('/', function (req, res) {
@@ -16,7 +16,7 @@ mainRouter.get('/terms_and_conditions', function (req, res) {
 })
 
 mainRouter.get('/terms_and_conditions/data', function (req, res) {
-  res.send(termsController.getTermsAndCondtions())
+  res.send(termsModel.getTermsAndCondtions())
 })
 
 mainRouter.get('/profile', function (req, res) {
