@@ -1,8 +1,18 @@
 'use strict'
 
 let express = require('express')
+let app = express()
 let path = require('path')
 let mainRouter = express.Router()
+
+let bodyParser = require('body-parser')
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({
+  extended: true
+}))
+
+var users = []
+
 // let db = require('../models/db.js')
 let terms = require('../models/termsAndConditionsModel')
 let tripModel = require('../models/tripModel')
@@ -74,6 +84,12 @@ mainRouter.get('/database', function (req, res) {
     })
 })
 */
+
+mainRouter.post('/auth', function (req, res) {
+  let name = req.body.name
+  // users.push()
+  res.send('authenticated')
+})
 
 mainRouter.get('*', function (req, res) {
   res.status(404).send('404 Error: page not found')

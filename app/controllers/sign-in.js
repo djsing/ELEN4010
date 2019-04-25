@@ -11,8 +11,24 @@ function signInInit () {
       console.log('GoogleAuth object initialised.')
       // click handler
       let onLoginSuccess = function (googleUser) {
-        saveGoogleProfile(googleUser)
-        window.location = '/profile'
+        $.ajax({
+          url: '/auth',
+          method: 'POST',
+          contentType: 'application/json',
+          data: JSON.stringify({
+            name: googleUser.getBasicProfile().getName(),
+            image: googleUser.getBasicProfile().getImageUrl(),
+            email: googleUser.getBasicProfile().getEmail(),
+            idToken: googleUser.getAuthResponse().id_token
+          }),
+          success: function (response) {
+            console.log('response', response)
+            if (response === 'authenticated') {
+              window.location = '/profile'
+            }
+          }
+        })
+        // window.sessionStorage.setItem('ID', JSON.stringify(profile.getId()))
       }
 
       let onLoginFail = function (error) {
