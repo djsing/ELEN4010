@@ -48,12 +48,15 @@ mainRouter.get('/trips', function (req, res) {
 })
 
 // RESTful interface for Trips page
-mainRouter.post('/trips', function (req, res) {
+mainRouter.post('/trips/data', function (req, res) {
+  /*
   res.render(path.join(__dirname, '../views', 'trips'))
   let title = req.body.tripTitleInput
   tripModel.saveTripTitle(title)
   res.render(path.join(__dirname, '../views', 'trips'),
     { tripTitleList: tripModel.getTripTitles() })
+    */
+  res.sendStatus(200)
 })
 /*
 mainRouter.get('/database', function (req, res) {

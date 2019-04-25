@@ -14,13 +14,10 @@
         <h1 id='heading'>My Trips:</h1>
         <button type='button' id='addButton'>Add</button> 
 
-        <div id='tripTitle'></div>
-        <div id='tripTitleSave'></div>
-        
-        <form action="/trips" method="POST">
-            <div id='tripsList'></div>
-            <button type="submit" id='saveButton' hidden='true' onclick="saveTripTitle()"> Save </button> 
+        <form id='newTrip'> 
+            <div id='tripTitle'></div>
         </form>
+        
         
         <table> 
             <tbody  id='tripTitleTable'>

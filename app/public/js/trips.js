@@ -1,13 +1,13 @@
 let addTitleInputField = function () {
   let titleInputField = document.createElement('input')
   titleInputField.type = 'text'
-  titleInputField.id = 'titleInputField'
+  titleInputField.id = 'tripTitleInputField'
   $('#tripTitle').append(titleInputField)
 }
 
 let addSaveTripButton = function () {
   let savetripButton = document.createElement('input')
-  savetripButton.type = 'button'
+  savetripButton.type = 'submit'
   savetripButton.value = 'Save'
   savetripButton.id = 'saveTripButton'
   $('#tripTitle').append(savetripButton)
@@ -20,8 +20,22 @@ $(document).ready(() => {
     $('#addButton').hide()
   })
 
-  $('#tripTitle').on('click', () => {
-    console.log('Clock')
+  $('#newTrip').on('submit', (event) => {
+    event.preventDefault()
+    let tripTitle = $('tripTitleInputField').val()
+    $.ajax({
+      url: '/trips/data',
+      method: 'POST',
+      contentType: 'application/json',
+      data: JSON.stringify({ tripTite: tripTitle }),
+      success: (response) => {
+        console.log('It works!')
+      }
+    })
+
+    $('#saveTripButton').remove()
+    $('#tripTitleInputField').remove()
+    $('#addButton').show()
   })
 })
 
