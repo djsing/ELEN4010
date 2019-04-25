@@ -85,6 +85,15 @@ $(function () {
   $('table').on('click', '.deleteButton', function () {
     let oldRow = $(this).closest('tr')
     oldRow.remove()
+
+    $.ajax({
+      url: '/trips/data',
+      method: 'DELETE',
+      contentType: 'json',
+      success: function (res) {
+        console.log(res)
+      }
+    })
   })
 })
 
