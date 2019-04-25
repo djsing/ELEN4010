@@ -29,6 +29,7 @@ let addEditBtnToTitle = function (title, row) {
   let newButton = document.createElement('input')
   newButton.type = 'button'
   newButton.value = 'Edit'
+  newButton.className = 'editButton'
   newButton.id = title
 
   row.appendChild(newButton)
@@ -39,8 +40,11 @@ let addDeleteBtnToTitle = function (title, row) {
   let newButton = document.createElement('input')
   newButton.type = 'button'
   newButton.value = 'Delete'
+  newButton.className = 'deleteButton'
   newButton.id = title
-
+  $('#title').on('click', () => {
+    console.log('Delete button works')
+  })
   row.appendChild(newButton)
 }
 
@@ -52,7 +56,7 @@ let addTitleEntry = function (title) {
   $('#tripTitleTable').append(newRow)
 }
 
-$(document).ready(() => {
+$(function () {
   $('#addButton').click(() => {
     addTitleInputField()
     addSaveTripButton()
@@ -76,6 +80,11 @@ $(document).ready(() => {
     $('#saveTripButton').remove()
     $('#tripTitleInputField').remove()
     $('#addButton').show()
+  })
+
+  $('table').on('click', '.deleteButton', function () {
+    let oldRow = $(this).closest('tr')
+    oldRow.remove()
   })
 })
 
