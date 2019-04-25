@@ -1,12 +1,18 @@
-let addTermsToSubsection = function (subsection, termsArray) {
-  let list = document.createElement('ol')
+let addTermsToSubsection = function (subsection, termsArray, divider) {
+  let parentItemType = ''
+  if (divider === 'li') {
+    parentItemType = 'ol'
+  } else {
+    parentItemType = 'p'
+  }
+  let parentItem = document.createElement(parentItemType)
   termsArray.forEach(element => {
-    let item = document.createElement('li')
+    let item = document.createElement(divider)
     let term = document.createTextNode(element)
     item.appendChild(term)
-    list.appendChild(item)
+    parentItem.appendChild(item)
   })
-  subsection.append(list)
+  subsection.append(parentItem)
 }
 
 $(document).ready(() => {
@@ -17,7 +23,8 @@ $(document).ready(() => {
     type: 'GET',
     success: (data) => {
       $('#Preamble').append(data.preamble)
-      addTermsToSubsection($('#Accounts'), data.accounts)
+      addTermsToSubsection($('#Preamble'), data.preamble, 'p')
+      addTermsToSubsection($('#Accounts'), data.accounts, 'li')
     }
   })
 })
