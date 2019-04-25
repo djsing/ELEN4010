@@ -1,4 +1,18 @@
+let addTitleInputField = function () {
+  let titleInputField = document.createElement('input')
+  titleInputField.type = 'text'
+  titleInputField.id = 'titleInputField'
+  $('#tripTitle').append(titleInputField)
+}
 
+$(document).ready(() => {
+  $('#addButton').click(() => {
+    addTitleInputField()
+    $('#addButton').attr('hidden', true)
+  })
+})
+
+/*
 let deleteButtons = document.getElementsByClassName('DeleteButtonClass')
 
 let addTripTitle = function () {
@@ -59,3 +73,4 @@ let createEditButton = function (tripTitle, inputElemName) {
 
   return editButton
 }
+*/

@@ -40,8 +40,7 @@ mainRouter.get('/hotels', function (req, res) {
 })
 
 mainRouter.get('/trips', function (req, res) {
-  res.render(path.join(__dirname, '../views', 'trips'), {
-    tripTitleList: tripModel.getTripTitles() })
+  res.sendFile('/trips.html', { root: req.app.get('views') })
 })
 
 // RESTful interface for Trips page

@@ -1,0 +1,29 @@
+  
+<!DOCTYPE html>
+<html lang='eng'>
+
+<head>
+    <title>My Trips</title>
+    <meta charset='utf-8' />      
+    <script src="/js/jquery-3.4.0.min.js"></script>
+    <script src='/js/trips.js'></script>  
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+</head>
+
+<body>
+        <h1 id='heading'>My Trips:</h1>
+        <button type='button' id='addButton'>Add</button> 
+
+        <div id='tripTitle'></div>
+        
+        <form action="/trips" method="POST">
+            <div id='tripsList'></div>
+            <button type="submit" id='saveButton' hidden='true' onclick="saveTripTitle()"> Save </button> 
+        </form>
+        
+        <table> 
+            <tbody  id='tripTitleTable'>
+            </tbody>
+        </table>
+</body>
+
