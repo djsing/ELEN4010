@@ -16,7 +16,11 @@ mainRouter.get('/terms_and_conditions', function (req, res) {
 })
 
 mainRouter.get('/terms_and_conditions/data', function (req, res) {
-  res.send('Test')
+  let termsAndCondtions = {
+    preamble: 'Preamble text',
+    accounts: ['Term 1', 'Term 2', 'Term 3']
+  }
+  res.send(termsAndCondtions)
 })
 
 mainRouter.get('/profile', function (req, res) {

@@ -1,12 +1,12 @@
 $(document).ready(() => {
+  let preamble = ''
+  let accounts = []
   $.ajax({
     url: '/terms_and_conditions/data',
     type: 'GET',
     success: (data) => {
-      console.log(data)
+      $('#Preamble').append(data.preamble)
+      $('#Accounts').append(data.accounts)
     }
   })
-  $('#Preamble').append('Preable section')
-
-  $('#Accounts').append('Term and conditions about accounts')
 })
