@@ -13,6 +13,45 @@ let addSaveTripButton = function () {
   $('#tripTitle').append(savetripButton)
 }
 
+let addTitleDiplayField = function (title, row) {
+  let newEntry = document.createElement('td')
+  let titleDisplayField = document.createElement('input')
+  titleDisplayField.id = title
+  titleDisplayField.value = title
+  titleDisplayField.disabled = true
+
+  newEntry.appendChild(titleDisplayField)
+  row.appendChild(newEntry)
+}
+
+let addEditBtnToTitle = function (title, row) {
+  let newEntry = document.createElement('td')
+  let newButton = document.createElement('input')
+  newButton.type = 'button'
+  newButton.value = 'Edit'
+  newButton.id = title
+
+  row.appendChild(newButton)
+}
+
+let addDeleteBtnToTitle = function (title, row) {
+  let newEntry = document.createElement('td')
+  let newButton = document.createElement('input')
+  newButton.type = 'button'
+  newButton.value = 'Delete'
+  newButton.id = title
+
+  row.appendChild(newButton)
+}
+
+let addTitleEntry = function (title) {
+  let newRow = document.createElement('tr')
+  addTitleDiplayField(title, newRow)
+  addEditBtnToTitle(title, newRow)
+  addDeleteBtnToTitle(title, newRow)
+  $('#tripTitleTable').append(newRow)
+}
+
 $(document).ready(() => {
   $('#addButton').click(() => {
     addTitleInputField()
@@ -30,25 +69,14 @@ $(document).ready(() => {
       data: JSON.stringify({ tripTite: tripTitle }),
       success: function (res) {
         res.tripTitles.forEach((title) => {
-          let newRow = document.createElement('tr')
-          // Title entry
-          let newEntry = document.createElement('td')
-          let titleDisplayField = document.createElement('input')
-          titleDisplayField.id = tripTitle
-          titleDisplayField.value = title
-          titleDisplayField.disabled = true
-
-          newEntry.appendChild(titleDisplayField)
-          newRow.appendChild(newEntry)
-          $('#tripTitleTable').append(newRow)
+          addTitleEntry(title)
         })
       }
     })
+    $('#saveTripButton').remove()
+    $('#tripTitleInputField').remove()
+    $('#addButton').show()
   })
-
-  $('#saveTripButton').remove()
-  $('#tripTitleInputField').remove()
-  $('#addButton').show()
 })
 
 /*
