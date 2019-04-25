@@ -56,7 +56,10 @@ mainRouter.post('/trips/data', function (req, res) {
   res.render(path.join(__dirname, '../views', 'trips'),
     { tripTitleList: tripModel.getTripTitles() })
     */
-  res.sendStatus(200)
+  let testObj = {
+    'tripTitles': ['Zanzibar', 'Kenya']
+  }
+  res.send(testObj)
 })
 /*
 mainRouter.get('/database', function (req, res) {

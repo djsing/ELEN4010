@@ -28,15 +28,27 @@ $(document).ready(() => {
       method: 'POST',
       contentType: 'application/json',
       data: JSON.stringify({ tripTite: tripTitle }),
-      success: (response) => {
-        console.log('It works!')
+      success: function (res) {
+        res.tripTitles.forEach((title) => {
+          let newRow = document.createElement('tr')
+          // Title entry
+          let newEntry = document.createElement('td')
+          let titleDisplayField = document.createElement('input')
+          titleDisplayField.id = tripTitle
+          titleDisplayField.value = title
+          titleDisplayField.disabled = true
+
+          newEntry.appendChild(titleDisplayField)
+          newRow.appendChild(newEntry)
+          $('#tripTitleTable').append(newRow)
+        })
       }
     })
-
-    $('#saveTripButton').remove()
-    $('#tripTitleInputField').remove()
-    $('#addButton').show()
   })
+
+  $('#saveTripButton').remove()
+  $('#tripTitleInputField').remove()
+  $('#addButton').show()
 })
 
 /*
