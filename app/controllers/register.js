@@ -48,3 +48,9 @@ function saveGoogleProfile (googleUser) {
   window.sessionStorage.setItem('Email', JSON.stringify(profile.getEmail()))
   window.sessionStorage.setItem('AuthToken', JSON.stringify(googleUser.getAuthResponse().id_token))
 }
+
+$(document).ready(function () {
+  $('#registerSignInButton').click(function () {
+    window.location = '/sign-in'
+  })
+})
