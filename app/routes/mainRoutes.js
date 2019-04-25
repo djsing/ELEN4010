@@ -12,9 +12,7 @@ mainRouter.get('/', function (req, res) {
 })
 
 mainRouter.get('/terms_and_conditions', function (req, res) {
-  res.render(path.join(__dirname, '../views', 'terms_and_conditions'),
-    { termList: terms.termsAndCondtions,
-      preamble: terms.preamble })
+  res.sendFile('/terms_and_conditions.html', { root: req.app.get('views') })
 })
 
 mainRouter.get('/profile', function (req, res) {
