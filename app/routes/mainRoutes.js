@@ -1,17 +1,20 @@
 'use strict'
 
 let express = require('express')
+let path = require('path')
 let mainRouter = express.Router()
 // let db = require('../models/db.js')
-let termsAndConditionsController = require('../controllers/termsAndConditionsController')
-let tripsController = require('../controllers/tripsController')
+let terms = require('../models/termsAndConditionsModel')
+let tripModel = require('../models/tripModel')
 
 mainRouter.get('/', function (req, res) {
   res.sendFile('/index.html', { root: req.app.get('views') })
 })
 
 mainRouter.get('/terms_and_conditions', function (req, res) {
-  termsAndConditionsController(req, res)
+  res.render(path.join(__dirname, '../views', 'terms_and_conditions'),
+    { termList: terms.termsAndCondtions,
+      preamble: terms.preamble })
 })
 
 mainRouter.get('/profile', function (req, res) {
@@ -35,13 +38,17 @@ mainRouter.get('/hotels', function (req, res) {
 })
 
 mainRouter.get('/trips', function (req, res) {
-  // res.sendFile('/trips.ejs', { root: req.app.get('views') })
-  tripsController.renderTripTitlePage(req, res)
+  res.render(path.join(__dirname, '../views', 'trips'), {
+    tripTitleList: tripModel.getTripTitles() })
 })
 
 // RESTful interface for Trips page
 mainRouter.post('/trips', function (req, res) {
-  tripsController.saveTripTitles(req, res)
+  res.render(path.join(__dirname, '../views', 'trips'))
+  let title = req.body.tripTitleInput
+  tripModel.saveTripTitle(title)
+  res.render(path.join(__dirname, '../views', 'trips'),
+    { tripTitleList: tripModel.getTripTitles() })
 })
 /*
 mainRouter.get('/database', function (req, res) {
