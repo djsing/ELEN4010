@@ -15,6 +15,10 @@ mainRouter.get('/terms_and_conditions', function (req, res) {
   res.sendFile('/terms_and_conditions.html', { root: req.app.get('views') })
 })
 
+mainRouter.get('/terms_and_conditions/data', function (req, res) {
+  res.send('Test')
+})
+
 mainRouter.get('/profile', function (req, res) {
   res.sendFile('profile.html', { root: req.app.get('views') })
 })
