@@ -12,7 +12,7 @@ function signInInit () {
       // click handler
       let onLoginSuccess = function (googleUser) {
         saveGoogleProfile(googleUser)
-        window.location = '/profile'
+        window.location = '/terms_and_conditions'
       }
 
       let onLoginFail = function (error) {
@@ -20,7 +20,7 @@ function signInInit () {
       }
 
       // find google log in button
-      let element = document.getElementById('googleLoginButton')
+      let element = document.getElementById('googleRegisterButton')
       // attach login to button
       auth2.attachClickHandler(element, {}, onLoginSuccess, onLoginFail)
     }
@@ -48,3 +48,9 @@ function saveGoogleProfile (googleUser) {
   window.sessionStorage.setItem('Email', JSON.stringify(profile.getEmail()))
   window.sessionStorage.setItem('AuthToken', JSON.stringify(googleUser.getAuthResponse().id_token))
 }
+
+$(document).ready(function () {
+  $('#registerSignInButton').click(function () {
+    window.location = '/sign-in'
+  })
+})
