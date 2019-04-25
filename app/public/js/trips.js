@@ -5,10 +5,23 @@ let addTitleInputField = function () {
   $('#tripTitle').append(titleInputField)
 }
 
+let addSaveTripButton = function () {
+  let savetripButton = document.createElement('input')
+  savetripButton.type = 'button'
+  savetripButton.value = 'Save'
+  savetripButton.id = 'saveTripButton'
+  $('#tripTitle').append(savetripButton)
+}
+
 $(document).ready(() => {
   $('#addButton').click(() => {
     addTitleInputField()
-    $('#addButton').attr('hidden', true)
+    addSaveTripButton()
+    $('#addButton').hide()
+  })
+
+  $('#tripTitle').on('click', () => {
+    console.log('Clock')
   })
 })
 
