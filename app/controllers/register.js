@@ -12,7 +12,7 @@ function signInInit () {
       // click handler
       let onLoginSuccess = function (googleUser) {
         saveGoogleProfile(googleUser)
-        window.location = '/profile'
+        window.location = '/terms_and_conditions'
       }
 
       let onLoginFail = function (error) {
@@ -20,7 +20,7 @@ function signInInit () {
       }
 
       // find google log in button
-      let element = document.getElementById('googleLoginButton')
+      let element = document.getElementById('googleRegisterButton')
       // attach login to button
       auth2.attachClickHandler(element, {}, onLoginSuccess, onLoginFail)
     }
