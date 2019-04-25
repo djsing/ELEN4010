@@ -25,6 +25,10 @@ mainRouter.get('/about', function (req, res) {
   res.sendFile('/about.html', { root: req.app.get('views') })
 })
 
+mainRouter.get('/register', function (req, res) {
+  res.sendFile('/register.html', { root: req.app.get('views') })
+})
+
 mainRouter.get('/sign-in', function (req, res) {
   res.sendFile('/sign-in.html', { root: req.app.get('views') })
 })
