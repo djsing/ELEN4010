@@ -65,6 +65,15 @@ let addSaveEditButton = function (tableCell) {
   tableCell.append(newButton)
 }
 
+let addEditButton = function (title, tableCell) {
+  let newButton = document.createElement('input')
+  newButton.type = 'button'
+  newButton.value = 'Edit'
+  newButton.className = 'editButton'
+  newButton.id = title
+  tableCell.append(newButton)
+}
+
 $(function () {
   $(window).on('load', () => {
     $.ajax({
@@ -142,7 +151,6 @@ $(function () {
     let titleInput = oldRow.find('input.titleField')
     let oldTripTitle = titleInput.attr('id')
     let newTripTitle = titleInput.val()
-    titleInput.attr('id', newTripTitle)
     titleInput.attr('disabled', true)
 
     $.ajax({
@@ -158,5 +166,9 @@ $(function () {
         })
       }
     })
+
+    let tableEntry = $(this).parent()
+    tableEntry.empty()
+    addEditButton(newTripTitle, tableEntry)
   })
 })
