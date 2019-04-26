@@ -4,7 +4,7 @@
 <head>
     <title>Trip Itinerary</title>
     <meta charset='utf-8' />    
-    <script defer src='/js/tripSidebar.js'></script>
+    <script defer src='/tripSidebar.js'></script>
     <link rel="stylesheet" href="/css/bootstrap.min.css">
 </head>
 
@@ -17,15 +17,14 @@
     <div>
         <button type='button' onclick="addDestination()" id='addButton'>Add</button>
     </div> 
-    
-    <table id='destinationsTable'> 
-        <tbody>
-        </tbody>
-    </table>
 
-    <form action="/trip" method="POST">
-        <div id='destinationsList'></div>
-        <button type="submit" id='saveButton' onclick="saveTrip()"> Save </button> 
+    <form action="/trip" method="POST"></form>
+        <table id='destinationsTable'> 
+            <tbody id='destinationsTableBody'>
+            </tbody>
+        </table>
+
+        <button type="submit" id='saveTripButton' onclick="saveTrip()"> Save </button> 
     </form>
 
 </body>
