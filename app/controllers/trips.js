@@ -142,13 +142,16 @@ $(function () {
   $('table').on('click', '.saveEdit', function () {
     let oldRow = $(this).closest('tr')
     let titleInput = oldRow.find('input.titleField')
-    let updatedTitle = titleInput.val()
+    let oldTripTitle = titleInput.id
+    let newTripTitle = titleInput.val()
+    titleInput.id = newTripTitle
     titleInput.attr('disabled', true)
 
     $.ajax({
       url: '/trips/data',
       method: 'PUT',
-      data: { 'tripTitle': updatedTitle },
+      data: { 'oldTripTitle': oldTripTitle,
+        'newTripTitle': newTripTitle },
       success: function (res) {
         $('#tripTitleTable').empty()
         res.tripTitles.forEach((title) => {

@@ -76,7 +76,7 @@ mainRouter.delete('/trips/data', function (req, res) {
 })
 
 mainRouter.put('/trips/data', function (req, res) {
-  tripModel.updateTrip(req.body.tripTitle)
+  tripModel.updateTrip(req.body.oldTipTitle, req.body.newTipTitle)
 })
 /*
 mainRouter.get('/database', function (req, res) {

@@ -15,8 +15,9 @@ let removeTrip = function (tripTitle) {
   })
 }
 
-let updateTrip = function (tripTitle) {
-  console.log('Updating trips')
+let updateTrip = function (oldTripTitle, newTripTitle) {
+  let index = tripTitles.findIndex((title) => { return title === oldTripTitle })
+  tripTitles[index] = newTripTitle
 }
 
 module.exports = {
