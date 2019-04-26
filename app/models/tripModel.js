@@ -15,8 +15,13 @@ let removeTrip = function (tripTitle) {
   })
 }
 
+let updateTrip = function (tripTitle) {
+  console.log('Updating trips')
+}
+
 module.exports = {
   saveTripTitle,
   getTripTitles,
-  removeTrip
+  removeTrip,
+  updateTrip
 }

@@ -119,6 +119,10 @@ $(function () {
       contentType: 'application/json',
       data: JSON.stringify({ 'tripTitle': title }),
       success: function (res) {
+        $('#tripTitleTable').empty()
+        res.tripTitles.forEach((title) => {
+          addTitleEntry(title)
+        })
       }
     })
 
@@ -138,8 +142,20 @@ $(function () {
   $('table').on('click', '.saveEdit', function () {
     let oldRow = $(this).closest('tr')
     let titleInput = oldRow.find('input.titleField')
+    let updatedTitle = titleInput.val()
     titleInput.attr('disabled', true)
 
+    $.ajax({
+      url: '/trips/data',
+      method: 'PUT',
+      data: { 'tripTitle': updatedTitle },
+      success: function (res) {
+        $('#tripTitleTable').empty()
+        res.tripTitles.forEach((title) => {
+          addTitleEntry(title)
+        })
+      }
+    })
     // let tableEntry = $(this).parent()
     // tableEntry.empty()
     // addSaveEditButton(tableEntry)

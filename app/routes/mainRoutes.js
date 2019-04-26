@@ -74,6 +74,10 @@ mainRouter.delete('/trips/data', function (req, res) {
     */
   tripModel.removeTrip(req.body.tripTitle)
 })
+
+mainRouter.put('/trips/data', function (req, res) {
+  tripModel.updateTrip(req.body.tripTitle)
+})
 /*
 mainRouter.get('/database', function (req, res) {
   // Make a query to the database
