@@ -1,5 +1,5 @@
 const { OAuth2Client } = require('google-auth-library')
-db = require('./db')
+let db = require('./db')
 
 function authenticateToken (token) {
   const client = new OAuth2Client('770023573168-8lo6smmhtuifqt6enlcnsulssucf2eb0.apps.googleusercontent.com')
