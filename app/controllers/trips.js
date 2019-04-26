@@ -57,6 +57,20 @@ let addTitleEntry = function (title) {
 }
 
 $(function () {
+  $(window).on('load', () => {
+    $.ajax({
+      url: '/trips/data',
+      method: 'GET',
+      contentType: 'application/json',
+      data: JSON.stringify({ 'tripTitle': tripTitle }),
+      success: function (res) {
+        $('#tripTitleTable').empty()
+        res.tripTitles.forEach((title) => {
+          addTitleEntry(title)
+        })
+      }
+    })
+  })
 
   $('#addButton').click(() => {
     addTitleInputField()
