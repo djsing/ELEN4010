@@ -5,10 +5,24 @@ let saveTripTitle = function (tripTitle) {
 }
 
 let getTripTitles = function () {
-  return tripTitles
+  tripTitles.sort()
+  return { 'tripTitles': tripTitles }
+}
+
+let removeTrip = function (tripTitle) {
+  tripTitles = tripTitles.filter((value, index, array) => {
+    return value !== tripTitle
+  })
+}
+
+let updateTrip = function (oldTripTitle, newTripTitle) {
+  let index = tripTitles.findIndex((title) => { return title === oldTripTitle })
+  tripTitles[index] = newTripTitle
 }
 
 module.exports = {
   saveTripTitle,
-  getTripTitles
+  getTripTitles,
+  removeTrip,
+  updateTrip
 }

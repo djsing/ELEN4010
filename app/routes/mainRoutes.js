@@ -11,9 +11,9 @@ app.use(bodyParser.urlencoded({
   extended: true
 }))
 
-let auth = require('../models/authenticate')
 // let db = require('../models/db.js')
-let terms = require('../models/termsAndConditionsModel')
+let auth = require('../models/authenticate')
+let termsModel = require('../models/termsAndConditionsModel')
 let tripModel = require('../models/tripModel')
 
 mainRouter.get('/', function (req, res) {
@@ -21,9 +21,11 @@ mainRouter.get('/', function (req, res) {
 })
 
 mainRouter.get('/terms_and_conditions', function (req, res) {
-  res.render(path.join(__dirname, '../views', 'terms_and_conditions'),
-    { termList: terms.termsAndCondtions,
-      preamble: terms.preamble })
+  res.sendFile('/terms_and_conditions.html', { root: req.app.get('views') })
+})
+
+mainRouter.get('/terms_and_conditions/data', function (req, res) {
+  res.send(termsModel.getTermsAndCondtions())
 })
 
 mainRouter.get('/profile', function (req, res) {
@@ -51,17 +53,24 @@ mainRouter.get('/hotels', function (req, res) {
 })
 
 mainRouter.get('/trips', function (req, res) {
-  res.render(path.join(__dirname, '../views', 'trips'), {
-    tripTitleList: tripModel.getTripTitles() })
+  res.sendFile('/trips.html', { root: req.app.get('views') })
 })
 
-// RESTful interface for Trips page
-mainRouter.post('/trips', function (req, res) {
-  res.render(path.join(__dirname, '../views', 'trips'))
-  let title = req.body.tripTitleInput
-  tripModel.saveTripTitle(title)
-  res.render(path.join(__dirname, '../views', 'trips'),
-    { tripTitleList: tripModel.getTripTitles() })
+mainRouter.get('/trips/data', function (req, res) {
+  res.send(tripModel.getTripTitles())
+})
+
+mainRouter.post('/trips/data', function (req, res) {
+  tripModel.saveTripTitle(req.body.tripTitle)
+  res.send(tripModel.getTripTitles())
+})
+
+mainRouter.delete('/trips/data', function (req, res) {
+  tripModel.removeTrip(req.body.tripTitle)
+})
+
+mainRouter.put('/trips/data', function (req, res) {
+  tripModel.updateTrip(req.body.oldTripTitle, req.body.newTripTitle)
 })
 
 mainRouter.post('/auth', function (req, res) {
