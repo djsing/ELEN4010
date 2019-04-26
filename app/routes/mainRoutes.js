@@ -63,26 +63,6 @@ mainRouter.post('/trips', function (req, res) {
   res.render(path.join(__dirname, '../views', 'trips'),
     { tripTitleList: tripModel.getTripTitles() })
 })
-/*
-mainRouter.get('/database', function (req, res) {
-  // Make a query to the database
-  db.pools
-    // Run query
-    .then((pool) => {
-      return pool.request()
-        // This is only a test query, change it to whatever you need
-        .query('SELECT 1')
-    })
-    // Send back the result
-    .then(result => {
-      res.status(200).send(result)
-    })
-    // If there's an error, return that with some description
-    .catch(err => {
-      res.status(500).send(err)
-    })
-})
-*/
 
 mainRouter.post('/auth', function (req, res) {
   auth.authenticateToken(req)
