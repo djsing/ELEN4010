@@ -60,6 +60,7 @@ let addSaveEditButton = function (tableCell) {
   let newButton = document.createElement('input')
   newButton.value = 'Save'
   newButton.type = 'submit'
+  newButton.className = 'saveEdit'
   newButton.addEventListener('click', () => {
     console.log('Save button works')
   })
@@ -132,6 +133,16 @@ $(function () {
     let tableEntry = $(this).parent()
     tableEntry.empty()
     addSaveEditButton(tableEntry)
+  })
+
+  $('table').on('click', '.saveEdit', function () {
+    let oldRow = $(this).closest('tr')
+    let titleInput = oldRow.find('input.titleField')
+    titleInput.attr('disabled', true)
+
+    // let tableEntry = $(this).parent()
+    // tableEntry.empty()
+    // addSaveEditButton(tableEntry)
   })
 })
 
