@@ -7,10 +7,10 @@ function authenticateToken (token) {
       idToken: token.body.idToken,
       audience: '770023573168-8lo6smmhtuifqt6enlcnsulssucf2eb0.apps.googleusercontent.com'
     })
-    console.log('ticket', ticket)
+    // console.log('ticket', ticket)
     const payload = ticket.getPayload()
     const userid = payload['sub']
-    console.log(userid)
+    // console.log(userid)
   }
   verify().catch(console.error)
 }
