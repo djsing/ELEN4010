@@ -11,7 +11,16 @@ let addDestination = function () {
   let destination = document.createTextNode('some place')
   destinationCell.appendChild(destination)
   row.appendChild(destinationCell)
+  let deleteButtonCell = document.createElement('td')
+  let deleteButton = document.createElement('input')
+  deleteButton.type = 'button'
+  deleteButton.value = 'x'
+  deleteButton.className = 'deleteButton'
+  deleteButtonCell.appendChild(deleteButton)
+  row.appendChild(deleteButtonCell)
   destinationsTable.appendChild(row)
 }
 
 let saveTrip = function () {}
+
+let deleteDestination = function () {}
