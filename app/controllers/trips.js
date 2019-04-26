@@ -17,9 +17,9 @@ let addTitleDiplayField = function (title, row) {
   let newEntry = document.createElement('td')
   let titleDisplayField = document.createElement('input')
   titleDisplayField.id = title
+  titleDisplayField.className = 'titleField'
   titleDisplayField.value = title
   titleDisplayField.disabled = true
-
   newEntry.appendChild(titleDisplayField)
   row.appendChild(newEntry)
 }
@@ -84,16 +84,20 @@ $(function () {
 
   $('table').on('click', '.deleteButton', function () {
     let oldRow = $(this).closest('tr')
-    oldRow.remove()
-
+    let titleInput = oldRow.find('input.titleField')
+    let title = titleInput.val()
+    console.log(title)
     $.ajax({
-      url: '/trips/data',
+      url: '/trips',
       method: 'DELETE',
-      contentType: 'json',
+      contentType: 'application/json',
+      data: JSON.stringify({ 'title': title }),
       success: function (res) {
         console.log(res)
       }
     })
+
+    oldRow.remove()
   })
 })
 
