@@ -13,7 +13,7 @@ app.use(bodyParser.urlencoded({
 
 // let db = require('../models/db.js')
 let auth = require('../models/authenticate')
-let terms = require('../models/termsAndConditionsModel')
+let termsModel = require('../models/termsAndConditionsModel')
 let tripModel = require('../models/tripModel')
 
 mainRouter.get('/', function (req, res) {
