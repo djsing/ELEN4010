@@ -1,14 +1,14 @@
 let saveTripTitle = function () {}
 
-let addDestination = function () {
+let addDestination = function (index, destinationTitle) {
   let destinationsTable = document.getElementById('destinationsTableBody')
   let row = document.createElement('tr')
   let enumerationCell = document.createElement('td')
-  let enumeration = document.createTextNode('1')
+  let enumeration = document.createTextNode(index)
   enumerationCell.appendChild(enumeration)
   row.appendChild(enumerationCell)
   let destinationCell = document.createElement('td')
-  let destination = document.createTextNode('some place')
+  let destination = document.createTextNode(destinationTitle)
   destinationCell.appendChild(destination)
   row.appendChild(destinationCell)
   let deleteButtonCell = document.createElement('td')
