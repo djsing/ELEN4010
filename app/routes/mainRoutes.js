@@ -1,9 +1,19 @@
 'use strict'
 
 let express = require('express')
+let app = express()
 let path = require('path')
 let mainRouter = express.Router()
-let termsModel = require('../models/termsAndConditionsModel')
+
+let bodyParser = require('body-parser')
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({
+  extended: true
+}))
+
+// let db = require('../models/db.js')
+let auth = require('../models/authenticate')
+let terms = require('../models/termsAndConditionsModel')
 let tripModel = require('../models/tripModel')
 
 mainRouter.get('/', function (req, res) {
@@ -61,6 +71,11 @@ mainRouter.delete('/trips/data', function (req, res) {
 
 mainRouter.put('/trips/data', function (req, res) {
   tripModel.updateTrip(req.body.oldTripTitle, req.body.newTripTitle)
+})
+
+mainRouter.post('/auth', function (req, res) {
+  auth.authenticateToken(req)
+  res.send('authenticated')
 })
 
 mainRouter.get('*', function (req, res) {
