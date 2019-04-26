@@ -75,7 +75,7 @@ let addEditButton = function (title, tableCell) {
 }
 
 $(function () {
-  $(window).on('load', () => {
+  $(document).ready(() => {
     $.ajax({
       url: '/trips/data',
       method: 'GET',
