@@ -31,8 +31,8 @@ let addEditBtnToTitle = function (title, row) {
   newButton.value = 'Edit'
   newButton.className = 'editButton'
   newButton.id = title
-
-  row.appendChild(newButton)
+  newEntry.appendChild(newButton)
+  row.appendChild(newEntry)
 }
 
 let addDeleteBtnToTitle = function (title, row) {
@@ -54,6 +54,16 @@ let addTitleEntry = function (title) {
   addEditBtnToTitle(title, newRow)
   addDeleteBtnToTitle(title, newRow)
   $('#tripTitleTable').append(newRow)
+}
+
+let addSaveEditButton = function (tableCell) {
+  let newButton = document.createElement('input')
+  newButton.value = 'Save'
+  newButton.type = 'submit'
+  newButton.addEventListener('click', () => {
+    console.log('Save button works')
+  })
+  tableCell.append(newButton)
 }
 
 $(function () {
@@ -102,7 +112,6 @@ $(function () {
     let oldRow = $(this).closest('tr')
     let titleInput = oldRow.find('input.titleField')
     let title = titleInput.val()
-    console.log(title)
     $.ajax({
       url: '/trips/data',
       method: 'DELETE',
@@ -119,7 +128,10 @@ $(function () {
     let oldRow = $(this).closest('tr')
     let titleInput = oldRow.find('input.titleField')
     titleInput.attr('disabled', false)
-    $(this).attr('value', 'Save')
+
+    let tableEntry = $(this).parent()
+    tableEntry.empty()
+    addSaveEditButton(tableEntry)
   })
 })
 

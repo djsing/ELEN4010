@@ -1,7 +1,6 @@
 let tripTitles = []
 
 let saveTripTitle = function (tripTitle) {
-  console.log(tripTitle)
   tripTitles.push(tripTitle)
 }
 
