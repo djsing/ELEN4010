@@ -114,6 +114,13 @@ $(function () {
 
     oldRow.remove()
   })
+
+  $('table').on('click', '.editButton', function () {
+    let oldRow = $(this).closest('tr')
+    let titleInput = oldRow.find('input.titleField')
+    titleInput.attr('disabled', false)
+    $(this).attr('value', 'Save')
+  })
 })
 
 /*
