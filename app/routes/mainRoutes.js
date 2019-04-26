@@ -11,6 +11,8 @@ app.use(bodyParser.urlencoded({
   extended: true
 }))
 
+const { OAuth2Client } = require('google-auth-library')
+
 var users = []
 
 // let db = require('../models/db.js')
@@ -86,8 +88,18 @@ mainRouter.get('/database', function (req, res) {
 */
 
 mainRouter.post('/auth', function (req, res) {
-  let name = req.body.name
-  // users.push()
+  const client = new OAuth2Client('770023573168-8lo6smmhtuifqt6enlcnsulssucf2eb0.apps.googleusercontent.com')
+  async function verify () {
+    const ticket = await client.verifyIdToken({
+      idToken: req.body.idToken,
+      audience: '770023573168-8lo6smmhtuifqt6enlcnsulssucf2eb0.apps.googleusercontent.com'
+    })
+    console.log('ticket', ticket)
+    const payload = ticket.getPayload()
+    const userid = payload['sub']
+    console.log(userid)
+  }
+  verify().catch(console.error)
   res.send('authenticated')
 })
 
