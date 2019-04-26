@@ -11,8 +11,22 @@ function signInInit () {
       console.log('GoogleAuth object initialised.')
       // click handler
       let onLoginSuccess = function (googleUser) {
-        saveGoogleProfile(googleUser)
-        window.location = '/terms_and_conditions'
+        let profile = googleUser.getBasicProfile()
+        window.sessionStorage.setItem('Name', JSON.stringify(profile.getName()))
+        window.sessionStorage.setItem('ImageURI', JSON.stringify(profile.getImageUrl()))
+        window.sessionStorage.setItem('Email', JSON.stringify(profile.getEmail()))
+        $.ajax({
+          url: '/auth',
+          method: 'POST',
+          contentType: 'application/json',
+          data: JSON.stringify({ idToken: googleUser.getAuthResponse().id_token }),
+          success: function (response) {
+            console.log('response', response)
+            if (response === 'authenticated') {
+              window.location = '/terms_and_conditions'
+            }
+          }
+        })
       }
 
       let onLoginFail = function (error) {
@@ -38,15 +52,6 @@ function signOut () {
   authInstance.signOut().then(function () {
     console.log('User signed out.')
   })
-}
-
-function saveGoogleProfile (googleUser) {
-  let profile = googleUser.getBasicProfile()
-  window.sessionStorage.setItem('ID', JSON.stringify(profile.getId()))
-  window.sessionStorage.setItem('Name', JSON.stringify(profile.getName()))
-  window.sessionStorage.setItem('ImageURI', JSON.stringify(profile.getImageUrl()))
-  window.sessionStorage.setItem('Email', JSON.stringify(profile.getEmail()))
-  window.sessionStorage.setItem('AuthToken', JSON.stringify(googleUser.getAuthResponse().id_token))
 }
 
 $(document).ready(function () {
