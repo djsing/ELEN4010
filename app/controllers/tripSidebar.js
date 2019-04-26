@@ -21,6 +21,10 @@ let addDestination = function (index, destinationTitle) {
   destinationsTable.appendChild(row)
 }
 
+document.getElementById('addButton').addEventListener('click', function () {
+  addDestination(3, 'blah')
+})
+
 let saveTrip = function () {}
 
 let deleteDestination = function () {}
