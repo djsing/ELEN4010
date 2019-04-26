@@ -2,7 +2,6 @@
 
 let express = require('express')
 let app = express()
-let path = require('path')
 let mainRouter = express.Router()
 
 let bodyParser = require('body-parser')
@@ -11,7 +10,6 @@ app.use(bodyParser.urlencoded({
   extended: true
 }))
 
-// let db = require('../models/db.js')
 let auth = require('../models/authenticate')
 let termsModel = require('../models/termsAndConditionsModel')
 let tripModel = require('../models/tripModel')
