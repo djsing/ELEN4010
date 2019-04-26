@@ -47,6 +47,10 @@ mainRouter.get('/trips', function (req, res) {
   res.sendFile('/trips.html', { root: req.app.get('views') })
 })
 
+mainRouter.get('/trips/data', function (req, res) {
+  res.send(tripModel.getTripTitles())
+})
+
 // RESTful interface for Trips page
 mainRouter.post('/trips/data', function (req, res) {
   /*
@@ -56,13 +60,11 @@ mainRouter.post('/trips/data', function (req, res) {
   res.render(path.join(__dirname, '../views', 'trips'),
     { tripTitleList: tripModel.getTripTitles() })
     */
-  let testObj = {
-    'tripTitles': ['Zanzibar', 'Kenya']
-  }
-  res.send(testObj)
+  tripModel.saveTripTitle(req.body.tripTitle)
+  res.send(tripModel.getTripTitles())
 })
 
-mainRouter.delete('/trips', function (req, res) {
+mainRouter.delete('/trips/data', function (req, res) {
   /*
   res.render(path.join(__dirname, '../views', 'trips'))
   let title = req.body.tripTitleInput
@@ -70,7 +72,7 @@ mainRouter.delete('/trips', function (req, res) {
   res.render(path.join(__dirname, '../views', 'trips'),
     { tripTitleList: tripModel.getTripTitles() })
     */
-  res.send(req.body.title)
+  tripModel.removeTrip(req.body.tripTitle)
 })
 /*
 mainRouter.get('/database', function (req, res) {

@@ -1,12 +1,13 @@
 let tripTitles = []
 
 let saveTripTitle = function (tripTitle) {
+  console.log(tripTitle)
   tripTitles.push(tripTitle)
 }
 
 let getTripTitles = function () {
   tripTitles.sort()
-  return tripTitles
+  return { 'tripTitles': tripTitles }
 }
 
 let removeTrip = function (tripTitle) {

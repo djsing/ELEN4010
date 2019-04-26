@@ -57,6 +57,7 @@ let addTitleEntry = function (title) {
 }
 
 $(function () {
+
   $('#addButton').click(() => {
     addTitleInputField()
     addSaveTripButton()
@@ -65,13 +66,14 @@ $(function () {
 
   $('#newTrip').on('submit', (event) => {
     event.preventDefault()
-    let tripTitle = $('tripTitleInputField').val()
+    let tripTitle = $('#tripTitleInputField').val()
     $.ajax({
       url: '/trips/data',
       method: 'POST',
       contentType: 'application/json',
-      data: JSON.stringify({ tripTite: tripTitle }),
+      data: JSON.stringify({ 'tripTitle': tripTitle }),
       success: function (res) {
+        $('#tripTitleTable').empty()
         res.tripTitles.forEach((title) => {
           addTitleEntry(title)
         })
@@ -88,12 +90,11 @@ $(function () {
     let title = titleInput.val()
     console.log(title)
     $.ajax({
-      url: '/trips',
+      url: '/trips/data',
       method: 'DELETE',
       contentType: 'application/json',
-      data: JSON.stringify({ 'title': title }),
+      data: JSON.stringify({ 'tripTitle': title }),
       success: function (res) {
-        console.log(res)
       }
     })
 
