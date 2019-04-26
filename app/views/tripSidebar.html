@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang='eng'>
+
+<head>
+    <title>Trip Itinerary</title>
+    <meta charset='utf-8' />    
+    <script defer src='/js/tripSidebar.js'></script>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+</head>
+
+<body>
+    <h1 id='heading'>Trip Itinerary:</h1>
+       
+    <input type='text' id='tripTitle' placeholder="New Trip">
+    <button type='button' onclick="saveTripTitle()" id='saveTripTitleButton'>Save</button> 
+
+    <div>
+        <button type='button' onclick="addDestination()" id='addButton'>Add</button>
+    </div> 
+    
+    <table id='destinationsTable'> 
+        <tbody>
+        </tbody>
+    </table>
+
+    <form action="/trip" method="POST">
+        <div id='destinationsList'></div>
+        <button type="submit" id='saveButton' onclick="saveTrip()"> Save </button> 
+    </form>
+
+</body>
+

@@ -46,6 +46,10 @@ mainRouter.get('/trips', function (req, res) {
     tripTitleList: tripModel.getTripTitles() })
 })
 
+mainRouter.get('/tripSidebar', function (req, res) {
+  res.sendFile('/tripSidebar.html', { root: req.app.get('views') })
+})
+
 // RESTful interface for Trips page
 mainRouter.post('/trips', function (req, res) {
   res.render(path.join(__dirname, '../views', 'trips'))
