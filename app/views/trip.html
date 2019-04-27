@@ -5,10 +5,13 @@
     <meta name="viewport" content="width=device-width,initial-scale=1, shrink-to-fit=no">
     <meta charset="utf-8">
 
+    <script src='map.js'></script>
+    <script src="/js/jquery-3.4.0.min.js"></script>
+    <script src='info.js'></script>
+
     <link rel="stylesheet" href="/css/bootstrap.lux.min.css" />
     <link rel="stylesheet" href="/css/general.css" />
     <link rel="stylesheet" href="/css/map.style.css" />
-    <script src='map.js'></script>
   </head>
   <body>
       <nav class="navbar navbar-expand-md navbar-light bg-light">
@@ -34,10 +37,17 @@
               <a class="nav-link" href="/hotels">Hotel Finder</a>
             </li>
           </ul>
+
           <ul class="navbar-nav ml-auto">
-              <li class="nav-item ">
-                  <a class="nav-link js-scroll-trigger" id="usernameTag" href="/profile">username</a>
-              </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="usernameTag" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">username</a>
+                  <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                      <a class="dropdown-item small" id='emailTag'>email</a>
+                      <a class="dropdown-item" href="/profile">My Account</a>
+                      <div class="dropdown-divider"></div>
+                      <a class="dropdown-item" href="#" onclick="signOut()">Sign Out</a><!-- Doesnt do anything yet -->
+                    </div>
+            </li>
           </ul>
         </div>
       </nav>
@@ -69,8 +79,6 @@
         </div>
       </div>
 
-    <script src="/js/jquery-3.4.0.min.js"></script>
-    <script src='info.js'></script>
     <script src="/js/bootstrap.bundle.min.js"></script>
     <script defer src='/js/loadmap.js'></script>
   </body>

@@ -5,7 +5,6 @@
         <title>About</title>
         <meta charset="utf-8" />
         <script src="/js/jquery-3.4.0.min.js"></script>
-        <!-- <script src="profile.js"></script> -->
         <script src='info.js'></script>
         <script src="/js/bootstrap.bundle.min.js"></script>
 
@@ -38,9 +37,13 @@
                     <a class="nav-link" href="/hotels">Hotel Finder</a>
                 </li>
                 </ul>
+
                 <ul class="navbar-nav ml-auto">
-                    <li class="nav-item active">
-                        <a class="nav-link js-scroll-trigger" id="emailTag" href="#">email</a>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="usernameTag" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">username</a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="#" onclick="signOut()">Sign Out</a><!-- Doesnt do anything yet -->
+                            </div>
                     </li>
                 </ul>
             </div>
@@ -49,7 +52,7 @@
         <div class="container-fluid align-items-center">
             <div class="mx-auto text-center">
                 <h2 >Welcome,</h2>
-                <h2 id="usernameTag" class="mx-auto mt-2 mb-5"></h2>
+                <h2 id="emailTag" class="mx-auto mt-2 mb-5"></h2>
             </div>
         </div>
 

@@ -14,3 +14,11 @@ ul.nav li.nav {
 ul.nav li:nth-child(5) a {
   float: right;
   }
+
+#emailTag .small {
+  font-size:smaller;
+}
+
+.dropdown-menu {
+  left: -50px;
+}
