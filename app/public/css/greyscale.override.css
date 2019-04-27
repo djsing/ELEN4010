@@ -1,0 +1,10 @@
+.bg-light {
+  background-color: #161616 !important;
+}
+#mainNav {
+  background-color: #181818;
+}
+.masthead h1 {
+  font-weight: 700;
+  font-family: "Nunito Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}

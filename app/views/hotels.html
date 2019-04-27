@@ -32,46 +32,47 @@
           <li class="nav-item active">
               <a class="nav-link" href="/hotels">Hotel Finder</a>
             </li>
-            <li class="nav-item ">
-                <a class="nav-link js-scroll-trigger" id="usernameTag" href="/profile">username</a>
-            </li>
-            <!-- <li class="nav-item">
-                    <a class="nav-link js-scroll-trigger" id="emailTag" href="/profile">email</a>
-                </li>
-            </ul> -->
-        </ul>
-      </div>
-    </nav>
+          </ul>
+          <ul class="navbar-nav ml-auto">
+              <li class="nav-item ">
+                  <a class="nav-link js-scroll-trigger" id="usernameTag" href="/profile">username</a>
+              </li>
+          </ul>
+        </div>
+      </nav>
 
-    <div class="container-fluid">
+      <div class="pac-card" id="pac-card">
+          <div>
+            <div id="findhotels">
+                Find hotels in:
+            </div>
+          </div>
+          <!-- <div id="pac-container">
+              <input id="pac-input" placeholder="Enter a city" type="text" />
+          </div> -->
 
-      <div id="findhotels">
-          Find hotels in:
+          <div id="locationField">
+              <input id="autocomplete" placeholder="Enter a city" type="text" />
+          </div>
+        <div id="controls">
+            <select id="country">
+              <option value="all">All</option>
+              <option value="au">Australia</option>
+              <option value="br">Brazil</option>
+              <option value="ca">Canada</option>
+              <option value="fr">France</option>
+              <option value="de">Germany</option>
+              <option value="mx">Mexico</option>
+              <option value="nz">New Zealand</option>
+              <option value="it">Italy</option>
+              <option value="za" selected>South Africa</option>
+              <option value="es">Spain</option>
+              <option value="pt">Portugal</option>
+              <option value="us">U.S.A.</option>
+              <option value="uk">United Kingdom</option>
+            </select>
+        </div>
       </div>
-
-      <div id="locationField">
-          <input id="autocomplete" placeholder="Enter a city" type="text" />
-      </div>
-
-      <div id="controls">
-          <select id="country">
-            <option value="all">All</option>
-            <option value="au">Australia</option>
-            <option value="br">Brazil</option>
-            <option value="ca">Canada</option>
-            <option value="fr">France</option>
-            <option value="de">Germany</option>
-            <option value="mx">Mexico</option>
-            <option value="nz">New Zealand</option>
-            <option value="it">Italy</option>
-            <option value="za" selected>South Africa</option>
-            <option value="es">Spain</option>
-            <option value="pt">Portugal</option>
-            <option value="us">U.S.A.</option>
-            <option value="uk">United Kingdom</option>
-          </select>
-      </div>
-    </div>
 
     <div class="col" id="map"></div>
 

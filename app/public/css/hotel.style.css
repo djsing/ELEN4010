@@ -1,10 +1,13 @@
 .row {
   height: 100%;
 }
-#map {
+html, body, .container, #map {
   width: 100%;
-  height: 100%;
-  background-color: whitesmoke;
+  height: 92%;
+  max-width: none;
+}
+#map {
+  position: relative;
 }
 /* Makes the sample page fill the window. */
 html, body {
@@ -15,44 +18,91 @@ html, body {
 table {
   font-size: 12px;
 }
+
 #map {
   width: 100%;
 }
+
+pac-card {
+  z-index: 0;
+  position: absolute;
+  right: 0px;
+  top: 0px;
+}
+
+.pac-card {
+  margin: 10px 10px 0 0;
+  border-radius: 2px 0 0 2px;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  outline: none;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  background-color: #fff;
+  /* font-family: Roboto; */
+}
+
+#locationfield {
+  padding-bottom: 12px;
+  margin-right: 12px;
+  width: 200px;
+}
+
+.pac-controls {
+  display: inline-block;
+  padding: 5px 11px;
+}
+
+.pac-controls label {
+  /* font-family: Roboto; */
+  font-size: 13px;
+  font-weight: 300;
+}
+
+#autocomplete {
+  background-color: #fff;
+  /* font-family: Roboto; */
+  font-size: 15px;
+  font-weight: 300;
+  /* margin-left: 12px; */
+  padding: 0 12px 0 12px;
+  text-overflow: ellipsis;
+  width: 200px;
+}
+
+#autocomplete:focus {
+  border-color: #4d90fe;
+}
+
 #listing {
   position: absolute;
   width: 248px;
   height: 487px;
   overflow: auto;
   right: 8px;
-  top: 64px;
+  top: 260px;
   cursor: pointer;
   overflow-x: hidden;
 }
 #findhotels {
-  position: absolute;
+  /* position: absolute; */
   text-align: right;
-  width: 100px;
-  left: 17px;
-  top: 66px;
+  width: 200px;
+  /* left: 17px; */
+  /* top: 66px; */
   font-size: 14px;
-  padding: 4px;
+  font-weight: 500;
+  padding: 6px 8px;
   z-index: 5;
-  /* background-color: #fff; */
+  color: #fff;
+  background-color: #e21d00;
+  text-align: center;
 }
-#locationField {
-  position: absolute;
-  width: 190px;
-  height: 30px;
-  left: 123px;
-  top: 65px;
-  z-index: 5;
-  background-color: #fff;
-}
+
 #controls {
-  position: absolute;
-  left: 321px;
-  width: 140px;
-  top: 68px;
+  /* position: absolute; */
+  /* left: 321px; */
+  /* width: 140px; */
+  /* top: 68px; */
   z-index: 5;
   background-color: #fff;
 }

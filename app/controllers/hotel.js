@@ -71,6 +71,11 @@ function initMap () {
     fullscreenControl: false
   })
 
+  let card = document.getElementById('pac-card')
+  let input = document.getElementById('pac-input')
+
+  map.controls[google.maps.ControlPosition.TOP_RIGHT].push(card)
+
   infoWindow = new google.maps.InfoWindow({
     content: document.getElementById('info-content')
   })
