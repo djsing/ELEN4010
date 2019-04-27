@@ -17,9 +17,6 @@ let storeItinerary = function (destInputs, destNames) {
   destNames.forEach((placeName) => {
     destNamesInt.push(placeName)
   })
-
-  console.log(destInputsInt)
-  console.log(destNamesInt)
 }
 
 let getIntinerary = function () {

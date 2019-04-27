@@ -43,11 +43,16 @@ document.getElementById('addButton').addEventListener('click', function () {
 
 // upon page reload, this function is called
 let initialiseItinerary = function () {
-  let testInput = ['a place', 'another place']
-  let testDestName = ['South Africa', 'London']
-  for (let i = 0; i < testInput.length; i++) {
-    addDestination(testInput[i], testDestName[i])
-  }
+  $.ajax({
+    url: '/tripSidebar/data',
+    method: 'GET',
+    contentType: 'application/json',
+    success: (res) => {
+      for (let i = 0; i < res.destInputs.length; i++) {
+        addDestination(res.destInputs[i], res.destNames[i])
+      }
+    }
+  })
 }
 
 let saveItinerary = function () {

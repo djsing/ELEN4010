@@ -65,6 +65,10 @@ mainRouter.post('/tripSidebar/data', function (req, res) {
   tripSidebarModel.storeItinerary(req.body.destInputs, req.body.destNames)
 })
 
+mainRouter.get('/tripSidebar/data', function (req, res) {
+  res.send(tripSidebarModel.getIntinerary())
+})
+
 mainRouter.get('/trips/data', function (req, res) {
   res.send(tripModel.getTripTitles())
 })
