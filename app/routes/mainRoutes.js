@@ -15,6 +15,7 @@ app.use(bodyParser.urlencoded({
 let auth = require('../models/authenticate')
 let termsModel = require('../models/termsAndConditionsModel')
 let tripModel = require('../models/tripModel')
+let tripSidebarModel = require('../models/tripSidebarModel')
 
 mainRouter.get('/', function (req, res) {
   res.sendFile('/index.html', { root: req.app.get('views') })
@@ -61,7 +62,7 @@ mainRouter.get('/tripSidebar', function (req, res) {
 })
 
 mainRouter.post('/tripSidebar/data', function (req, res) {
-  res.sendStatus(200)
+  tripSidebarModel.storeItinerary(req.body.destInputs, req.body.destNames)
 })
 
 mainRouter.get('/trips/data', function (req, res) {

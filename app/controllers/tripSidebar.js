@@ -63,7 +63,6 @@ let saveItinerary = function () {
     contentType: 'application/json',
     data: JSON.stringify(itinerary),
     success: function (res) {
-      console.log('Success')
     }
   })
 }
