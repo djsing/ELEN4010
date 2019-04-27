@@ -41,10 +41,14 @@ document.getElementById('addButton').addEventListener('click', function () {
   addDestination('', 'destination name')
 })
 
-// // upon page reload, this function is called
-// let initialiseItinerary = function () {
-//   for(let i =0, )
-// }
+// upon page reload, this function is called
+let initialiseItinerary = function () {
+  let testInput = ['a place', 'another place']
+  let testDestName = ['South Africa', 'London']
+  for (let i = 0; i < testInput.length; i++) {
+    addDestination(testInput[i], testDestName[i])
+  }
+}
 
 let saveItinerary = function () {
   let destInputs = []
