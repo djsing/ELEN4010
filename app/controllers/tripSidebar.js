@@ -1,10 +1,11 @@
 let saveTripTitle = function () {}
 
-let addIndexRow = function (index) {
+let addIndexRow = function () {
   let indexTable = document.getElementById('indexTableBody')
+  let index = indexTable.rows.length
   let indexRow = document.createElement('tr')
   let indexCell = document.createElement('td')
-  let destinationIndex = document.createTextNode(index)
+  let destinationIndex = document.createTextNode(index + 1)
   indexCell.appendChild(destinationIndex)
   indexRow.appendChild(indexCell)
   indexTable.appendChild(indexRow)
@@ -31,19 +32,19 @@ let addDestinationRow = function (destinationInput, destinationTitle) {
   destinationsTable.appendChild(row)
 }
 
-let addDestination = function (index, destinationInput, destinationTitle) {
-  addIndexRow(index)
+let addDestination = function (destinationInput, destinationTitle) {
+  addIndexRow()
   addDestinationRow(destinationInput, destinationTitle)
 }
 
 document.getElementById('addButton').addEventListener('click', function () {
-  addDestination(3, '', 'destination name')
+  addDestination('', 'destination name')
 })
 
-// upon page reload, this function is called
-let initialiseItinerary = function () {
-
-}
+// // upon page reload, this function is called
+// let initialiseItinerary = function () {
+//   for(let i =0, )
+// }
 
 let saveItinerary = function () {
   let destInputs = []
