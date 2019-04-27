@@ -1,27 +1,27 @@
 'use strict'
 
+let destInputs = []
 let destNames = []
-let placeNames = []
 
 let storeItinerary = function (itinerary) {
   // Initialize destination array
-  destNames = []
+  destInputs = []
   // Store new destinations into destinations array
-  itinerary.destNames.forEach((dest) => {
-    destNames.push(dest)
+  itinerary.destInput.forEach((dest) => {
+    destInputs.push(dest)
   })
 
   // Initialize destination array
-  placeNames = []
+  destNames = []
   // Store new place names into place name array
-  itinerary.placeNames.forEach((placeName) => {
-    placeNames.push(placeName)
+  itinerary.destNames.forEach((placeName) => {
+    destNames.push(placeName)
   })
 }
 
 let getIntinerary = function () {
   return {
-    'destNames': destNames,
-    'placeNames': placeNames
+    'destInputs': destInputs,
+    'destNames': destNames
   }
 }
