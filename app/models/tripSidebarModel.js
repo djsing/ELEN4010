@@ -26,7 +26,17 @@ let getIntinerary = function () {
   }
 }
 
+let deleteDestination = function (destInput, destName) {
+  destInputsInt = destInputsInt.filter((value, index, array) => {
+    return value !== destInput
+  })
+  destNamesInt = destNamesInt.filter((value, index, array) => {
+    return value !== destName
+  })
+}
+
 module.exports = {
   storeItinerary,
-  getIntinerary
+  getIntinerary,
+  deleteDestination
 }

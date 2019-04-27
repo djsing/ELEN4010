@@ -68,9 +68,6 @@ let saveItinerary = function () {
     destInputs.push(inputField.value)
     destNames.push(text)
   }
-  console.log(destInputs)
-  console.log(destNames)
-
   let itinerary = {
     'destInputs': destInputs,
     'destNames': destNames
@@ -101,7 +98,7 @@ $('#destinationsTable').on('click', '.deleteButton', function () {
     'destName': destName
   }
   $.ajax({
-    url: '/trips/data',
+    url: '/tripSidebar/data',
     method: 'DELETE',
     contentType: 'application/json',
     data: JSON.stringify(destination),

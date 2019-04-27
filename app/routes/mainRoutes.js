@@ -70,6 +70,7 @@ mainRouter.get('/tripSidebar/data', function (req, res) {
 })
 
 mainRouter.delete('/tripSidebar/data', function (req, res) {
+  tripSidebarModel.deleteDestination(req.body.destInput, req.body.destName)
   res.sendStatus(200)
 })
 
