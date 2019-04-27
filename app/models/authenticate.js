@@ -8,8 +8,8 @@ function authenticateToken (token) {
       audience: '770023573168-8lo6smmhtuifqt6enlcnsulssucf2eb0.apps.googleusercontent.com'
     })
     // console.log('ticket', ticket)
-    const payload = ticket.getPayload()
-    const userid = payload['sub']
+    // const payload = ticket.getPayload()
+    // const userid = payload['sub']
     // console.log(userid)
   }
   verify().catch(console.error)

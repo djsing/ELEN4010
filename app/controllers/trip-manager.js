@@ -1,3 +1,7 @@
+'use strict'
+
+const $ = window.$
+
 let addTitleInputField = function () {
   let titleInputField = document.createElement('input')
   titleInputField.type = 'text'

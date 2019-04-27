@@ -8,9 +8,8 @@
     "test": "test"
   },
   "scripts": {
-    "test": "jest && standard",
-    "start": "node index",
-    "coveralls": "jest --coverage --coverageReporters=text-lcov | coveralls"
+    "test": "jest",
+    "start": "node index"
   },
   "repository": {
     "type": "git",
