@@ -1,6 +1,6 @@
 let saveTripTitle = function () {}
 
-let addDestination = function (index, destinationTitle) {
+let addIndexRow = function (index) {
   let indexTable = document.getElementById('indexTableBody')
   let indexRow = document.createElement('tr')
   let indexCell = document.createElement('td')
@@ -8,7 +8,9 @@ let addDestination = function (index, destinationTitle) {
   indexCell.appendChild(destinationIndex)
   indexRow.appendChild(indexCell)
   indexTable.appendChild(indexRow)
+}
 
+let addDestinationRow = function (destinationTitle) {
   let destinationsTable = document.getElementById('destinationsTableBody')
   let row = document.createElement('tr')
   let destinationCell = document.createElement('td')
@@ -26,6 +28,11 @@ let addDestination = function (index, destinationTitle) {
   deleteButtonCell.appendChild(deleteButton)
   row.appendChild(deleteButtonCell)
   destinationsTable.appendChild(row)
+}
+
+let addDestination = function (index, destinationTitle) {
+  addIndexRow(index)
+  addDestinationRow(destinationTitle)
 }
 
 document.getElementById('addButton').addEventListener('click', function () {
