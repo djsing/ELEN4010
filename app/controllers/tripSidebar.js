@@ -1,12 +1,16 @@
 let saveTripTitle = function () {}
 
 let addDestination = function (index, destinationTitle) {
-  let destinationsTable = document.getElementById('destinationsTableBody')
-  let row = document.createElement('tr')
+  let numbersTable = document.getElementById('numbersTableBody')
+  let numberRow = document.createElement('tr')
   let enumerationCell = document.createElement('td')
   let enumeration = document.createTextNode(index)
   enumerationCell.appendChild(enumeration)
-  row.appendChild(enumerationCell)
+  numberRow.appendChild(enumerationCell)
+  numbersTable.appendChild(numberRow)
+
+  let destinationsTable = document.getElementById('destinationsTableBody')
+  let row = document.createElement('tr')
   let destinationCell = document.createElement('td')
   let destination = document.createTextNode(destinationTitle)
   destinationCell.appendChild(destination)

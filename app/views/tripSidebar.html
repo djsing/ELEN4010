@@ -19,12 +19,22 @@
     </div> 
 
     <form action="/trip" method="POST"></form>
-        <table id='destinationsTable'> 
-            <tbody id='destinationsTableBody'>
-            </tbody>
-        </table>
 
-        <button type="submit" id='saveTripButton' onclick="saveTrip()"> Save </button> 
+        <div>
+            <table id='numbersTable' style = 'float: left'> 
+                <tbody id='numbersTableBody'>
+                </tbody>
+            </table>
+            <table id='destinationsTable' style = 'float: left'> 
+                <tbody id='destinationsTableBody'>
+                </tbody>
+            </table>
+        </div>    
+
+        <div>
+            <button type="submit" id='saveTripButton' onclick="saveTrip()"> Save </button> 
+        </div> 
+          
     </form>
 
 </body>
