@@ -1,0 +1,66 @@
+  
+<!DOCTYPE html>
+<html lang='eng'>
+
+<head>
+    <title>Trip Manager</title>
+    <meta charset='utf-8' />      
+    <script src="/js/jquery-3.4.0.min.js"></script>
+    <script src='trip-manager.js'></script>  
+    <link rel="stylesheet" href="/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/css/general.css">
+</head>
+
+<body>
+        <nav class="navbar navbar-expand-md navbar-light bg-lightfixed-top">
+                <a class="navbar-brand" href="#">
+                    <img src="/img/logo.svg" width="30" height="30" class="d-inline-block align-top" alt="">
+                    Away We Go</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon"></span>
+                </button>
+                
+                <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+                  <ul class="navbar-nav mr-auto">
+                    <li class="nav-item ">
+                      <a class="nav-link" href="/trip">New Trip <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item active">
+                      <a class="nav-link" href="/trip-manager">Trip Manager</a>
+                    </li>
+                    <li class="nav-item ">
+                        <a class="nav-link disabled" href="#">My Groups</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/hotels">Hotel Finder</a>
+                      </li>
+                      <li class="nav-item ">
+                            <a class="nav-link js-scroll-trigger" id="usernameTag" href="/profile">username</a>
+                        </li>
+                        <!-- <li class="nav-item">
+                                <a class="nav-link js-scroll-trigger" id="emailTag" href="/profile">email</a>
+                            </li>
+                        </ul> -->
+                  </ul>
+                </div>
+              </nav>
+
+        <div class="container" id="tripmanager">
+          <h1 id='heading'>My Trips:</h1>
+          <button type='button' id='addButton'>Add</button> 
+
+          <form id='newTrip'> 
+            <div id='tripTitle'></div>
+          </form>
+        
+          <table> 
+              <tbody  id='tripTitleTable'>
+              </tbody>
+          </table>
+        </div>
+
+        <script src="/js/jquery-3.4.0.min.js"></script>
+        <script src='info.js'></script>
+        <script src="/js/bootstrap.bundle.min.js"></script>
+</body>
+
