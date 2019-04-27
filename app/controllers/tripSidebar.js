@@ -39,6 +39,18 @@ document.getElementById('addButton').addEventListener('click', function () {
   addDestination(3, 'blah')
 })
 
-let saveTrip = function () {}
+let saveItinerary = function () {
+  let destInputs = []
+  let destNames = []
+  let destTable = document.getElementById('destinationsTable')
+  for (let i = 0, rows; rows = destTable.rows[i]; i++) {
+    let inputField = rows.cells[0].childNodes[0]
+    let text = rows.cells[0].textContent
+    destInputs.push(inputField.value)
+    destNames.push(text)
+  }
+  console.log(destInputs)
+  console.log(destNames)
+}
 
 let deleteDestination = function () {}
