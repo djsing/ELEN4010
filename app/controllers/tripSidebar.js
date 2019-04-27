@@ -12,8 +12,11 @@ let addDestination = function (index, destinationTitle) {
   let destinationsTable = document.getElementById('destinationsTableBody')
   let row = document.createElement('tr')
   let destinationCell = document.createElement('td')
-  let destination = document.createTextNode(destinationTitle)
-  destinationCell.appendChild(destination)
+  let destinationInput = document.createElement('input')
+  destinationInput.placeholder = 'New Destination'
+  destinationCell.appendChild(destinationInput)
+  let destinationName = document.createTextNode(destinationTitle)
+  destinationCell.appendChild(destinationName)
   row.appendChild(destinationCell)
   let deleteButtonCell = document.createElement('td')
   let deleteButton = document.createElement('input')
