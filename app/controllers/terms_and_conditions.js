@@ -1,3 +1,7 @@
+'use strict'
+
+const $ = window.$
+
 let addTermsToSubsection = function (subsection, termsArray, divider) {
   let parentItemType = ''
   if (divider === 'li') {
