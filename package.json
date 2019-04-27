@@ -10,7 +10,7 @@
   "scripts": {
     "test": "jest && standard",
     "start": "node index",
-    "coveralls": "jest --coverage --coverageReporters=text-lcov | coveralls"
+    // "coveralls": "jest --coverage --coverageReporters=text-lcov | coveralls"
   },
   "repository": {
     "type": "git",
