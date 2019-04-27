@@ -10,13 +10,14 @@ let addIndexRow = function (index) {
   indexTable.appendChild(indexRow)
 }
 
-let addDestinationRow = function (destinationTitle) {
+let addDestinationRow = function (destinationInput, destinationTitle) {
   let destinationsTable = document.getElementById('destinationsTableBody')
   let row = document.createElement('tr')
   let destinationCell = document.createElement('td')
-  let destinationInput = document.createElement('input')
-  destinationInput.placeholder = 'New Destination'
-  destinationCell.appendChild(destinationInput)
+  let destInput = document.createElement('input')
+  destInput.placeholder = 'New Destination'
+  destInput.value = destinationInput
+  destinationCell.appendChild(destInput)
   let destinationName = document.createTextNode(destinationTitle)
   destinationCell.appendChild(destinationName)
   row.appendChild(destinationCell)
@@ -30,14 +31,19 @@ let addDestinationRow = function (destinationTitle) {
   destinationsTable.appendChild(row)
 }
 
-let addDestination = function (index, destinationTitle) {
+let addDestination = function (index, destinationInput, destinationTitle) {
   addIndexRow(index)
-  addDestinationRow(destinationTitle)
+  addDestinationRow(destinationInput, destinationTitle)
 }
 
 document.getElementById('addButton').addEventListener('click', function () {
-  addDestination(3, 'blah')
+  addDestination(3, '', 'destination name')
 })
+
+// upon page reload, this function is called
+let initialiseItinerary = function () {
+
+}
 
 let saveItinerary = function () {
   let destInputs = []
