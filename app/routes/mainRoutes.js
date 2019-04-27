@@ -69,6 +69,10 @@ mainRouter.get('/tripSidebar/data', function (req, res) {
   res.send(tripSidebarModel.getIntinerary())
 })
 
+mainRouter.delete('/tripSidebar/data', function (req, res) {
+  res.sendStatus(200)
+})
+
 mainRouter.get('/trips/data', function (req, res) {
   res.send(tripModel.getTripTitles())
 })

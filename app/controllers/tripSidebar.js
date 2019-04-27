@@ -16,6 +16,7 @@ let addDestinationRow = function (destinationInput, destinationTitle) {
   let row = document.createElement('tr')
   let destinationCell = document.createElement('td')
   let destInput = document.createElement('input')
+  destInput.className = 'destInput'
   destInput.placeholder = 'New Destination'
   destInput.value = destinationInput
   destinationCell.appendChild(destInput)
@@ -43,6 +44,8 @@ document.getElementById('addButton').addEventListener('click', function () {
 
 // upon page reload, this function is called
 let initialiseItinerary = function () {
+  $('#indexTableBody').empty()
+  $('#destinationsTableBody').empty()
   $.ajax({
     url: '/tripSidebar/data',
     method: 'GET',
@@ -83,4 +86,29 @@ let saveItinerary = function () {
   })
 }
 
-let deleteDestination = function () {}
+$('#destinationsTable').on('click', '.deleteButton', function () {
+  let oldRow = $(this).closest('tr')
+  let destInput = oldRow.find('input.destInput')
+  let destInputValue = destInput.val()
+  let destName = oldRow.find('td:eq(0)').html()
+  oldRow.index()
+  let indexTable = $('#indexTableBody')
+  let removeRow = indexTable.find('tr:eq(' + oldRow.index() + ')')
+  removeRow.remove()
+
+  let destination = {
+    'destInput': destInputValue,
+    'destName': destName
+  }
+  $.ajax({
+    url: '/trips/data',
+    method: 'DELETE',
+    contentType: 'application/json',
+    data: JSON.stringify(destination),
+    success: function (res) {
+      initialiseItinerary()
+    }
+  })
+
+  oldRow.remove()
+})
