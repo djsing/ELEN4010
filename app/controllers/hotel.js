@@ -67,7 +67,8 @@ function initMap () {
     mapTypeControl: false,
     panControl: false,
     zoomControl: false,
-    streetViewControl: false
+    streetViewControl: false,
+    fullscreenControl: false
   })
 
   infoWindow = new google.maps.InfoWindow({
