@@ -60,7 +60,8 @@ mainRouter.get('/tripSidebar', function (req, res) {
   res.sendFile('/tripSidebar.html', { root: req.app.get('views') })
 })
 
-mainRouter.get('/tripSidebar/data', function (req, res) {
+mainRouter.post('/tripSidebar/data', function (req, res) {
+  res.sendStatus(200)
 })
 
 mainRouter.get('/trips/data', function (req, res) {

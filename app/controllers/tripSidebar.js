@@ -51,6 +51,21 @@ let saveItinerary = function () {
   }
   console.log(destInputs)
   console.log(destNames)
+
+  let itinerary = {
+    'destInputs': destInputs,
+    'destNames': destNames
+  }
+
+  $.ajax({
+    url: '/tripSidebar/data',
+    method: 'POST',
+    contentType: 'application/json',
+    data: JSON.stringify(itinerary),
+    success: function (res) {
+      console.log('Success')
+    }
+  })
 }
 
 let deleteDestination = function () {}
