@@ -1,10 +1,19 @@
 'use strict'
 
 let express = require('express')
+let app = express()
 let path = require('path')
 let mainRouter = express.Router()
+
+let bodyParser = require('body-parser')
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({
+  extended: true
+}))
+
 // let db = require('../models/db.js')
-let terms = require('../models/termsAndConditionsModel')
+let auth = require('../models/authenticate')
+let termsModel = require('../models/termsAndConditionsModel')
 let tripModel = require('../models/tripModel')
 
 mainRouter.get('/', function (req, res) {
@@ -12,9 +21,11 @@ mainRouter.get('/', function (req, res) {
 })
 
 mainRouter.get('/terms_and_conditions', function (req, res) {
-  res.render(path.join(__dirname, '../views', 'terms_and_conditions'),
-    { termList: terms.termsAndCondtions,
-      preamble: terms.preamble })
+  res.sendFile('/terms_and_conditions.html', { root: req.app.get('views') })
+})
+
+mainRouter.get('/terms_and_conditions/data', function (req, res) {
+  res.send(termsModel.getTermsAndCondtions())
 })
 
 mainRouter.get('/profile', function (req, res) {
@@ -42,42 +53,34 @@ mainRouter.get('/hotels', function (req, res) {
 })
 
 mainRouter.get('/trips', function (req, res) {
-  res.render(path.join(__dirname, '../views', 'trips'), {
-    tripTitleList: tripModel.getTripTitles() })
+  res.sendFile('/trips.html', { root: req.app.get('views') })
 })
 
 mainRouter.get('/tripSidebar', function (req, res) {
   res.sendFile('/tripSidebar.html', { root: req.app.get('views') })
 })
 
-// RESTful interface for Trips page
-mainRouter.post('/trips', function (req, res) {
-  res.render(path.join(__dirname, '../views', 'trips'))
-  let title = req.body.tripTitleInput
-  tripModel.saveTripTitle(title)
-  res.render(path.join(__dirname, '../views', 'trips'),
-    { tripTitleList: tripModel.getTripTitles() })
+mainRouter.get('/trips/data', function (req, res) {
+  res.send(tripModel.getTripTitles())
 })
-/*
-mainRouter.get('/database', function (req, res) {
-  // Make a query to the database
-  db.pools
-    // Run query
-    .then((pool) => {
-      return pool.request()
-        // This is only a test query, change it to whatever you need
-        .query('SELECT 1')
-    })
-    // Send back the result
-    .then(result => {
-      res.status(200).send(result)
-    })
-    // If there's an error, return that with some description
-    .catch(err => {
-      res.status(500).send(err)
-    })
+
+mainRouter.post('/trips/data', function (req, res) {
+  tripModel.saveTripTitle(req.body.tripTitle)
+  res.send(tripModel.getTripTitles())
 })
-*/
+
+mainRouter.delete('/trips/data', function (req, res) {
+  tripModel.removeTrip(req.body.tripTitle)
+})
+
+mainRouter.put('/trips/data', function (req, res) {
+  tripModel.updateTrip(req.body.oldTripTitle, req.body.newTripTitle)
+})
+
+mainRouter.post('/auth', function (req, res) {
+  auth.authenticateToken(req)
+  res.send('authenticated')
+})
 
 mainRouter.get('*', function (req, res) {
   res.status(404).send('404 Error: page not found')
