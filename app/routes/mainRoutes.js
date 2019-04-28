@@ -65,11 +65,11 @@ mainRouter.post(['/trip-manager/data', '/trips/data'], function (req, res) {
   res.send(tripModel.getTripTitles())
 })
 
-mainRouter.delete(['/trip_manager/data', '/trips/data'], function (req, res) {
+mainRouter.delete(['/trip-manager/data', '/trips/data'], function (req, res) {
   tripModel.removeTrip(req.body.tripTitle)
 })
 
-mainRouter.put(['/trip_manager/data', '/trips/data'], function (req, res) {
+mainRouter.put(['/trip-manager/data', '/trips/data'], function (req, res) {
   tripModel.updateTrip(req.body.oldTripTitle, req.body.newTripTitle)
 })
 
