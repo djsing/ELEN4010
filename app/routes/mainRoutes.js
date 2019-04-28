@@ -10,7 +10,7 @@ app.use(bodyParser.urlencoded({
   extended: true
 }))
 
-let auth = require('../models/authenticate')
+let authenticate = require('../models/authenticate')
 let termsModel = require('../models/termsAndConditionsModel')
 let tripModel = require('../models/tripModel')
 
@@ -71,9 +71,8 @@ mainRouter.put('/trips/data', function (req, res) {
   tripModel.updateTrip(req.body.oldTripTitle, req.body.newTripTitle)
 })
 
-mainRouter.post('/auth', function (req, res) {
-  auth.authenticateToken(req)
-  res.send('authenticated')
+mainRouter.post('/auth', (req, res) => {
+  res.send(authenticate.userAccountDatabaseConnection(req))
 })
 
 mainRouter.get('*', function (req, res) {

@@ -21,8 +21,8 @@ function signInInit () {
           contentType: 'application/json',
           data: JSON.stringify({ idToken: googleUser.getAuthResponse().id_token }),
           success: function (response) {
-            console.log('response', response)
-            if (response === 'authenticated') {
+            // console.log('response', response)
+            if (response === 'currentUser') {
               window.location = '/profile'
             }
           }

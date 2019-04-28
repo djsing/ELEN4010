@@ -22,7 +22,7 @@ function signInInit () {
           data: JSON.stringify({ idToken: googleUser.getAuthResponse().id_token }),
           success: function (response) {
             console.log('response', response)
-            if (response === 'authenticated') {
+            if (response === 'newUser') {
               window.location = '/terms_and_conditions'
             }
           }
