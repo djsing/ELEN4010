@@ -23,7 +23,7 @@ function signInInit () {
           success: function (response) {
             // console.log('response', response)
             if (response === 'currentUser') {
-              window.location = '/profile'
+              window.location = '/trip'
             }
           }
         })

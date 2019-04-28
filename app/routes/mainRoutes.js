@@ -38,36 +38,36 @@ mainRouter.get('/register', function (req, res) {
   res.sendFile('/register.html', { root: req.app.get('views') })
 })
 
-mainRouter.get('/sign-in', function (req, res) {
+mainRouter.get(['/sign-in', '/login', '/signin'], function (req, res) {
   res.sendFile('/sign-in.html', { root: req.app.get('views') })
 })
 
-mainRouter.get('/map', function (req, res) {
-  res.sendFile('/map.html', { root: req.app.get('views') })
+mainRouter.get(['/trip', '/map'], function (req, res) {
+  res.sendFile('/trip.html', { root: req.app.get('views') })
 })
 
 mainRouter.get('/hotels', function (req, res) {
   res.sendFile('/hotels.html', { root: req.app.get('views') })
 })
 
-mainRouter.get('/trips', function (req, res) {
-  res.sendFile('/trips.html', { root: req.app.get('views') })
+mainRouter.get(['/trip-manager', '/trips'], function (req, res) {
+  res.sendFile('/trip-manager.html', { root: req.app.get('views') })
 })
 
-mainRouter.get('/trips/data', function (req, res) {
+mainRouter.get(['/trip-manager/data', '/trips/data'], function (req, res) {
   res.send(tripModel.getTripTitles())
 })
 
-mainRouter.post('/trips/data', function (req, res) {
+mainRouter.post(['/trip-manager/data', '/trips/data'], function (req, res) {
   tripModel.saveTripTitle(req.body.tripTitle)
   res.send(tripModel.getTripTitles())
 })
 
-mainRouter.delete('/trips/data', function (req, res) {
+mainRouter.delete(['/trip-manager/data', '/trips/data'], function (req, res) {
   tripModel.removeTrip(req.body.tripTitle)
 })
 
-mainRouter.put('/trips/data', function (req, res) {
+mainRouter.put(['/trip-manager/data', '/trips/data'], function (req, res) {
   tripModel.updateTrip(req.body.oldTripTitle, req.body.newTripTitle)
 })
 
