@@ -17,11 +17,12 @@ function signInInit () {
           contentType: 'application/json',
           data: JSON.stringify({ idToken: googleUser.getAuthResponse().id_token }),
           success: function (response) {
-            console.log('response', response)
+            // console.log('response', response)
             let name = JSON.stringify(response.firstName + ' ' + response.lastName)
             window.sessionStorage.setItem('Name', name)
             window.sessionStorage.setItem('ImageURI', JSON.stringify(response.image))
             window.sessionStorage.setItem('Email', JSON.stringify(response.emailAddress))
+            // direct to different pages based on whether the user is new or current
             if (response.userType === 'currentUser') {
               window.location = '/trip'
             } else if (response.userType === 'newUser') {

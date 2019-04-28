@@ -41,30 +41,32 @@ let pools = new mssql.ConnectionPool(config)
     // This is only a test query, change it to whatever you need
       .query(`IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='users' and xtype='U')
           CREATE TABLE users (
-          user_id int,
+          user_id varchar(50),
           first_name varchar(50),
           last_name varchar(50),
-          email_address varchar(50)
+          email_address varchar(50),
+          image_url varchar(255)
           )`)
   }).then(result => {
-    console.log('table', result)
+    console.log('table created', result)
   }).catch(err => {
     console.log('table error', err)
   })
 }
 )()
 
-function createUser (userID, firstName, lastName, emailAddress, password) {
+function createGoogleUser (userInfo) {
+  let info = userInfo
   pools
     // Run query
     .then((pool) => {
       return pool.request()
         .query(`INSERT INTO users VALUES(
-          ${userID},
-          '${firstName}',
-          '${lastName}',
-          '${emailAddress}',
-          '${password}')`)
+          ${info.userID},
+          '${info.firstName}',
+          '${info.lastName}',
+          '${info.emailAddress}',
+          '${info.image}')`)
     })
     // Send back the result
     .then(result => {
@@ -76,20 +78,41 @@ function createUser (userID, firstName, lastName, emailAddress, password) {
     })
 }
 
-function findUser (userID) {
+function findUser (userInfo, res) {
+  let info = userInfo
+  let userID = info.userID
   pools
     // Run query
     .then((pool) => {
       return pool.request()
-        .query(`SELECT user_id
+        .query(`SELECT *
         FROM users
         WHERE user_id = ${userID}`)
     })
     // Send back the result
     .then(result => {
-      return result
+      // console.log('query result', result)
+
+      // check if the ID/Email attributes in the db match the google-auth return
+      for (let i = 0; i < result.recordset.length; i++) {
+        let isCurrentUser = (result.recordset[i].user_id === info.userID) && (result.recordset[i].email_address === info.emailAddress)
+
+        if (isCurrentUser) {
+          info.userType = 'currentUser'
+          break
+        } else {
+          info.userType = 'newUser'
+        }
+      }
+      // if user isn't in database, create db entry for them
+      if (info.userType === 'newUser') {
+        createGoogleUser(info)
+      }
+      // ID doesn't need to be sent to front-end
+      delete info.userID
+      // console.log(info)
+      res.send(info)
     })
-    // If there's an error, return that with some description
     .catch(err => {
       return err
     })
