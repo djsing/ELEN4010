@@ -6,11 +6,10 @@ deploy:
   site: awaywego
   on: 
     branch: master
-    tags: true
 - provider: azure_web_apps
   site: testawaywego
   on: 
-    branch: coveralls
+    branch: development
 # before script: 
 #   - npm install coveralls --save-dev
 # script:
