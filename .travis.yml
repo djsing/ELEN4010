@@ -3,10 +3,17 @@ node_js:
 - "10.14"
 deploy:
 - provider: azure_web_apps
-  on: master
-before script: 
-  - npm install coveralls --save-dev
-script:
-  - npm run coveralls
-after_success:
-  - coveralls-lcov coverage/lcov.info
+  site: awaywego
+  on: 
+    branch: master
+    tags: true
+- provider: azure_web_apps
+  site: testawaywego
+  on: 
+    branch: development
+# before script: 
+#   - npm install coveralls --save-dev
+# script:
+#   - npm run coveralls
+# after_success:
+#   - coveralls-lcov coverage/lcov.info
