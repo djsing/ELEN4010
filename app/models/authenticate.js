@@ -5,25 +5,24 @@ let db = require('./db')
 function googleUserAccountDatabaseConnection (req, res) {
   let token = req.body.idToken
   const client = new OAuth2Client(keys.web.client_id)
-  var userid, firstName, lastName, emailAddress
   client.verifyIdToken({
     idToken: token,
     audience: keys.web.client_id
   }).then(result => {
     const payload = result.getPayload()
-    userid = payload['sub']
-    firstName = payload['given_name']
-    lastName = payload['family_name']
-    emailAddress = payload['email']
+    const userid = payload['sub']
     // console.log('userID', userid)
     const user = db.findUser(userid)
     // console.log('user', user)
+
     var userInfo = {
       userID: userid,
-      firstName: firstName,
-      lastName: lastName,
-      emailAddress: emailAddress
+      firstName: payload['given_name'],
+      lastName: payload['family_name'],
+      emailAddress: payload['email'],
+      image: payload['picture']
     }
+
     if (user === undefined) {
       userInfo.userType = 'newUser'
     } else {

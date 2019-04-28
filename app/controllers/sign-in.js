@@ -11,10 +11,6 @@ function signInInit () {
       console.log('GoogleAuth object initialised.')
       // click handler
       let onLoginSuccess = function (googleUser) {
-        let profile = googleUser.getBasicProfile()
-        window.sessionStorage.setItem('Name', JSON.stringify(profile.getName()))
-        window.sessionStorage.setItem('ImageURI', JSON.stringify(profile.getImageUrl()))
-        window.sessionStorage.setItem('Email', JSON.stringify(profile.getEmail()))
         $.ajax({
           url: '/google-auth',
           method: 'POST',
@@ -22,6 +18,10 @@ function signInInit () {
           data: JSON.stringify({ idToken: googleUser.getAuthResponse().id_token }),
           success: function (response) {
             console.log('response', response)
+            let name = JSON.stringify(response.firstName + ' ' + response.lastName)
+            window.sessionStorage.setItem('Name', name)
+            window.sessionStorage.setItem('ImageURI', JSON.stringify(response.image))
+            window.sessionStorage.setItem('Email', JSON.stringify(response.emailAddress))
             if (response.userType === 'currentUser') {
               window.location = '/trip'
             } else if (response.userType === 'newUser') {
