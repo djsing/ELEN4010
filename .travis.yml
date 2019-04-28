@@ -4,9 +4,9 @@ node_js:
 deploy:
 - provider: azure_web_apps
   on: master
-# before script: 
-#   - npm install coveralls --save-dev
-# script:
-#   - npm run coveralls
-# after_success:
-#   - coveralls-lcov coverage/lcov.info
+before script: 
+  - npm install coveralls --save-dev
+script:
+  - npm run coveralls
+after_success:
+  - coveralls-lcov coverage/lcov.info
