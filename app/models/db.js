@@ -34,11 +34,11 @@ let pools = new mssql.ConnectionPool(config)
     connectionError = err
     console.log(err)
   });
-  // Upon connection, create user table if it doesn't exist
+// Upon connection, create user table if it doesn't exist
 (function createUserTable () {
   pools.then((pool) => {
     return pool.request()
-    // This is only a test query, change it to whatever you need
+      // This is only a test query, change it to whatever you need
       .query(`IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='users' and xtype='U')
           CREATE TABLE users (
           user_id varchar(50),
@@ -55,14 +55,15 @@ let pools = new mssql.ConnectionPool(config)
 }
 )()
 
-function createGoogleUser (userInfo) {
+function createGoogleUser (userInfo, res) {
   let info = userInfo
+  // console.log('create', info)
   pools
     // Run query
     .then((pool) => {
       return pool.request()
         .query(`INSERT INTO users VALUES(
-          ${info.userID},
+          '${info.userID}',
           '${info.firstName}',
           '${info.lastName}',
           '${info.emailAddress}',
@@ -70,51 +71,65 @@ function createGoogleUser (userInfo) {
     })
     // Send back the result
     .then(result => {
-      return result
+      console.log('create google users', result)
+      // ID doesn't need to be sent to front-end
+      delete info.userID
+      // console.log('lastly new', info)
+      res.send(info)
     })
     // If there's an error, return that with some description
     .catch(err => {
-      return err
+      console.log('create users error', err)
     })
 }
 
 function findUser (userInfo, res) {
   let info = userInfo
   let userID = info.userID
+  let email = info.emailAddress
   pools
     // Run query
     .then((pool) => {
       return pool.request()
         .query(`SELECT *
         FROM users
-        WHERE user_id = ${userID}`)
+        WHERE user_id = ${userID}
+        OR
+        email_address = '${email}'`)
     })
-    // Send back the result
+    // both ID/Email match sought after in case of possible duplication of either ID/Email
     .then(result => {
       // console.log('query result', result)
 
-      // check if the ID/Email attributes in the db match the google-auth return
-      for (let i = 0; i < result.recordset.length; i++) {
-        let isCurrentUser = (result.recordset[i].user_id === info.userID) && (result.recordset[i].email_address === info.emailAddress)
-
-        if (isCurrentUser) {
-          info.userType = 'currentUser'
-          break
-        } else {
-          info.userType = 'newUser'
+      // if no match is found, it must be a new user
+      if (result.recordset.length === 0) {
+        info.userType = 'newUser'
+      } else {
+        // check if the ID/Email attributes in the db match the google-auth return
+        for (let i = 0; i < result.recordset.length; i++) {
+          let isCurrentUser = (result.recordset[i].user_id === userID) && (result.recordset[i].email_address === email)
+          // prevent possible duplicate ID/Email combinations
+          if (isCurrentUser) {
+            info.userType = 'currentUser'
+            // ID doesn't need to be sent to front-end
+            delete info.userID
+            // console.log('lastly current', info)
+            res.send(info)
+            break
+          } else {
+            info.userType = 'newUser'
+          }
         }
       }
+
       // if user isn't in database, create db entry for them
       if (info.userType === 'newUser') {
-        createGoogleUser(info)
+        // console.log('about to create', info)
+        createGoogleUser(info, res)
       }
-      // ID doesn't need to be sent to front-end
-      delete info.userID
-      // console.log(info)
-      res.send(info)
     })
     .catch(err => {
-      return err
+      console.log('find google user', err)
     })
 }
 
@@ -123,6 +138,5 @@ module.exports = {
   pools: pools,
   isConnected: isConnected,
   connectionError: connectionError,
-  findUser: findUser,
-  createUser: createUser
+  findUser: findUser
 }
