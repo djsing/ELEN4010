@@ -71,8 +71,8 @@ mainRouter.put(['/trip-manager/data', '/trips/data'], function (req, res) {
   tripModel.updateTrip(req.body.oldTripTitle, req.body.newTripTitle)
 })
 
-mainRouter.post('/auth', (req, res) => {
-  res.send(authenticate.userAccountDatabaseConnection(req))
+mainRouter.post('/google-auth', (req, res) => {
+  authenticate.googleUserAccountDatabaseConnection(req, res)
 })
 
 mainRouter.get('*', function (req, res) {

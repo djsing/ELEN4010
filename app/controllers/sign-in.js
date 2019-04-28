@@ -16,14 +16,16 @@ function signInInit () {
         window.sessionStorage.setItem('ImageURI', JSON.stringify(profile.getImageUrl()))
         window.sessionStorage.setItem('Email', JSON.stringify(profile.getEmail()))
         $.ajax({
-          url: '/auth',
+          url: '/google-auth',
           method: 'POST',
           contentType: 'application/json',
           data: JSON.stringify({ idToken: googleUser.getAuthResponse().id_token }),
           success: function (response) {
-            // console.log('response', response)
-            if (response === 'currentUser') {
+            console.log('response', response)
+            if (response.userType === 'currentUser') {
               window.location = '/trip'
+            } else if (response.userType === 'newUser') {
+              window.location = '/terms_and_conditions'
             }
           }
         })
