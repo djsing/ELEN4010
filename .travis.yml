@@ -10,7 +10,7 @@ deploy:
 - provider: azure_web_apps
   site: testawaywego
   on: 
-    branch: development
+    branch: coveralls
 # before script: 
 #   - npm install coveralls --save-dev
 # script:
