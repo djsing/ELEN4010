@@ -161,7 +161,7 @@ let addDestination = function (destinationInput, destinationPlace) {
 }
 
 // upon page reload, this function is called
-let initialiseItinerary = function () {
+let renderItinerary = function () {
   $('#indexTableBody').empty()
   $('#destinationsTableBody').empty()
   $.ajax({
@@ -221,7 +221,7 @@ $('#destinationsTable').on('click', '.deleteButton', function () {
     contentType: 'application/json',
     data: JSON.stringify(destination),
     success: function (res) {
-      initialiseItinerary()
+      renderItinerary()
     }
   })
 
