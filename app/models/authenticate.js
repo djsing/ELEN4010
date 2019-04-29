@@ -22,6 +22,18 @@ function googleUserAccountDatabaseConnection (req, res) {
   })
 }
 
+function userAccountDatabaseConnection (req, res) {
+  let userInfo = req.body
+
+  /* generate a subject number that is the same length of the google id using the email address as a seed
+
+set userID property of userInfo
+*/
+
+  db.findNormalUser(userInfo, res)
+}
+
 module.exports = {
-  googleUserAccountDatabaseConnection: googleUserAccountDatabaseConnection
+  googleUserAccountDatabaseConnection: googleUserAccountDatabaseConnection,
+  userAccountDatabaseConnection: userAccountDatabaseConnection
 }

@@ -75,6 +75,10 @@ mainRouter.post('/google-auth', (req, res) => {
   authenticate.googleUserAccountDatabaseConnection(req, res)
 })
 
+mainRouter.post('/auth', (req, res) => {
+  authenticate.userAccountDatabaseConnection(req, res)
+})
+
 mainRouter.get('*', function (req, res) {
   res.status(404).send('404 Error: page not found')
 })

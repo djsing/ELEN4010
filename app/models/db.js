@@ -133,10 +133,22 @@ function findUser (userInfo, res) {
     })
 }
 
+function findNormalUser (userInfo, res) {
+  // console.log('reg user', userInfo)
+
+  /* query database to see if they exist
+
+if not, create an account and database entry
+*/
+
+  res.send(userInfo)
+}
+
 module.exports = {
   sql: mssql,
   pools: pools,
   isConnected: isConnected,
   connectionError: connectionError,
-  findUser: findUser
+  findUser: findUser,
+  findNormalUser: findNormalUser
 }
