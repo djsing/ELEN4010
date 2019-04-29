@@ -23,7 +23,7 @@ function signInInit () {
           success: function (response) {
             console.log('response', response)
             if (response === 'authenticated') {
-              window.location = '/profile'
+              window.location = '/trip'
             }
           }
         })

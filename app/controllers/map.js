@@ -1,23 +1,6 @@
-'user strict'
-
-document.addEventListener('DOMContentLoaded', function () {
-  let lang
-  if (document.querySelectorAll('#map').length > 0) {
-    if (document.querySelector('html').lang) {
-      lang = document.querySelector('html').lang
-    } else {
-      lang = 'en'
-    }
-
-    let jsFile = document.createElement('script')
-    jsFile.type = 'text/javascript'
-    jsFile.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyCgnuMPrM3Yha6Y9K6f_XkdifRrE2t33Z4&libraries=places&callback=initMap&language=' + lang
-    document.getElementsByTagName('head')[0].appendChild(jsFile)
-  }
-})
+'use strict'
 
 let map, infoWindow, service
-let worldView = { lat: 10, lng: 350 }
 let markerInfo = []
 let markersOnMap = []
 
@@ -159,15 +142,15 @@ function placeMarkerAndPanTo (latLng, map) {
     map.panTo(latLng)
   })
 }
-
 function initMap () {
   map = new google.maps.Map(document.getElementById('map'), {
-    center: worldView,
+    center: { lat: 10, lng: 350 },
     zoom: 3,
     mapTypeControl: false,
     panControl: false,
     zoomControl: false,
-    streetViewControl: false
+    streetViewControl: false,
+    fullscreenControl: false
   })
 
   let card = document.getElementById('pac-card')

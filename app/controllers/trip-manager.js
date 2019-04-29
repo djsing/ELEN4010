@@ -1,3 +1,7 @@
+'use strict'
+
+const $ = window.$
+
 let addTitleInputField = function () {
   let titleInputField = document.createElement('input')
   titleInputField.type = 'text'
@@ -77,7 +81,7 @@ let addEditButton = function (title, tableCell) {
 $(function () {
   $(document).ready(() => {
     $.ajax({
-      url: '/trips/data',
+      url: '/trip-manager/data',
       method: 'GET',
       contentType: 'application/json',
       data: JSON.stringify({ 'tripTitle': tripTitle }),
@@ -100,7 +104,7 @@ $(function () {
     event.preventDefault()
     let tripTitle = $('#tripTitleInputField').val()
     $.ajax({
-      url: '/trips/data',
+      url: '/trip-manager/data',
       method: 'POST',
       contentType: 'application/json',
       data: JSON.stringify({ 'tripTitle': tripTitle }),
@@ -121,7 +125,7 @@ $(function () {
     let titleInput = oldRow.find('input.titleField')
     let title = titleInput.val()
     $.ajax({
-      url: '/trips/data',
+      url: '/trip-manager/data',
       method: 'DELETE',
       contentType: 'application/json',
       data: JSON.stringify({ 'tripTitle': title }),
@@ -154,7 +158,7 @@ $(function () {
     titleInput.attr('disabled', true)
 
     $.ajax({
-      url: '/trips/data',
+      url: '/trip-manager/data',
       method: 'PUT',
       contentType: 'application/json',
       data: JSON.stringify({ 'oldTripTitle': oldTripTitle,
