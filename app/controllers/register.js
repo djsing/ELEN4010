@@ -26,7 +26,7 @@ function signInInit () {
             if (response.userType === 'currentUser') {
               window.location = '/trip'
             } else if (response.userType === 'newUser') {
-              window.location = '/terms_and_conditions'
+              window.location = '/trip'
             } else {
               console.error('bad google response', response)
             }
@@ -64,6 +64,8 @@ $(document).ready(() => {
     window.location = '/sign-in'
   })
 
+  $('#TCLink').click(() => { window.open('/terms_and_conditions') })
+
   $('#registerButton').click(() => {
     if ($('#registerInputPassword').val() !== $('#registerInputConfirmPassword').val()) {
       return false
@@ -75,6 +77,9 @@ $(document).ready(() => {
       }
     })
     if (isAnyFieldEmpty) {
+      return false
+    }
+    if (!$('#TCCheck').prop('checked')) {
       return false
     }
 
@@ -101,7 +106,7 @@ $(document).ready(() => {
         if (response.userType === 'currentUser') {
           window.location = '/trip'
         } else if (response.userType === 'newUser') {
-          window.location = '/terms_and_conditions'
+          window.location = '/trip'
         } else {
           console.error('bad response', response)
         }

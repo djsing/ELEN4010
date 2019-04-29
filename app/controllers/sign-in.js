@@ -26,7 +26,7 @@ function signInInit () {
             if (response.userType === 'currentUser') {
               window.location = '/trip'
             } else if (response.userType === 'newUser') {
-              window.location = '/terms_and_conditions'
+              window.location = '/trip'
             }
           }
         })
