@@ -1,7 +1,6 @@
 'use strict'
 
-let map, infoWindow, service
-let markerInfo = []
+let map, service
 let markersOnMap = []
 
 function addMarker (latLng, map, id, label, placeName) {
@@ -13,75 +12,10 @@ function addMarker (latLng, map, id, label, placeName) {
     contentString: placeName
   })
   markersOnMap.push(marker)
-  addMarkerInfo()
   addDestination('', placeName)
 }
 
-let deleteMarker = function (id) {
-  // remove the marker from the map (a null-map marker)
-  try {
-    markersOnMap[id].setMap(null)
-  } catch (error) {}
-  // check if the last entr(ies) of the array is a null-map marker
-  let size = markersOnMap.length - 1
-  try {
-    while (markersOnMap[size].map === null) {
-      markersOnMap.pop()
-      size = markersOnMap.length - 1
-    }
-  } catch (error) {}
-  // Check that the whole array is not full of null-map markers:
-  if (markersOnMap.length !== 0) {
-    let j = 0
-    for (let i = 0; i < markersOnMap.length; i++) {
-      if (markersOnMap[i].map === null) {
-        j++
-      }
-    }
-    if (j === markersOnMap.length) {
-      markersOnMap = []
-      markerInfo = []
-      markersOnMap.length = 0
-      markerInfo.length = 0
-    }
-  }
-}
-
-function addMarkerInfo () {
-  for (let i = 0; i < markersOnMap.length; i++) {
-    let contentString = '<div id="content"><h1>' + markersOnMap[i].contentString
-    let marker = markersOnMap[i]
-
-    const infowindow = new google.maps.InfoWindow({
-      content: contentString,
-      maxWidth: 200
-    })
-
-    marker.addListener('click', function () {
-      closeOtherInfo()
-      infowindow.open(marker.get('map'), marker)
-      markerInfo[0] = infowindow
-    })
-
-    google.maps.event.addListener(marker, 'rightclick', function (e) {
-      let clicked = this
-      deleteMarker(clicked.id)
-    })
-  }
-}
-
-function closeOtherInfo () {
-  if (markerInfo.length > 0) {
-    /* detach the info-window from the marker */
-    markerInfo[0].set('marker', null)
-    /* close it */
-    markerInfo[0].close()
-    /* blank the array */
-    markerInfo.length = 0
-  }
-}
-
-function placeDestination (place, marker, infoWindow, infoWindowContent) {
+function placeDestination (place, marker) {
   if (!place.geometry) {
     // User entered the name of a Place that was not suggested and
     // pressed the Enter key, or the Place Details request failed.
@@ -108,14 +42,9 @@ function placeDestination (place, marker, infoWindow, infoWindowContent) {
     ].join(' ')
   }
 
-  infoWindowContent.children['place-icon'].src = place.icon
-  infoWindowContent.children['place-name'].textContent = place.name
-  infoWindowContent.children['place-address'].textContent = address
-  infoWindow.open(map, marker)
-
   let id = markersOnMap.length
   let label = String(id + 1)
-  let placeName = 'Destination ' + label + ': ' + place.name
+  let placeName = place.name
   addMarker(place.geometry.location, map, id, label, placeName)
 }
 
@@ -133,7 +62,7 @@ function placeMarkerAndPanTo (latLng, map) {
   service.nearbySearch(request, function (results, status) {
     if (status === google.maps.places.PlacesServiceStatus.OK) {
       // ToDo some checks for valid info here, sort and process for sensible name
-      destinationName = ': ' + results[0].name
+      destinationName = results[0].name
     }
 
     let id = markersOnMap.length
@@ -170,17 +99,12 @@ function initMap () {
   autocomplete.setFields(
     ['address_components', 'geometry', 'icon', 'name'])
 
-  infoWindow = new google.maps.InfoWindow()
-  let infoWindowContent = document.getElementById('infowindow-content')
-  infoWindow.setContent(infoWindowContent)
-
   let marker = new google.maps.Marker({
     map: map,
     anchorPoint: new google.maps.Point(0, 0)
   })
 
   map.addListener('click', function (e) {
-    infoWindow.close()
     marker = new google.maps.Marker({
       position: e.latLng,
       map: map
@@ -190,10 +114,9 @@ function initMap () {
   })
 
   autocomplete.addListener('place_changed', function () {
-    infoWindow.close()
     marker.setVisible(true)
     let place = autocomplete.getPlace()
-    placeDestination(place, marker, infoWindow, infoWindowContent)
+    placeDestination(place, marker)
   })
 }
 
