@@ -237,10 +237,6 @@ let addDestination = function (destinationInput, destinationPlace) {
   addDestinationRow(destinationInput, destinationPlace)
 }
 
-document.getElementById('addButton').addEventListener('click', function () {
-  addDestination('', 'destination name')
-})
-
 // upon page reload, this function is called
 let initialiseItinerary = function () {
   $('#indexTableBody').empty()
