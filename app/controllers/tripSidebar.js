@@ -11,7 +11,7 @@ let addIndexRow = function () {
   indexTable.appendChild(indexRow)
 }
 
-let addDestinationRow = function (destinationInput, destinationTitle) {
+let addDestinationRow = function (destinationInput, destinationPlace) {
   let destinationsTable = document.getElementById('destinationsTableBody')
   let row = document.createElement('tr')
   let destinationCell = document.createElement('td')
@@ -20,8 +20,8 @@ let addDestinationRow = function (destinationInput, destinationTitle) {
   destInput.placeholder = 'New Destination'
   destInput.value = destinationInput
   destinationCell.appendChild(destInput)
-  let destinationName = document.createTextNode(destinationTitle)
-  destinationCell.appendChild(destinationName)
+  destinationPlace = document.createTextNode(destinationPlace)
+  destinationCell.appendChild(destinationPlace)
   row.appendChild(destinationCell)
   let deleteButtonCell = document.createElement('td')
   let deleteButton = document.createElement('input')
@@ -33,9 +33,9 @@ let addDestinationRow = function (destinationInput, destinationTitle) {
   destinationsTable.appendChild(row)
 }
 
-let addDestination = function (destinationInput, destinationTitle) {
+let addDestination = function (destinationInput, destinationPlace) {
   addIndexRow()
-  addDestinationRow(destinationInput, destinationTitle)
+  addDestinationRow(destinationInput, destinationPlace)
 }
 
 document.getElementById('addButton').addEventListener('click', function () {
