@@ -65,8 +65,17 @@ $(document).ready(() => {
   })
 
   $('#registerButton').click(() => {
-    if ($('#registerInputPassword').val !== $('#registerInputConfirmPassword').val) {
-      return
+    if ($('#registerInputPassword').val() !== $('#registerInputConfirmPassword').val()) {
+      return false
+    }
+    var isAnyFieldEmpty = false
+    $('input[class="form-control"]').each(function () {
+      if ($(this).val() === '') {
+        isAnyFieldEmpty = true
+      }
+    })
+    if (isAnyFieldEmpty) {
+      return false
     }
 
     let userInfo = {
