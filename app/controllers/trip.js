@@ -7,15 +7,13 @@ function addMarker (latLng, map, id, label, placeName) {
   let marker = new google.maps.Marker({
     position: latLng,
     map: map,
-    label: label,
-    id: id,
-    contentString: placeName
+    label: label
   })
   markersOnMap.push(marker)
-  addDestination('', placeName)
+  addDestination('', placeName, latLng)
 }
 
-function placeDestination (place, marker) {
+function placeDestinationBySearch (place, marker) {
   if (!place.geometry) {
     // User entered the name of a Place that was not suggested and
     // pressed the Enter key, or the Place Details request failed.
@@ -48,12 +46,12 @@ function placeDestination (place, marker) {
   addMarker(place.geometry.location, map, id, label, placeName)
 }
 
-function placeMarkerAndPanTo (latLng, map) {
+function placeDestinationByClick (latLng) {
   let request = {
     bounds: map.bounds,
     location: latLng,
     rankBy: google.maps.places.RankBy.DISTANCE,
-    type: ['sublocality'],
+    type: ['regions', 'cities'],
     fields: ['name', 'formatted_address', 'place_id', 'geometry']
   }
 
@@ -67,7 +65,7 @@ function placeMarkerAndPanTo (latLng, map) {
 
     let id = markersOnMap.length
     let label = String(id + 1)
-    let placeName = 'Destination ' + label + destinationName
+    let placeName = destinationName
     addMarker(latLng, map, id, label, placeName)
     map.panTo(latLng)
   })
@@ -85,9 +83,7 @@ function initMap () {
 
   let card = document.getElementById('pac-card')
   let input = document.getElementById('pac-input')
-
   map.controls[google.maps.ControlPosition.TOP_RIGHT].push(card)
-
   let autocomplete = new google.maps.places.Autocomplete(input)
 
   // Bind the map's bounds (viewport) property to the autocomplete object,
@@ -110,17 +106,25 @@ function initMap () {
       map: map
     })
     marker.setVisible(false)
-    placeMarkerAndPanTo(e.latLng, map)
+    placeDestinationByClick(e.latLng, map)
   })
 
   autocomplete.addListener('place_changed', function () {
     marker.setVisible(true)
     let place = autocomplete.getPlace()
-    placeDestination(place, marker)
+    placeDestinationBySearch(place, marker)
   })
 }
 
-let saveTripTitle = function () {}
+// let saveTripTitle = function () {}
+
+// let destinations = []
+
+// function Destination(input, latLng, place) {
+//   this.input = input;
+//   this.latLng = latLng;
+//   this.place = place;
+// }
 
 let addIndexRow = function () {
   let indexTable = document.getElementById('indexTableBody')
@@ -133,31 +137,47 @@ let addIndexRow = function () {
   indexTable.appendChild(indexRow)
 }
 
-let addDestinationRow = function (destinationInput, destinationPlace) {
+let addDestinationRow = function (input, place, latLng) {
   let destinationsTable = document.getElementById('destinationsTableBody')
   let row = document.createElement('tr')
-  let destinationCell = document.createElement('td')
   let destInput = document.createElement('input')
+  let destPlace = document.createElement('td')
+  // let destLocationLat = document.createElement('td')
+  // let destLocationLng = document.createElement('td')
+  // let latlong = latLng.toString().replace(/\(|\)/g, '').split(', ')
+
   destInput.className = 'destInput'
   destInput.placeholder = 'New Destination'
-  destInput.value = destinationInput
-  destinationCell.appendChild(destInput)
-  destinationPlace = document.createTextNode(destinationPlace)
-  destinationCell.appendChild(destinationPlace)
-  row.appendChild(destinationCell)
+  destInput.value = input
+
+  destPlace.appendChild(destInput)
+  destPlace.appendChild(document.createTextNode(place))
+  row.appendChild(destPlace)
+
+  // destLocationLat.appendChild(destPlace)
+  // destLocationLat.appendChild(document.createTextNode(latlong[0]))
+  // row.appendChild(destLocationLat)
+
+  // destLocationLng.appendChild(destLocationLat)
+  // destLocationLat.appendChild(document.createTextNode(latlong[1]))
+  // row.appendChild(destLocationLng)
+
   let deleteButtonCell = document.createElement('td')
   let deleteButton = document.createElement('input')
   deleteButton.type = 'button'
   deleteButton.value = 'x'
   deleteButton.className = 'deleteButton'
   deleteButtonCell.appendChild(deleteButton)
+
   row.appendChild(deleteButtonCell)
   destinationsTable.appendChild(row)
 }
 
-let addDestination = function (destinationInput, destinationPlace) {
+let addDestination = function (input, place, latLng) {
+  // let destination = Destination(destinationInput, destinationLatLng, destinationPlace)
+  // destinations.push(destination)
   addIndexRow()
-  addDestinationRow(destinationInput, destinationPlace)
+  addDestinationRow(input, place, latLng)
 }
 
 // upon page reload, this function is called
@@ -165,7 +185,7 @@ let renderItinerary = function () {
   $('#indexTableBody').empty()
   $('#destinationsTableBody').empty()
   $.ajax({
-    url: '/tripSidebar/data',
+    url: '/trip/data',
     method: 'GET',
     contentType: 'application/json',
     success: (res) => {
@@ -192,7 +212,7 @@ let saveItinerary = function () {
   }
 
   $.ajax({
-    url: '/tripSidebar/data',
+    url: '/trip/data',
     method: 'POST',
     contentType: 'application/json',
     data: JSON.stringify(itinerary),
@@ -216,7 +236,7 @@ $('#destinationsTable').on('click', '.deleteButton', function () {
     'destName': destName
   }
   $.ajax({
-    url: '/tripSidebar/data',
+    url: '/trip/data',
     method: 'DELETE',
     contentType: 'application/json',
     data: JSON.stringify(destination),

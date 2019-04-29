@@ -15,7 +15,7 @@ app.use(bodyParser.urlencoded({
 let auth = require('../models/authenticate')
 let termsModel = require('../models/termsAndConditionsModel')
 let tripManagerModel = require('../models/tripManagerModel')
-let tripSidebarModel = require('../models/tripSidebarModel')
+let tripModel = require('../models/tripModel')
 
 mainRouter.get('/', function (req, res) {
   res.sendFile('/index.html', { root: req.app.get('views') })
@@ -57,19 +57,16 @@ mainRouter.get(['/trip-manager', '/trips'], function (req, res) {
   res.sendFile('/trip-manager.html', { root: req.app.get('views') })
 })
 
-mainRouter.get('/tripSidebar', function (req, res) {
-  res.sendFile('/tripSidebar.html', { root: req.app.get('views') })
+mainRouter.post('/trip/data', function (req, res) {
+  tripModel.storeItinerary(req.body.destInputs, req.body.destNames)
 })
 
-mainRouter.post('/tripSidebar/data', function (req, res) {
-  tripSidebarModel.storeItinerary(req.body.destInputs, req.body.destNames)
+mainRouter.get('/trip/data', function (req, res) {
+  res.send(tripModel.getIntinerary())
 })
 
-mainRouter.get('/tripSidebar/data', function (req, res) {
-  res.send(tripSidebarModel.getIntinerary())
-})
-mainRouter.delete('/tripSidebar/data', function (req, res) {
-  tripSidebarModel.deleteDestination(req.body.destInput, req.body.destName)
+mainRouter.delete('/trip/data', function (req, res) {
+  tripModel.deleteDestination(req.body.destInput, req.body.destName)
   res.sendStatus(200)
 })
 
