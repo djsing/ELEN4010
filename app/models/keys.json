@@ -1,0 +1,15 @@
+{
+  "web": {
+    "client_id": "770023573168-8lo6smmhtuifqt6enlcnsulssucf2eb0.apps.googleusercontent.com",
+    "project_id": "awaywego",
+    "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+    "token_uri": "https://oauth2.googleapis.com/token",
+    "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+    "client_secret": "uPeA-ySkBEG-v7oyL1EO229o",
+    "javascript_origins": [
+      "http://localhost:3000",
+      "https://awaywego.azurewebsites.net",
+      "https://testawaywego.azurewebsites.net"
+    ]
+  }
+}
