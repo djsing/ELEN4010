@@ -79,8 +79,9 @@ $(document).ready(() => {
         // direct to different pages based on whether the user is new or current
         if (response.userType === 'currentUser') {
           window.location = '/trip'
-        } else {
+        } else if (response.userType === 'incorrectUser') {
           window.alert('Username or Password Incorrect.')
+        } else {
           console.error('bad sign in response', response)
         }
       }

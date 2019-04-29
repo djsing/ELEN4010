@@ -101,9 +101,22 @@ function findUser (userInfo, res) {
       // console.log('query result', result)
       // if no match is found, it must be a new user
       if (result.recordset.length === 0) {
-        info.userType = 'newUser'
-        // console.log('about to create', info)
-        createUser(info, res)
+        // console.log('length', Object.keys(info))
+        if (Object.keys(info).length === 4) {
+          // Only sign-in requests have 4 objects: email/password/image/hash
+          info.userType = 'incorrectUser'
+          // some info doesn't need to be sent to front-end
+          delete info.emailAddress
+          delete info.password
+          delete info.hash
+          delete info.image
+          // console.log('lastly incorrect user', info)
+          res.send(info)
+        } else {
+          info.userType = 'newUser'
+          // console.log('about to create', info)
+          createUser(info, res)
+        }
       } else {
         info.userType = 'currentUser'
         info.firstName = result.recordset[0].first_name
