@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width,initial-scale=1, shrink-to-fit=no">
     <meta charset="utf-8">
     
-    <script src="/js/jquery-3.4.0.min.js"></script>
+    <script src="/js/jquery-3.4.0.js"></script>
+    <script src="/js/jquery-ui-1.12.1.js"></script>
     <script src='info.js'></script>
     <script defer src='trip.js'></script>
 
@@ -78,34 +79,15 @@
             <div class="col-sm-9" id="map"></div>
             <div class="col-sm-3"  id="destination">
                 <h1 id='heading'>Trip Itinerary:</h1>
-       
-                <input type='text' id='tripTitle' placeholder="New Trip">
-                <button type='button' onclick="saveTripTitle()" id='saveTripTitleButton'>Save</button> 
-            
-                <form action="/trip" method="POST"></form>
-            
-                    <div>
-                        <table id='indexTable' style = 'float: left'> 
-                            <tbody id='indexTableBody'>
-                            </tbody>
-                        </table>
-                        <table id='destinationsTable' style = 'float: left'> 
-                            <tbody id='destinationsTableBody'>
-                            </tbody>
-                        </table>
-                    </div>    
-            
-                    <div>
-                        <button type="submit" id='saveItineraryButton' onclick="saveItinerary()"> Save </button> 
-                    </div> 
-            
-                </form>
+                <ul id="destinationList" class="list-group">
+                </ul>
             </div>
             </div>
         </div>
       </div>
 
     <script src="/js/bootstrap.bundle.min.js"></script>
+    <script>$("#destinationList").sortable()</script>
     <script defer src='/js/loadmap.js'></script>
   </body>
 </html>

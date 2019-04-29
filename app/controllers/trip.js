@@ -174,11 +174,19 @@ let addDestinationRow = function (input, place, latLng) {
 }
 
 let addDestination = function (input, place, latLng) {
-  // let destination = Destination(destinationInput, destinationLatLng, destinationPlace)
-  // destinations.push(destination)
-  addIndexRow()
-  addDestinationRow(input, place, latLng)
+  let node = document.createElement('li')
+  let destinationName = document.createTextNode(place)
+  node.appendChild(destinationName)
+  node.className = 'list-group-item'
+  document.getElementById('destinationList').appendChild(node)
 }
+
+// let addDestination = function (input, place, latLng) {
+//   // let destination = Destination(destinationInput, destinationLatLng, destinationPlace)
+//   // destinations.push(destination)
+//   addIndexRow()
+//   addDestinationRow(input, place, latLng)
+// }
 
 // upon page reload, this function is called
 let renderItinerary = function () {
