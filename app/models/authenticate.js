@@ -1,6 +1,7 @@
 const { OAuth2Client } = require('google-auth-library')
-let keys = require('./keys.json')
+const keys = require('./keys.json')
 let db = require('./db')
+const crypto = require('crypto')
 
 function googleUserAccountDatabaseConnection (req, res) {
   let token = req.body.idToken
@@ -18,19 +19,27 @@ function googleUserAccountDatabaseConnection (req, res) {
       emailAddress: payload['email'],
       image: payload['picture']
     }
+    userInfo = createHashKey(userInfo, true)
     db.findUser(userInfo, res)
   })
 }
 
 function userAccountDatabaseConnection (req, res) {
   let userInfo = req.body
-
-  /* generate a subject number that is the same length of the google id using the email address as a seed
-
-set userID property of userInfo
-*/
-
+  userInfo = createHashKey(userInfo, false)
   db.findNormalUser(userInfo, res)
+}
+
+function createHashKey (userInfo, isGoogleUser) {
+  const hash = crypto.createHash('sha256')
+  if (isGoogleUser) {
+    hash.update(userInfo.userID + userInfo.password)
+  } else {
+    hash.update(userInfo.emailAddress + userInfo.password)
+  }
+  userInfo.hash = hash.digest('hex')
+  console.log('after hash', userInfo)
+  return userInfo
 }
 
 module.exports = {
