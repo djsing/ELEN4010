@@ -2,15 +2,25 @@
 
 let map, service
 let markersOnMap = []
+let destinationList = []
 
-function addMarker (latLng, map, id, label, placeName) {
+class Destination {
+  constructor (latLng, id, place) {
+    this.latLng = latLng
+    this.id = id
+    this.place = place
+    this.input = ''
+  }
+}
+
+function addMarker (latLng, id, placeName, label) {
   let marker = new google.maps.Marker({
     position: latLng,
     map: map,
     label: label
   })
   markersOnMap.push(marker)
-  addDestination('', placeName, latLng)
+  addDestination(latLng, id, placeName)
 }
 
 function placeDestinationBySearch (place, marker) {
@@ -40,10 +50,10 @@ function placeDestinationBySearch (place, marker) {
     ].join(' ')
   }
 
-  let id = markersOnMap.length
-  let label = String(id + 1)
+  let id = (new Date()).getTime()
   let placeName = place.name
-  addMarker(place.geometry.location, map, id, label, placeName)
+  let label = String(markersOnMap.length + 1)
+  addMarker(place.geometry.location, id, placeName, label)
 }
 
 function placeDestinationByClick (latLng) {
@@ -55,7 +65,7 @@ function placeDestinationByClick (latLng) {
     fields: ['name', 'formatted_address', 'place_id', 'geometry']
   }
 
-  let destinationName = ''
+  let destinationName = 'Destination'
   service = new google.maps.places.PlacesService(map)
   service.nearbySearch(request, function (results, status) {
     if (status === google.maps.places.PlacesServiceStatus.OK) {
@@ -63,13 +73,14 @@ function placeDestinationByClick (latLng) {
       destinationName = results[0].name
     }
 
-    let id = markersOnMap.length
-    let label = String(id + 1)
+    let id = (new Date()).getTime()
     let placeName = destinationName
-    addMarker(latLng, map, id, label, placeName)
+    let label = String(markersOnMap.length + 1)
+    addMarker(latLng, id, placeName, label)
     map.panTo(latLng)
   })
 }
+
 function initMap () {
   map = new google.maps.Map(document.getElementById('map'), {
     center: { lat: 10, lng: 350 },
@@ -78,7 +89,8 @@ function initMap () {
     panControl: false,
     zoomControl: false,
     streetViewControl: false,
-    fullscreenControl: false
+    fullscreenControl: false,
+    draggableCursor: 'default'
   })
 
   let card = document.getElementById('pac-card')
@@ -118,140 +130,142 @@ function initMap () {
 
 // let saveTripTitle = function () {}
 
-// let destinations = []
+let addDestination = function (latLng, id, placeName) {
+  let newDestination = new Destination(latLng, id, placeName)
+  destinationList.push(newDestination)
 
-// function Destination(input, latLng, place) {
-//   this.input = input;
-//   this.latLng = latLng;
-//   this.place = place;
-// }
-
-let addIndexRow = function () {
-  let indexTable = document.getElementById('indexTableBody')
-  let index = indexTable.rows.length
-  let indexRow = document.createElement('tr')
-  let indexCell = document.createElement('td')
-  let destinationIndex = document.createTextNode(index + 1)
-  indexCell.appendChild(destinationIndex)
-  indexRow.appendChild(indexCell)
-  indexTable.appendChild(indexRow)
-}
-
-let addDestinationRow = function (input, place, latLng) {
-  let destinationsTable = document.getElementById('destinationsTableBody')
   let row = document.createElement('tr')
-  let destInput = document.createElement('input')
+  row.id = id
+  let destNum = document.createElement('td')
   let destPlace = document.createElement('td')
-  // let destLocationLat = document.createElement('td')
-  // let destLocationLng = document.createElement('td')
-  // let latlong = latLng.toString().replace(/\(|\)/g, '').split(', ')
-
-  destInput.className = 'destInput'
-  destInput.placeholder = 'New Destination'
-  destInput.value = input
-
-  destPlace.appendChild(destInput)
-  destPlace.appendChild(document.createTextNode(place))
-  row.appendChild(destPlace)
-
-  // destLocationLat.appendChild(destPlace)
-  // destLocationLat.appendChild(document.createTextNode(latlong[0]))
-  // row.appendChild(destLocationLat)
-
-  // destLocationLng.appendChild(destLocationLat)
-  // destLocationLat.appendChild(document.createTextNode(latlong[1]))
-  // row.appendChild(destLocationLng)
+  let number = document.createTextNode(destinationList.length)
+  destNum.innerHTML = number
+  destPlace.append(destNum)
+  destPlace.append(document.createTextNode(placeName))
+  row.append(destPlace)
 
   let deleteButtonCell = document.createElement('td')
   let deleteButton = document.createElement('input')
   deleteButton.type = 'button'
   deleteButton.value = 'x'
-  deleteButton.className = 'deleteButton'
+  deleteButton.id = 'deleteButton'
+  deleteButton.className = 'btn-xs'
+  deleteButton.classList.add('mini')
+  deleteButton.classList.add('red-stripe')
   deleteButtonCell.appendChild(deleteButton)
 
   row.appendChild(deleteButtonCell)
-  destinationsTable.appendChild(row)
+  document.getElementById('destinationTable').appendChild(row)
 }
 
-let addDestination = function (input, place, latLng) {
-  let node = document.createElement('li')
-  let destinationName = document.createTextNode(place)
-  node.appendChild(destinationName)
-  node.className = 'list-group-item'
-  document.getElementById('destinationList').appendChild(node)
+let clearMarkers = function () {
+  for (var i = 0; i < markersOnMap.length; i++) {
+    markersOnMap[i].setMap(null)
+  }
+  markersOnMap = []
 }
 
-// let addDestination = function (input, place, latLng) {
-//   // let destination = Destination(destinationInput, destinationLatLng, destinationPlace)
-//   // destinations.push(destination)
-//   addIndexRow()
-//   addDestinationRow(input, place, latLng)
-// }
+let renderMarkers = function () {
+  for (var j = 0; j < destinationList.length; j++) {
+    let marker = new google.maps.Marker({
+      position: destinationList[j].latLng,
+      map: map,
+      label: String(Number(j) + 1)
+    })
+    markersOnMap.push(marker)
+  }
+}
+
+let updateIndex = function (e, ui) {
+  $('td.index', ui.item.parent()).each(function (i) {
+    $(this).html(i + 1)
+  })
+
+  $('input[type=text]', ui.item.parent()).each(function (i) {
+    $(this).val(i + 1)
+  })
+}
+$('#destinationTable').sortable({
+  stop: updateIndex
+})
+
+$(document).on('click', '#deleteButton', function (e) {
+  let id = $(this).parents('tr')[0].id
+  $(this).parents('tr').remove()
+  for (var i = 0; i < destinationList.length; i++) {
+    if (destinationList[i].id === Number(id)) {
+      destinationList.splice(i, 1)
+      i--
+    }
+  }
+  clearMarkers()
+  renderMarkers()
+})
 
 // upon page reload, this function is called
-let renderItinerary = function () {
-  $('#indexTableBody').empty()
-  $('#destinationsTableBody').empty()
-  $.ajax({
-    url: '/trip/data',
-    method: 'GET',
-    contentType: 'application/json',
-    success: (res) => {
-      for (let i = 0; i < res.destInputs.length; i++) {
-        addDestination(res.destInputs[i], res.destNames[i])
-      }
-    }
-  })
-}
+// let renderDestinations = function () {
+//   $('#indexTableBody').empty()
+//   $('#destinationsTableBody').empty()
+//   $.ajax({
+//     url: '/trip/data',
+//     method: 'GET',
+//     contentType: 'application/json',
+//     success: (res) => {
+//       for (let i = 0; i < res.destInputs.length; i++) {
+//         addDestination(res.destInputs[i], res.destNames[i])
+//       }
+//     }
+//   })
+// }
 
-let saveItinerary = function () {
-  let destInputs = []
-  let destNames = []
-  let destTable = document.getElementById('destinationsTable')
-  for (let i = 0, rows; rows = destTable.rows[i]; i++) {
-    let inputField = rows.cells[0].childNodes[0]
-    let text = rows.cells[0].textContent
-    destInputs.push(inputField.value)
-    destNames.push(text)
-  }
-  let itinerary = {
-    'destInputs': destInputs,
-    'destNames': destNames
-  }
+// let saveItinerary = function () {
+//   let destInputs = []
+//   let destNames = []
+//   let destTable = document.getElementById('destinationsTable')
+//   for (let i = 0, rows; rows = destTable.rows[i]; i++) {
+//     let inputField = rows.cells[0].childNodes[0]
+//     let text = rows.cells[0].textContent
+//     destInputs.push(inputField.value)
+//     destNames.push(text)
+//   }
+//   let itinerary = {
+//     'destInputs': destInputs,
+//     'destNames': destNames
+//   }
 
-  $.ajax({
-    url: '/trip/data',
-    method: 'POST',
-    contentType: 'application/json',
-    data: JSON.stringify(itinerary),
-    success: function (res) {
-    }
-  })
-}
+//   $.ajax({
+//     url: '/trip/data',
+//     method: 'POST',
+//     contentType: 'application/json',
+//     data: JSON.stringify(itinerary),
+//     success: function (res) {
+//     }
+//   })
+// }
 
-$('#destinationsTable').on('click', '.deleteButton', function () {
-  let oldRow = $(this).closest('tr')
-  let destInput = oldRow.find('input.destInput')
-  let destInputValue = destInput.val()
-  let destName = oldRow.find('td:eq(0)').html()
-  oldRow.index()
-  let indexTable = $('#indexTableBody')
-  let removeRow = indexTable.find('tr:eq(' + oldRow.index() + ')')
-  removeRow.remove()
+// $('#destinationsTable').on('click', '.deleteButton', function () {
+//   let oldRow = $(this).closest('tr')
+//   let destInput = oldRow.find('input.destInput')
+//   let destInputValue = destInput.val()
+//   let destName = oldRow.find('td:eq(0)').html()
+//   oldRow.index()
+//   let indexTable = $('#indexTableBody')
+//   let removeRow = indexTable.find('tr:eq(' + oldRow.index() + ')')
+//   removeRow.remove()
 
-  let destination = {
-    'destInput': destInputValue,
-    'destName': destName
-  }
-  $.ajax({
-    url: '/trip/data',
-    method: 'DELETE',
-    contentType: 'application/json',
-    data: JSON.stringify(destination),
-    success: function (res) {
-      renderItinerary()
-    }
-  })
+//   let destination = {
+//     'destInput': destInputValue,
+//     'destName': destName
+//   }
+//   $.ajax({
+//     url: '/trip/data',
+//     method: 'DELETE',
+//     contentType: 'application/json',
+//     data: JSON.stringify(destination),
+//     success: function (res) {
+//       renderItinerary()
+//     }
+//   })
 
-  oldRow.remove()
-})
+//   oldRow.remove()
+// })

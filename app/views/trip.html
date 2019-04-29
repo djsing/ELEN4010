@@ -15,8 +15,8 @@
     <link rel="stylesheet" href="/css/map.style.css" />
   </head>
 
-  <body onload='renderItinerary()'>
-
+  <!-- <body onload='renderDestinations()'> -->
+<body>
       <nav class="navbar navbar-expand-md navbar-light bg-light">
         <a class="navbar-brand" href="#">
             <img src="/img/logo.svg" width="30" height="30" class="d-inline-block align-top" alt="">
@@ -68,26 +68,24 @@
         </div>
       </div>
 
-      <!-- <div id="infowindow-content">
-        <img src="" width="16" height="16" id="place-icon">
-        <span id="place-name"  class="title"></span><br>
-        <span id="place-address"></span>
-      </div> -->
-
       <div class="container">
         <div class="row">
             <div class="col-sm-9" id="map"></div>
             <div class="col-sm-3"  id="destination">
-                <h1 id='heading'>Trip Itinerary:</h1>
-                <ul id="destinationList" class="list-group">
-                </ul>
-            </div>
+                <table class="table table-striped table-hover" id="destinationTable">
+                    <thead>
+                      <th><h1 id='heading'>Trip Itinerary</h1></th>
+                      <th></th>
+                      <th></th>
+                    </thead>
+                    <tbody id='destinationsTableBody'>
+                    </tbody>
+                </table>
             </div>
         </div>
       </div>
 
     <script src="/js/bootstrap.bundle.min.js"></script>
-    <script>$("#destinationList").sortable()</script>
     <script defer src='/js/loadmap.js'></script>
   </body>
 </html>

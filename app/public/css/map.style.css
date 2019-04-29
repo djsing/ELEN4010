@@ -86,3 +86,6 @@ html, body {
 h1, .h1 {
   font-size: 12pt;
 }
+td:hover{
+  cursor:move;
+  }
