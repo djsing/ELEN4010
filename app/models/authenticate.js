@@ -12,12 +12,13 @@ function googleUserAccountDatabaseConnection (req, res) {
   }).then(result => {
     const payload = result.getPayload()
     const userid = payload['sub']
+    const imageURL = '\'' + payload['picture'] + '\''
     var userInfo = {
       userID: userid,
       firstName: payload['given_name'],
       lastName: payload['family_name'],
       emailAddress: payload['email'],
-      image: payload['picture']
+      image: imageURL
     }
     userInfo = createHashKey(userInfo, true)
     db.findUser(userInfo, res)

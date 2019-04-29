@@ -67,7 +67,7 @@ function createUser (userInfo, res) {
           '${info.firstName}',
           '${info.lastName}',
           '${info.emailAddress}',
-          '${info.image}',
+          ${info.image},
           '${info.hash}')`)
     })
     // Send back the result
