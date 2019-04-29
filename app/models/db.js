@@ -49,14 +49,14 @@ let pools = new mssql.ConnectionPool(config)
           hash varchar(255)
           )`)
   }).then(result => {
-    console.log('table created', result)
+    console.log('user table created', result)
   }).catch(err => {
-    console.log('table error', err)
+    console.log('user table creation error', err)
   })
 }
 )()
 
-function createGoogleUser (userInfo, res) {
+function createUser (userInfo, res) {
   let info = userInfo
   // console.log('create', info)
   pools
@@ -72,7 +72,7 @@ function createGoogleUser (userInfo, res) {
     })
     // Send back the result
     .then(result => {
-      console.log('create google users', result)
+      console.log('create users', result)
       // some info doesn't need to be sent to front-end
       delete info.userID
       delete info.hash
@@ -103,7 +103,7 @@ function findUser (userInfo, res) {
       if (result.recordset.length === 0) {
         info.userType = 'newUser'
         // console.log('about to create', info)
-        createGoogleUser(info, res)
+        createUser(info, res)
       } else {
         info.userType = 'currentUser'
         // some info doesn't need to be sent to front-end
@@ -114,78 +114,77 @@ function findUser (userInfo, res) {
       }
     })
     .catch(err => {
-      console.log('find google user', err)
+      console.log('find user', err)
     })
 }
 
-function createNormalUser (userInfo, res) {
-  let info = userInfo
-  console.log('create', info)
-  pools
-    // Run query
-    .then((pool) => {
-      return pool.request()
-        .query(`INSERT INTO users VALUES(
-          '${info.firstName}',
-          '${info.lastName}',
-          '${info.emailAddress}',
-          '${info.image}',
-          '${info.hash}')`)
-    })
-    // Send back the result
-    .then(result => {
-      console.log('create users', result)
-      // some info doesn't need to be sent to front-end
-      delete info.userID
-      delete info.hash
-      // console.log('lastly new', info)
-      res.send(info)
-    })
-    // If there's an error, return that with some description
-    .catch(err => {
-      console.log('create users error', err)
-    })
-}
+// function createNormalUser (userInfo, res) {
+//   let info = userInfo
+//   console.log('create', info)
+//   pools
+//     // Run query
+//     .then((pool) => {
+//       return pool.request()
+//         .query(`INSERT INTO users VALUES(
+//           '${info.firstName}',
+//           '${info.lastName}',
+//           '${info.emailAddress}',
+//           '${info.image}',
+//           '${info.hash}')`)
+//     })
+//     // Send back the result
+//     .then(result => {
+//       console.log('create users', result)
+//       // some info doesn't need to be sent to front-end
+//       delete info.userID
+//       delete info.hash
+//       // console.log('lastly new', info)
+//       res.send(info)
+//     })
+//     // If there's an error, return that with some description
+//     .catch(err => {
+//       console.log('create users error', err)
+//     })
+// }
 
-function findNormalUser (userInfo, res) {
-  console.log('reg user', userInfo)
-  let info = userInfo
-  let hash = info.hash
-  pools
-    // Run query
-    .then((pool) => {
-      return pool.request()
-        .query(`SELECT *
-        FROM users
-        WHERE hash = '${hash}'`)
-    })
-    // both ID/Email match sought after in case of possible duplication of either ID/Email
-    .then(result => {
-      // console.log('query result', result)
-      // if no match is found, it must be a new user
-      if (result.recordset.length === 0) {
-        info.userType = 'newUser'
-        // console.log('about to create', info)
-        createNormalUser(info, res)
-      } else {
-        info.userType = 'currentUser'
-        // some info doesn't need to be sent to front-end
-        delete info.userID
-        delete info.hash
-        // console.log('lastly current', info)
-        res.send(info)
-      }
-    })
-    .catch(err => {
-      console.log('find google user', err)
-    })
-}
+// function findNormalUser (userInfo, res) {
+//   console.log('reg user', userInfo)
+//   let info = userInfo
+//   let hash = info.hash
+//   pools
+//     // Run query
+//     .then((pool) => {
+//       return pool.request()
+//         .query(`SELECT *
+//         FROM users
+//         WHERE hash = '${hash}'`)
+//     })
+//     // both ID/Email match sought after in case of possible duplication of either ID/Email
+//     .then(result => {
+//       // console.log('query result', result)
+//       // if no match is found, it must be a new user
+//       if (result.recordset.length === 0) {
+//         info.userType = 'newUser'
+//         // console.log('about to create', info)
+//         createNormalUser(info, res)
+//       } else {
+//         info.userType = 'currentUser'
+//         // some info doesn't need to be sent to front-end
+//         delete info.userID
+//         delete info.hash
+//         // console.log('lastly current', info)
+//         res.send(info)
+//       }
+//     })
+//     .catch(err => {
+//       console.log('find google user', err)
+//     })
+// }
 
 module.exports = {
   sql: mssql,
   pools: pools,
   isConnected: isConnected,
   connectionError: connectionError,
-  findUser: findUser,
-  findNormalUser: findNormalUser
+  findUser: findUser
 }

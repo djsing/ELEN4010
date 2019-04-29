@@ -27,7 +27,7 @@ function googleUserAccountDatabaseConnection (req, res) {
 function userAccountDatabaseConnection (req, res) {
   let userInfo = req.body
   userInfo = createHashKey(userInfo, false)
-  db.findNormalUser(userInfo, res)
+  db.findUser(userInfo, res)
 }
 
 function createHashKey (userInfo, isGoogleUser) {
