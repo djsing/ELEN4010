@@ -14,7 +14,7 @@ app.use(bodyParser.urlencoded({
 // let db = require('../models/db.js')
 let auth = require('../models/authenticate')
 let termsModel = require('../models/termsAndConditionsModel')
-let tripModel = require('../models/tripModel')
+let tripManagerModel = require('../models/tripManagerModel')
 let tripSidebarModel = require('../models/tripSidebarModel')
 
 mainRouter.get('/', function (req, res) {
@@ -69,26 +69,25 @@ mainRouter.get('/tripSidebar/data', function (req, res) {
   res.send(tripSidebarModel.getIntinerary())
 })
 mainRouter.delete('/tripSidebar/data', function (req, res) {
-
   tripSidebarModel.deleteDestination(req.body.destInput, req.body.destName)
   res.sendStatus(200)
 })
 
 mainRouter.get(['/trip-manager/data', '/trips/data'], function (req, res) {
-  res.send(tripModel.getTripTitles())
+  res.send(tripManagerModel.getTripTitles())
 })
 
 mainRouter.post(['/trip-manager/data', '/trips/data'], function (req, res) {
-  tripModel.saveTripTitle(req.body.tripTitle)
-  res.send(tripModel.getTripTitles())
+  tripManagerModel.saveTripTitle(req.body.tripTitle)
+  res.send(tripManagerModel.getTripTitles())
 })
 
 mainRouter.delete(['/trip-manager/data', '/trips/data'], function (req, res) {
-  tripModel.removeTrip(req.body.tripTitle)
+  tripManagerModel.removeTrip(req.body.tripTitle)
 })
 
 mainRouter.put(['/trip-manager/data', '/trips/data'], function (req, res) {
-  tripModel.updateTrip(req.body.oldTripTitle, req.body.newTripTitle)
+  tripManagerModel.updateTrip(req.body.oldTripTitle, req.body.newTripTitle)
 })
 
 mainRouter.post('/auth', function (req, res) {
