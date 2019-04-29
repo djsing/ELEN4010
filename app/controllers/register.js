@@ -94,7 +94,7 @@ $(document).ready(() => {
         } else if (response.userType === 'newUser') {
           window.location = '/terms_and_conditions'
         } else {
-          // console.error('bad response', response)
+          console.error('bad response', response)
         }
       }
     })

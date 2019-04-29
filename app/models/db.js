@@ -106,6 +106,9 @@ function findUser (userInfo, res) {
         createUser(info, res)
       } else {
         info.userType = 'currentUser'
+        info.firstName = result.recordset[0].first_name
+        info.lastName = result.recordset[0].last_name
+        info.emailAddress = result.recordset[0].email_address
         // some info doesn't need to be sent to front-end
         delete info.userID
         delete info.hash
@@ -117,69 +120,6 @@ function findUser (userInfo, res) {
       console.log('find user', err)
     })
 }
-
-// function createNormalUser (userInfo, res) {
-//   let info = userInfo
-//   console.log('create', info)
-//   pools
-//     // Run query
-//     .then((pool) => {
-//       return pool.request()
-//         .query(`INSERT INTO users VALUES(
-//           '${info.firstName}',
-//           '${info.lastName}',
-//           '${info.emailAddress}',
-//           '${info.image}',
-//           '${info.hash}')`)
-//     })
-//     // Send back the result
-//     .then(result => {
-//       console.log('create users', result)
-//       // some info doesn't need to be sent to front-end
-//       delete info.userID
-//       delete info.hash
-//       // console.log('lastly new', info)
-//       res.send(info)
-//     })
-//     // If there's an error, return that with some description
-//     .catch(err => {
-//       console.log('create users error', err)
-//     })
-// }
-
-// function findNormalUser (userInfo, res) {
-//   console.log('reg user', userInfo)
-//   let info = userInfo
-//   let hash = info.hash
-//   pools
-//     // Run query
-//     .then((pool) => {
-//       return pool.request()
-//         .query(`SELECT *
-//         FROM users
-//         WHERE hash = '${hash}'`)
-//     })
-//     // both ID/Email match sought after in case of possible duplication of either ID/Email
-//     .then(result => {
-//       // console.log('query result', result)
-//       // if no match is found, it must be a new user
-//       if (result.recordset.length === 0) {
-//         info.userType = 'newUser'
-//         // console.log('about to create', info)
-//         createNormalUser(info, res)
-//       } else {
-//         info.userType = 'currentUser'
-//         // some info doesn't need to be sent to front-end
-//         delete info.userID
-//         delete info.hash
-//         // console.log('lastly current', info)
-//         res.send(info)
-//       }
-//     })
-//     .catch(err => {
-//       console.log('find google user', err)
-//     })
-// }
 
 module.exports = {
   sql: mssql,

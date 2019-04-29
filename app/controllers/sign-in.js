@@ -56,3 +56,34 @@ function signOut () {
     console.log('User signed out.')
   })
 }
+
+$(document).ready(() => {
+  $('#signInPageSignInButton').click(() => {
+    let userInfo = {
+      emailAddress: $('#inputEmail').val(),
+      password: $('#inputPassword').val()
+    }
+    // console.log('sign in info', userInfo)
+
+    $.ajax({
+      url: '/auth',
+      method: 'POST',
+      contentType: 'application/json',
+      data: JSON.stringify(userInfo),
+      success: function (response) {
+        // console.log('reg response', response)
+        let name = JSON.stringify(response.firstName + ' ' + response.lastName)
+        window.sessionStorage.setItem('Name', name)
+        window.sessionStorage.setItem('ImageURI', JSON.stringify(response.image))
+        window.sessionStorage.setItem('Email', JSON.stringify(response.emailAddress))
+        // direct to different pages based on whether the user is new or current
+        if (response.userType === 'currentUser') {
+          window.location = '/trip'
+        } else {
+          window.alert('Username or Password Incorrect.')
+          console.error('bad sign in response', response)
+        }
+      }
+    })
+  })
+})
