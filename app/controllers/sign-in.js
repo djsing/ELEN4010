@@ -59,6 +59,16 @@ function signOut () {
 
 $(document).ready(() => {
   $('#signInPageSignInButton').click(() => {
+    var isAnyFieldEmpty = false
+    $('input[class="form-control"]').each(function () {
+      if ($(this).val() === '') {
+        isAnyFieldEmpty = true
+      }
+    })
+    if (isAnyFieldEmpty) {
+      return false
+    }
+
     let userInfo = {
       emailAddress: $('#inputEmail').val(),
       password: $('#inputPassword').val()
