@@ -15,7 +15,10 @@ function signInInit () {
           url: '/google-auth',
           method: 'POST',
           contentType: 'application/json',
-          data: JSON.stringify({ idToken: googleUser.getAuthResponse().id_token }),
+          data: JSON.stringify({
+            idToken: googleUser.getAuthResponse().id_token,
+            signin: true
+          }),
           success: function (response) {
             // console.log('response', response)
             let name = JSON.stringify(response.firstName + ' ' + response.lastName)
@@ -26,7 +29,7 @@ function signInInit () {
             if (response.userType === 'currentUser') {
               window.location = '/trip'
             } else if (response.userType === 'newUser') {
-              window.location = '/trip'
+              window.alert('You have not registered with Away We Go.\nPlease register before signing in.')
             }
           }
         })

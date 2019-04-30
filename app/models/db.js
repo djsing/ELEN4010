@@ -85,7 +85,7 @@ function createUser (userInfo, res) {
     })
 }
 
-function findUser (userInfo, res) {
+function findUser (userInfo, signin, res) {
   let info = userInfo
   let hash = info.hash
   pools
@@ -114,8 +114,18 @@ function findUser (userInfo, res) {
           res.send(info)
         } else {
           info.userType = 'newUser'
-          // console.log('about to create', info)
-          createUser(info, res)
+          if (signin) {
+            delete info.emailAddress
+            delete info.password
+            delete info.hash
+            delete info.image
+            delete info.firstName
+            delete info.lastName
+            res.send(info)
+          } else {
+            // console.log('about to create', info)
+            createUser(info, res)
+          }
         }
       } else {
         info.userType = 'currentUser'

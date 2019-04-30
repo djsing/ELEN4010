@@ -4,7 +4,8 @@ let db = require('./db')
 const crypto = require('crypto')
 
 function googleUserAccountDatabaseConnection (req, res) {
-  let token = req.body.idToken
+  const token = req.body.idToken
+  const signin = req.body.signin
   const client = new OAuth2Client(keys.web.client_id)
   client.verifyIdToken({
     idToken: token,
@@ -21,15 +22,16 @@ function googleUserAccountDatabaseConnection (req, res) {
       image: imageURL
     }
     userInfo = createHashKey(userInfo, true)
-    db.findUser(userInfo, res)
+    db.findUser(userInfo, signin, res)
   })
 }
 
 function userAccountDatabaseConnection (req, res) {
   let userInfo = req.body
+  const signin = req.body.signin
   userInfo.image = null
   userInfo = createHashKey(userInfo, false)
-  db.findUser(userInfo, res)
+  db.findUser(userInfo, signin, res)
 }
 
 function createHashKey (userInfo, isGoogleUser) {
