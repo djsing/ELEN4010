@@ -5,7 +5,7 @@ let path = require('path')
 let app = express()
 let mainRouter = require('./app/routes/mainRoutes')
 require('dotenv').config()
-
+var favicon = require('serve-favicon')
 let bodyParser = require('body-parser')
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({
@@ -13,9 +13,9 @@ app.use(bodyParser.urlencoded({
 }))
 
 app.set('views', path.join(__dirname, './app/views'))
-// app.set('view engine', 'ejs')
 app.use(express.static(path.join(__dirname, './app/public')))
 app.use(express.static(path.join(__dirname, './app/controllers')))
+app.use(favicon(path.join(__dirname, './app/public/img/favicon.ico')))
 
 app.use('/', mainRouter)
 
