@@ -5,11 +5,12 @@ let markersOnMap = []
 let destinationList = []
 
 class Destination {
-  constructor (latLng, id, place) {
+  constructor (latLng, id, place, order) {
     this.latLng = latLng
     this.id = id
     this.place = place
     this.input = ''
+    this.order = order
   }
 }
 
@@ -52,7 +53,7 @@ function placeDestinationBySearch (place, marker) {
 
   let id = (new Date()).getTime()
   let placeName = place.name
-  let label = String(markersOnMap.length + 1)
+  let label = String(destinationList.length + 1)
   addMarker(place.geometry.location, id, placeName, label)
 }
 
@@ -131,7 +132,8 @@ function initMap () {
 // let saveTripTitle = function () {}
 
 let addDestination = function (latLng, id, placeName) {
-  let newDestination = new Destination(latLng, id, placeName)
+  let order = destinationList.length + 1
+  let newDestination = new Destination(latLng, id, placeName, order)
   destinationList.push(newDestination)
 
   let row = document.createElement('tr')
@@ -173,7 +175,7 @@ let renderMarkers = function () {
     let marker = new google.maps.Marker({
       position: destinationList[j].latLng,
       map: map,
-      label: String(Number(j) + 1)
+      label: String(destinationList[j].order)
     })
     markersOnMap.push(marker)
   }
@@ -181,26 +183,24 @@ let renderMarkers = function () {
 
 $('#destinationTable').sortable({
   update: function (event, ui) {
+    let id
     $('.destinationsTableRow .indexClass').each(function (i) {
-      var numbering = i + 1
+      let numbering = i + 1
       $(this).text(numbering)
+      for (let j = 0; j < destinationList.length; j++) {
+        console.log(numbering)
+        console.log(Number($(this)[0].parentNode.id))
+        console.log(destinationList[j].id)
+        if (destinationList[j].id === Number($(this)[0].parentNode.id)) {
+          destinationList[j].order = numbering
+          console.log('Match!')
+        }
+      }
     })
+    clearMarkers()
+    renderMarkers()
   }
 })
-
-// let updateIndex = function (e, ui) {
-//   $('td.index', ui.item.parent('indexClass')).each(function (i) {
-//     $(this).html(i + 1)
-//   })
-
-//   $('input[type=text]', ui.item.parent('indexClass')).each(function (i) {
-//     $(this).val(i + 1)
-//   })
-// }
-
-// $('#destinationTable').sortable({
-//   stop: updateIndex
-// })
 
 $(document).on('click', '#deleteButton', function (e) {
   let id = $(this).parents('tr')[0].id
