@@ -149,11 +149,11 @@ function findUser (userInfo, signin, res) {
     return pool.request()
       .query(`IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='destinations' and xtype='U')
           CREATE TABLE destinations (
-          destination_id int IDENTITY(1,1) PRIMARY KEY,
-          destination_name varchar(50),
-          destination_place varchar(50),
+          dest_id int IDENTITY(1,1) PRIMARY KEY,
+          dest_name varchar(50),
+          dest_place varchar(50),
           latLng varchar(255),
-          destination_date date,
+          dest_date date,
           trip_id varchar(255),
           )`)
   }).then(result => {
@@ -172,7 +172,6 @@ function createDestination (destInfo, res) {
     .then((pool) => {
       return pool.request()
         .query(`INSERT INTO destinations VALUES(
-          '${info.dest_id}',
           '${info.dest_name}',
           '${info.dest_place}',
           '${info.latLng}',
@@ -193,6 +192,18 @@ function createDestination (destInfo, res) {
       console.log('create destinations error', err)
     })
 }
+
+// function saveTrip (destList, res) {
+//   destList.forEach((dest) => {
+//     let destInfo = new Object{
+//       'dest_name',
+//       'dest_place',
+//       'latLng',
+//       'dest_date',
+//       'trip_id'
+//     }
+//   })
+// }
 
 module.exports = {
   sql: mssql,
