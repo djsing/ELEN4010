@@ -164,14 +164,14 @@ let addDestination = function (latLng, id, placeName) {
 }
 
 let clearMarkers = function () {
-  for (var i = 0; i < markersOnMap.length; i++) {
+  for (let i = 0; i < markersOnMap.length; i++) {
     markersOnMap[i].setMap(null)
   }
   markersOnMap = []
 }
 
 let renderMarkers = function () {
-  for (var j = 0; j < destinationList.length; j++) {
+  for (let j = 0; j < destinationList.length; j++) {
     let marker = new google.maps.Marker({
       position: destinationList[j].latLng,
       map: map,
@@ -188,15 +188,16 @@ $('#destinationTable').sortable({
       let numbering = i + 1
       $(this).text(numbering)
       for (let j = 0; j < destinationList.length; j++) {
-        console.log(numbering)
         console.log(Number($(this)[0].parentNode.id))
         console.log(destinationList[j].id)
         if (destinationList[j].id === Number($(this)[0].parentNode.id)) {
           destinationList[j].order = numbering
-          console.log('Match!')
+          // console.log(numbering)
+          // console.log('Match!')
         }
       }
     })
+    destinationList.sort((a, b) => (a.order > b.order) ? 1 : -1)
     clearMarkers()
     renderMarkers()
   }
@@ -205,11 +206,18 @@ $('#destinationTable').sortable({
 $(document).on('click', '#deleteButton', function (e) {
   let id = $(this).parents('tr')[0].id
   $(this).parents('tr').remove()
-  for (var i = 0; i < destinationList.length; i++) {
+  let i = destinationList.length
+  while (i--) {
     if (destinationList[i].id === Number(id)) {
       destinationList.splice(i, 1)
-      i--
     }
+  }
+  for (let j = destinationList.length - 1; j >= 0; j--) {
+    destinationList[j].order = Number(j + 1)
+    $('.destinationsTableRow .indexClass').each(function (k) {
+      let numbering = k + 1
+      $(this).text(numbering)
+    })
   }
   clearMarkers()
   renderMarkers()
