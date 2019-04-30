@@ -179,22 +179,9 @@ let renderMarkers = function () {
   }
 }
 
-// $('destinationTableBody').sortable({
-//   onDrop: function ($item, container, _super, event) {
-//     $('destinationsTable td').removeClass('dragged')
-//     $('body').removeClass('dragging')
-//     $('destinationsTable indexClass').each(function (i) {
-//       var Num = i + 1
-//       $(this).html(Num + '')
-//     })
-//   }
-// })
-
-// $('#destinationTable').sortable()
-
 $('#destinationTable').sortable({
   update: function (event, ui) {
-    $('.destinationsTableRow').each(function (i) {
+    $('.destinationsTableRow .indexClass').each(function (i) {
       var numbering = i + 1
       $(this).text(numbering)
     })
