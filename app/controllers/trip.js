@@ -232,6 +232,13 @@ $(document).on('click', '#deleteButton', function (e) {
   saveToLocal()
 })
 
+$(document).on('click', '#deleteDestinations', function () {
+  clearMarkers()
+  $('#destinationTable').empty()
+  destinationList = []
+  saveToLocal()
+})
+
 // upon page reload, this function is called
 function renderOnReload () {
   getFromLocal()
@@ -244,7 +251,7 @@ function renderOnReload () {
 
 // Thabang still working on this
 
-$('#savetrip').on('click', function () {
+$('#saveTrip').on('click', function () {
   let itinerary = {
     'destinationList': destinationList
   }

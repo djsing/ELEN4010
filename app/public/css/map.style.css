@@ -118,8 +118,16 @@ td:hover{
   padding: 25px
 }
 
-#savetrip {
+#saveTrip {
   position: absolute!important;
-  right: 56px;
+  right: 40px;
   bottom: 20px!important;
+}
+
+#deleteDestinations {
+  position: absolute!important;
+  width: 50px;
+  height: 44px;
+  right: 180px;
+  bottom: 22px!important;
 }
