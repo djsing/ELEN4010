@@ -1,8 +1,32 @@
-#map {
+.row {
+  height: 100%;
+}
+html, body, .container, #map {
   width: 100%;
   height: 100%;
-  background-color: whitesmoke;
+  max-width: none;
+  max-height: 800px;
 }
+#map {
+  position: relative;
+  width: 100%;
+  height: 92%;
+}
+
+fixed-height {
+  min-width: 100%;
+  min-height: 100%;
+  height: 100%;
+  max-width: 360px;
+  max-height: 660px;
+}
+
+/* #mainContainer {
+  min-width: 100%;
+  min-height: 100%;
+  max-width: none;
+} */
+
 /* Makes the sample page fill the window. */
 html, body {
   height: 100%;
@@ -10,7 +34,7 @@ html, body {
   padding: 0;
 }
 #description {
-  font-family: Roboto;
+  /* font-family: Roboto; */
   font-size: 15px;
   font-weight: 300;
 }
@@ -35,7 +59,7 @@ html, body {
   outline: none;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
   background-color: #fff;
-  font-family: Roboto;
+  /* font-family: Roboto; */
 }
 
 #pac-container {
@@ -49,20 +73,20 @@ html, body {
 }
 
 .pac-controls label {
-  font-family: Roboto;
+  /* font-family: Roboto; */
   font-size: 13px;
   font-weight: 300;
 }
 
 #pac-input {
   background-color: #fff;
-  font-family: Roboto;
+  /* font-family: Roboto; */
   font-size: 15px;
   font-weight: 300;
   margin-left: 12px;
-  padding: 0 11px 0 13px;
+  padding: 0 12px 0 12px;
   text-overflow: ellipsis;
-  width: 400px;
+  width: 200px;
 }
 
 #pac-input:focus {
@@ -71,8 +95,39 @@ html, body {
 
 #title {
   color: #fff;
-  background-color: #4d90fe;
-  font-size: 25px;
+  background-color: #e21d00;
+  font-size: 16px;
   font-weight: 500;
-  padding: 6px 12px;
+  padding: 6px 8px;
+  text-align: center;
+}
+h1, .h1 {
+  font-size: 12pt;
+}
+
+td:hover{
+  cursor:move;
+  }
+
+  table {
+    table-layout: fixed;
+    /* word-wrap: break-word; */
+}
+
+#tripTitle {
+  padding: 25px
+}
+
+#saveTrip {
+  position: absolute!important;
+  right: 40px;
+  bottom: 20px!important;
+}
+
+#deleteDestinations {
+  position: absolute!important;
+  width: 50px;
+  height: 44px;
+  right: 180px;
+  bottom: 22px!important;
 }

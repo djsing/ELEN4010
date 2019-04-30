@@ -5,8 +5,8 @@ $(document).ready(function () {
     window.location = '/sign-in'
   })
 
-  $('#landingPageSignUpButton').click(function () {
-
+  $('#landingPageRegisterButton').click(function () {
+    window.location = '/register'
   })
 
   $('#aboutButton').click(function () {

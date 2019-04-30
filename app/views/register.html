@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8" />
+		<title>Register</title>
+		<!-- Google API -->
+		<script src="/js/platform.js"></script>
+		<!-- Scripts -->
+		<script src="/js/jquery-3.4.0.min.js"></script>
+		<script src="register.js"></script>
+		<!-- Style Sheets -->
+		<link rel="stylesheet" href="/css/bootstrap.lux.min.css" />
+		<link rel="stylesheet" href="/css/sign-in.css" />
+		<link rel="stylesheet" href="/css/register.override.css"  />
+	</head>
+
+	<body onload="signInInit()">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-10 col-xl-9 mx-auto">
+					<div class="card card-signin bg-dark flex-row my-5">
+						<div class="card-img-left d-none d-md-flex"></div>
+						<div class="card-body">
+							<h5 class="card-title text-center">Register</h5>
+							<form class="form-signin">
+								<div class="form-label-group">
+									<input type="text" id="registerInputName" class="form-control" placeholder="Name" required autofocus>
+									<label for="registerInputName">Name</label>
+								</div>
+
+								<div class="form-label-group">
+									<input type="text" id="registerInputSurname" class="form-control" placeholder="Surname" required
+										autofocus>
+									<label for="registerInputSurname">Surname</label>
+								</div>
+
+								<div class="form-label-group">
+									<input type="email" id="registerInputEmail" class="form-control" placeholder="Email address" required>
+									<label for="registerInputEmail">Email address</label>
+								</div>
+
+								<hr>
+
+								<div class="form-label-group">
+									<input type="password" autocomplete="new-password" id="registerInputPassword" class="form-control"
+										placeholder="Password" required>
+									<label for="registerInputPassword">Password</label>
+								</div>
+
+								<div class="form-label-group">
+									<input type="password" autocomplete="new-password" id="registerInputConfirmPassword"
+										class="form-control" placeholder="Password" required>
+									<label for="registerInputConfirmPassword">Confirm password</label>
+								</div>
+
+								<button id="registerButton" class="btn btn-lg btn-primary btn-block text-uppercase"
+									type="button" disabled>Register</button>
+								<!-- <a id="registerSignInButton" class="d-block text-center mt-2 small">Sign In</a>
+								<hr class="my-4"> -->
+								<button id="googleRegisterButton" class="btn btn-lg btn-google btn-block text-uppercase"
+									type="button" disabled><i class="fab fa-google mr-2"></i>Sign up with Google</button>
+
+								<hr>
+								<div class="custom-control custom-checkbox mb-3">
+									<input type="checkbox" onchange="document.getElementById('registerButton').disabled = !this.checked;document.getElementById('googleRegisterButton').disabled = !this.checked"
+									class="custom-control-input" id="TCCheck">
+									<label class="custom-control-label" for="TCCheck">Accept the <a type="button" id="TCLink"> Terms and Conditions </a></label>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+
+</html>

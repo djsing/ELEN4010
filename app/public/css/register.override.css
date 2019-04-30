@@ -1,0 +1,20 @@
+body {
+  padding: 5rem 0!important;
+}
+
+#checkbox {
+  border: 2px;
+  border-color: #000;
+  background-color: #e0e0e0;
+}
+#TCLink {
+  /* background-color: #343a40!important; */
+  font-weight: 600;
+  color: #000;
+  padding: 3px 3px 3px 3px;
+}
+
+#TCLink:hover {
+  font-weight: 800;
+  color: #ea4335;
+}

@@ -1,7 +1,24 @@
 #aboutButton:hover {
     cursor:pointer;
-   }
+}
 
 .nav-item:hover{
     cursor:pointer;
+}
+ul.nav li.nav { 
+  list-style:none;
+  margin:10px;
+  float: left; 
+}
+
+ul.nav li:nth-child(5) a {
+  float: right;
+  }
+
+#emailTag .small {
+  font-size:smaller;
+}
+
+.dropdown-menu {
+  left: -50px;
 }

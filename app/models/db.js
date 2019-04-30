@@ -1,3 +1,5 @@
+'use strict'
+
 const mssql = require('mssql')
 require('dotenv').config() // grab the ENV variables
 let config = {
@@ -30,11 +32,198 @@ let pools = new mssql.ConnectionPool(config)
     // Handle errors
     isConnected = false
     connectionError = err
-    console.log(err)
+    console.log('connection error', err)
+  });
+// Upon connection, create user table if it doesn't exist
+(function createUserTable () {
+  pools.then((pool) => {
+    return pool.request()
+      // This is only a test query, change it to whatever you need
+      .query(`IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='users' and xtype='U')
+          CREATE TABLE users (
+          user_id int IDENTITY(1,1) PRIMARY KEY,
+          first_name varchar(50),
+          last_name varchar(50),
+          email_address varchar(50) NOT NULL,
+          image_url varchar(255),
+          hash varchar(255) NOT NULL
+          )`)
+  }).then(result => {
+    // console.log('user table created', result)
+  }).catch(err => {
+    console.log('user table creation error', err)
   })
+}
+)()
+
+function createUser (userInfo, res) {
+  let info = userInfo
+  // console.log('create', info)
+  pools
+    // Run query
+    .then((pool) => {
+      return pool.request()
+        .query(`INSERT INTO users VALUES(
+          '${info.firstName}',
+          '${info.lastName}',
+          '${info.emailAddress}',
+          ${info.image},
+          '${info.hash}')`)
+    })
+    // Send back the result
+    .then(result => {
+      // console.log('create users', result)
+      // some info doesn't need to be sent to front-end
+      delete info.userID
+      delete info.hash
+      // console.log('lastly new', info)
+      res.send(info)
+    })
+    // If there's an error, return that with some description
+    .catch(err => {
+      console.log('create users error', err)
+    })
+}
+
+function findUser (userInfo, signin, res) {
+  let info = userInfo
+  let email = info.emailAddress
+  pools
+    // Run query
+    .then((pool) => {
+      return pool.request()
+        .query(`SELECT *
+        FROM users
+        WHERE email_address = '${email}'`)
+    })
+    // both ID/Email match sought after in case of possible duplication of either ID/Email
+    .then(result => {
+      // console.log('query result', result)
+      // if no match is found, it must be a new user
+      if (result.recordset.length === 0) {
+        info.userType = 'newUser'
+        // if user doesn't exist and tries to sign in
+        if (signin) {
+          delete info.emailAddress
+          delete info.password
+          delete info.hash
+          delete info.image
+          delete info.firstName
+          delete info.lastName
+          res.send(info)
+        } else {
+          createUser(info, res)
+        }
+      } else {
+        info.userType = 'currentUser'
+        // console.log('changed to current')
+        // account that does exist and is trying to register
+        if (!signin) {
+          // console.log('trying to register')
+          delete info.emailAddress
+          delete info.password
+          delete info.hash
+          delete info.image
+          delete info.firstName
+          delete info.lastName
+          res.send(info)
+        } else if (result.recordset[0].hash === info.hash) {
+          // account that exists and is trying to sign in with the correct password
+          // console.log('correct sign in')
+          info.firstName = result.recordset[0].first_name
+          info.lastName = result.recordset[0].last_name
+          info.emailAddress = result.recordset[0].email_address
+          // some info doesn't need to be sent to front-end
+          delete info.userID
+          delete info.hash
+          // console.log('lastly current', info)
+          res.send(info)
+        } else {
+          // account that exists and is trying to sign in with the wrong password
+          // console.log('incorrect sign in')
+          info.userType = 'incorrectUser'
+          // some info doesn't need to be sent to front-end
+          delete info.emailAddress
+          delete info.password
+          delete info.hash
+          delete info.image
+          res.send(info)
+        }
+      }
+    })
+    .catch(err => {
+      console.log('find user error', err)
+    })
+}
+
+(function createDestinationTable () {
+  pools.then((pool) => {
+    return pool.request()
+      .query(`IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='destinations' and xtype='U')
+          CREATE TABLE destinations (
+          dest_id int IDENTITY(1,1) PRIMARY KEY,
+          dest_name varchar(50),
+          dest_place varchar(50),
+          latLng varchar(255),
+          dest_date date,
+          trip_id varchar(255),
+          )`)
+  }).then(result => {
+    console.log('destinations table created', result)
+  }).catch(err => {
+    console.log('destinations table creation error', err)
+  })
+}
+)()
+
+function createDestination (destInfo, res) {
+  let info = destInfo
+  // console.log('create', info)
+  pools
+    // Run query
+    .then((pool) => {
+      return pool.request()
+        .query(`INSERT INTO destinations VALUES(
+          '${info.dest_name}',
+          '${info.dest_place}',
+          '${info.latLng}',
+          '${info.dest_date}',
+          '${info.trip_id}')`)
+    })
+    // Send back the result
+    .then(result => {
+      // console.log('create destinations', result)
+      // // some info doesn't need to be sent to front-end
+      // delete info.dest_id
+      // delete info.trip_id
+      // // console.log('lastly new', info)
+      // res.send(info)
+    })
+    // If there's an error, return that with some description
+    .catch(err => {
+      console.log('create destinations error', err)
+    })
+}
+
+function saveTrip (destList, res) {
+  destList.forEach((dest) => {
+    let destInfo = {
+      dest_name: dest.input,
+      dest_place: dest.place,
+      latLng: dest.latLng,
+      dest_date: '2008-11-11',
+      trip_id: ''
+    }
+    createDestination(destInfo, res)
+    // console.log(destInfo.la)
+  })
+}
+
 module.exports = {
   sql: mssql,
   pools: pools,
   isConnected: isConnected,
-  connectionError: connectionError
+  connectionError: connectionError,
+  findUser: findUser,
+  saveTrip: saveTrip
 }
