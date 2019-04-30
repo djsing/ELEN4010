@@ -8,5 +8,5 @@ deploy:
   on: master
 - provider: script
   verbose: true
-  script: git fetch --unshallow && git push -f https://$AZURE_WA_USERNAME:$AZURE_WA_PASSWORD@testawaywego.scm.azurewebsites.net:443/testawaywego.git HEAD:refs/heads/development
+  script: git fetch --unshallow && git push https://$AZURE_WA_USERNAME:$AZURE_WA_PASSWORD@testawaywego.scm.azurewebsites.net:443/testawaywego.git HEAD:refs/heads/development
   on: development
