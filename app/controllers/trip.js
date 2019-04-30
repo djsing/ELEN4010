@@ -244,12 +244,13 @@ $(document).on('click', '#deleteDestinations', function () {
 
 // upon page reload, this function is called
 function renderOnReload () {
-  getFromLocal()
-  console.log(destinationList)
-  for (let i = 0; i < destinationList.length; i++) {
-    drawDestination(destinationList[i])
+  if (localStorage.getItem('destinations') !== null) {
+    getFromLocal()
+    for (let i = 0; i < destinationList.length; i++) {
+      drawDestination(destinationList[i])
+    }
+    renderMarkers()
   }
-  renderMarkers()
 }
 
 // Thabang still working on this
