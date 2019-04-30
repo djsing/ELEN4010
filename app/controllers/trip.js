@@ -143,6 +143,7 @@ let addDestination = function (latLng, id, placeName) {
   let destNum = document.createElement('td')
   destNum.innerHTML = String(destinationList.length)
   destNum.classList.add('indexClass')
+  destNum.setAttribute('style', 'width: 10%')
   row.appendChild(destNum)
   let destPlace = document.createElement('td')
   destPlace.innerHTML = placeName
@@ -150,13 +151,15 @@ let addDestination = function (latLng, id, placeName) {
   row.appendChild(destPlace)
 
   let deleteButtonCell = document.createElement('td')
-  let deleteButton = document.createElement('input')
+  let deleteButton = document.createElement('i')
   deleteButton.type = 'button'
-  deleteButton.value = 'x'
+  deleteButton.value = ''
   deleteButton.id = 'deleteButton'
-  deleteButton.className = 'btn-xs'
-  deleteButton.classList.add('mini')
-  deleteButton.classList.add('red-stripe')
+  deleteButton.className = 'fas'
+  deleteButton.classList.add('fa-trash-alt')
+  // deleteButton.className = 'btn-xs'
+  // deleteButton.classList.add('mini')
+  // deleteButton.classList.add('red-stripe')
   deleteButtonCell.appendChild(deleteButton)
 
   row.appendChild(deleteButtonCell)
@@ -188,8 +191,8 @@ $('#destinationTable').sortable({
       let numbering = i + 1
       $(this).text(numbering)
       for (let j = 0; j < destinationList.length; j++) {
-        console.log(Number($(this)[0].parentNode.id))
-        console.log(destinationList[j].id)
+        // console.log(Number($(this)[0].parentNode.id))
+        // console.log(destinationList[j].id)
         if (destinationList[j].id === Number($(this)[0].parentNode.id)) {
           destinationList[j].order = numbering
           // console.log(numbering)

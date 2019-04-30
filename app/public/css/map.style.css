@@ -86,6 +86,22 @@ html, body {
 h1, .h1 {
   font-size: 12pt;
 }
+
 td:hover{
   cursor:move;
   }
+
+  table {
+    table-layout: fixed;
+    /* word-wrap: break-word; */
+}
+
+#tripTitle {
+  padding: 25px
+}
+
+#savetrip {
+  position: absolute!important;
+  right: 56px;
+  bottom: 80px!important;
+}

@@ -9,6 +9,8 @@
     <script src="/js/jquery-ui-1.12.1.js"></script>
     <script src='info.js'></script>
     <script defer src='trip.js'></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.8.1/js/all.js" integrity="sha384-g5uSoOSBd7KkhAMlnQILrecXvzst9TdC09/VM+pjDTCM+1il8RHz5fKANTFFb+gQ" crossorigin="anonymous"></script>
+
 
     <link rel="stylesheet" href="/css/bootstrap.lux.min.css" />
     <link rel="stylesheet" href="/css/general.css" />
@@ -72,15 +74,31 @@
         <div class="row">
             <div class="col-sm-9" id="map"></div>
             <div class="col-sm-3"  id="destination">
+                <div class="input-group mb-1">
+                    <!-- Small input -->
+                  <div class="md-form form-sm">
+                      <label >Trip Itinerary</label>
+                      <input type="text" class="form-control" id="formGroupExampleInput" placeholder="New Trip...">                      
+                    </div> 
+                    <div class="input-group-append">
+                      <!-- <button class="btn btn-outline-secondary" type="button" fa-trash-alt">Save</button> -->
+                    </div>
+                  </div>
                 <table class="table table-striped table-hover" id="destinationTable">
-                    <thead>
-                      <th><h1 id='heading'>Trip Itinerary</h1></th>
-                    </thead>
+                    <!-- <thead> -->
+                    <!-- </thead> -->
                     <tbody id='destinationsTableBody'>
                     </tbody>
                 </table>
+                <footer class="footer">
+                    <div class="container">
+                      <!-- <span class="text-muted"> -->
+                          <button type="button" class="btn btn-md btn-primary" id='savetrip'>Save Trip</button>
+                      <!-- </span> -->
+                    </div>
+                  </footer>
             </div>
-        </div>
+            </div>
       </div>
 
     <script src="/js/bootstrap.bundle.min.js"></script>
