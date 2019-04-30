@@ -147,7 +147,7 @@ function findUser (userInfo, signin, res) {
 (function createDestinationTable () {
   pools.then((pool) => {
     return pool.request()
-      .query(`IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='destinations' and xtype='TT')
+      .query(`IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='destinations' and xtype='U')
           CREATE TABLE destinations (
           destination_id int IDENTITY(1,1) PRIMARY KEY,
           destination_name varchar(50),
@@ -163,6 +163,36 @@ function findUser (userInfo, signin, res) {
   })
 }
 )()
+
+// function createDestination (destInfo, res) {
+//   let info = destInfo
+//   // console.log('create', info)
+//   pools
+//     // Run query
+//     .then((pool) => {
+//       return pool.request()
+//         .query(`INSERT INTO destinations VALUES(
+//           '${info.dest_id}',
+//           '${info.dest_name}',
+//           '${info.dest_place}',
+//           '${info.latLng}',
+//           '${info.dest_date}',
+//           '${info.trip_id}')`)
+//     })
+//     // Send back the result
+//     .then(result => {
+//       console.log('create destinations', result)
+//       // some info doesn't need to be sent to front-end
+//       delete info.dest_id
+//       delete info.trip_id
+//       // console.log('lastly new', info)
+//       res.send(info)
+//     })
+//     // If there's an error, return that with some description
+//     .catch(err => {
+//       console.log('create destinations error', err)
+//     })
+// }
 
 module.exports = {
   sql: mssql,
