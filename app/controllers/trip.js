@@ -192,23 +192,26 @@ let renderMarkers = function () {
   }
 }
 
-$('#destinationTable').sortable({
-  update: function (event, ui) {
-    let id
-    $('.destinationsTableRow .indexClass').each(function (i) {
-      let numbering = i + 1
-      $(this).text(numbering)
-      for (let j = 0; j < destinationList.length; j++) {
-        if (destinationList[j].id === Number($(this)[0].parentNode.id)) {
-          destinationList[j].order = numbering
+$(document).ready(function () {
+  $('#destinationTable').sortable({
+    scroll: true,
+    update: function (event, ui) {
+      let id
+      $('.destinationsTableRow .indexClass').each(function (i) {
+        let numbering = i + 1
+        $(this).text(numbering)
+        for (let j = 0; j < destinationList.length; j++) {
+          if (destinationList[j].id === Number($(this)[0].parentNode.id)) {
+            destinationList[j].order = numbering
+          }
         }
-      }
-    })
-    destinationList.sort((a, b) => (a.order > b.order) ? 1 : -1)
-    clearMarkers()
-    renderMarkers()
-    saveToLocal()
-  }
+      })
+      destinationList.sort((a, b) => (a.order > b.order) ? 1 : -1)
+      clearMarkers()
+      renderMarkers()
+      saveToLocal()
+    }
+  })
 })
 
 $(document).on('click', '#deleteButton', function (e) {
