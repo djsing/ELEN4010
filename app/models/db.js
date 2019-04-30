@@ -165,7 +165,7 @@ function findUser (userInfo, signin, res) {
           dest_name varchar(50),
           dest_place varchar(50),
           latLng varchar(255),
-          -- dest_date date,
+          dest_date date,
           trip_id varchar(255),
           )`)
   }).then(result => {
@@ -192,12 +192,12 @@ function createDestination (destInfo, res) {
     })
     // Send back the result
     .then(result => {
-      console.log('create destinations', result)
-      // some info doesn't need to be sent to front-end
-      delete info.dest_id
-      delete info.trip_id
-      // console.log('lastly new', info)
-      res.send(info)
+      // console.log('create destinations', result)
+      // // some info doesn't need to be sent to front-end
+      // delete info.dest_id
+      // delete info.trip_id
+      // // console.log('lastly new', info)
+      // res.send(info)
     })
     // If there's an error, return that with some description
     .catch(err => {
@@ -208,11 +208,11 @@ function createDestination (destInfo, res) {
 function saveTrip (destList, res) {
   destList.forEach((dest) => {
     let destInfo = {
-      'dest_name': dest.input,
-      'dest_place': dest.place,
-      'latLng': dest.latLng,
-      // 'dest_date': null,
-      'trip_id': ''
+      dest_name: dest.input,
+      dest_place: dest.place,
+      latLng: dest.latLng,
+      dest_date: '2008-11-11',
+      trip_id: ''
     }
     createDestination(destInfo, res)
   })
