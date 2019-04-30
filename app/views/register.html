@@ -55,15 +55,16 @@
 								</div>
 
 								<button id="registerButton" class="btn btn-lg btn-primary btn-block text-uppercase"
-									type="button">Register</button>
+									type="button" disabled>Register</button>
 								<!-- <a id="registerSignInButton" class="d-block text-center mt-2 small">Sign In</a>
 								<hr class="my-4"> -->
 								<button id="googleRegisterButton" class="btn btn-lg btn-google btn-block text-uppercase"
-									type="button"><i class="fab fa-google mr-2"></i>Sign up with Google</button>
+									type="button" disabled><i class="fab fa-google mr-2"></i>Sign up with Google</button>
 
 								<hr>
 								<div class="custom-control custom-checkbox mb-3">
-									<input type="checkbox" class="custom-control-input" id="TCCheck">
+									<input type="checkbox" onchange="document.getElementById('registerButton').disabled = !this.checked;document.getElementById('googleRegisterButton').disabled = !this.checked"
+									class="custom-control-input" id="TCCheck">
 									<label class="custom-control-label" for="TCCheck">Accept the <a type="button" id="TCLink"> Terms and Conditions </a></label>
 								</div>
 							</form>
