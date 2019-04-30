@@ -55,13 +55,6 @@ function signInInit () {
   })
 }
 
-function signOut () {
-  let authInstance = gapi.auth2.getAuthInstance()
-  authInstance.signOut().then(function () {
-    console.log('User signed out.')
-  })
-}
-
 $(document).ready(() => {
   $('#registerSignInButton').click(() => {
     window.location = '/sign-in'
