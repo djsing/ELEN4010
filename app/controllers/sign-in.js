@@ -49,7 +49,19 @@ function signInInit () {
       console.log('GoogleAuth object failed to initialise.')
     }
 
-    auth2.then(onInit, onError)
+    if (window.location.pathname === '/sign-in') {
+      auth2.then(onInit, onError)
+    }
+  })
+
+  $(document).ready(() => {
+    $('#signOutButton').click(() => {
+      let authInstance = gapi.auth2.getAuthInstance()
+      authInstance.signOut().then(function () {
+        console.log('User signed out.')
+        window.location = '/'
+      })
+    })
   })
 }
 
