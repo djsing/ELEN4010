@@ -27,7 +27,7 @@ function signInInit () {
             window.sessionStorage.setItem('Email', JSON.stringify(response.emailAddress))
             // direct to different pages based on whether the user is new or current
             if (response.userType === 'currentUser') {
-              window.location = '/trip'
+              window.alert('An account with this email address already exists.\nPlease Sign-in.')
             } else if (response.userType === 'newUser') {
               window.location = '/trip'
             } else {
@@ -71,6 +71,7 @@ $(document).ready(() => {
 
   $('#registerButton').click(() => {
     if ($('#registerInputPassword').val() !== $('#registerInputConfirmPassword').val()) {
+      window.alert('The passwords do not match.')
       return false
     }
     var isAnyFieldEmpty = false
@@ -91,7 +92,8 @@ $(document).ready(() => {
       firstName: $('#registerInputName').val(),
       lastName: $('#registerInputSurname').val(),
       emailAddress: $('#registerInputEmail').val(),
-      password: $('#registerInputPassword').val()
+      password: $('#registerInputPassword').val(),
+      signin: false
     }
     // console.log('user info', userInfo)
 
@@ -108,11 +110,11 @@ $(document).ready(() => {
         window.sessionStorage.setItem('Email', JSON.stringify(response.emailAddress))
         // direct to different pages based on whether the user is new or current
         if (response.userType === 'currentUser') {
-          window.location = '/trip'
+          window.alert('An account with this email address already exists.\nPlease Sign-in.')
         } else if (response.userType === 'newUser') {
           window.location = '/trip'
         } else {
-          console.error('bad response', response)
+          console.error('bad google response', response)
         }
       }
     })
