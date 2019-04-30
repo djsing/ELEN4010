@@ -12,13 +12,14 @@
 		<!-- Style Sheets -->
 		<link rel="stylesheet" href="/css/bootstrap.lux.min.css" />
 		<link rel="stylesheet" href="/css/sign-in.css" />
+		<link rel="stylesheet" href="/css/register.override.css"  />
 	</head>
 
 	<body onload="signInInit()">
 		<div class="container">
 			<div class="row">
 				<div class="col-lg-10 col-xl-9 mx-auto">
-					<div class="card card-signin flex-row my-5">
+					<div class="card card-signin bg-dark flex-row my-5">
 						<div class="card-img-left d-none d-md-flex"></div>
 						<div class="card-body">
 							<h5 class="card-title text-center">Register</h5>
@@ -54,16 +55,17 @@
 								</div>
 
 								<button id="registerButton" class="btn btn-lg btn-primary btn-block text-uppercase"
-									type="button">Register</button>
-								<a id="registerSignInButton" class="d-block text-center mt-2 small">Sign In</a>
-								<hr class="my-4">
+									type="button" disabled>Register</button>
+								<!-- <a id="registerSignInButton" class="d-block text-center mt-2 small">Sign In</a>
+								<hr class="my-4"> -->
 								<button id="googleRegisterButton" class="btn btn-lg btn-google btn-block text-uppercase"
-									type="button"><i class="fab fa-google mr-2"></i>Sign up with Google</button>
+									type="button" disabled><i class="fab fa-google mr-2"></i>Sign up with Google</button>
 
 								<hr>
 								<div class="custom-control custom-checkbox mb-3">
-									<input type="checkbox" class="custom-control-input" id="TCCheck">
-									<label class="custom-control-label" for="TCCheck">Accept the <a type="button" id="TCLink">Terms and Conditions</a>.</label>
+									<input type="checkbox" onchange="document.getElementById('registerButton').disabled = !this.checked;document.getElementById('googleRegisterButton').disabled = !this.checked"
+									class="custom-control-input" id="TCCheck">
+									<label class="custom-control-label" for="TCCheck">Accept the <a type="button" id="TCLink"> Terms and Conditions </a></label>
 								</div>
 							</form>
 						</div>

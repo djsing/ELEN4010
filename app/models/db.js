@@ -32,7 +32,7 @@ let pools = new mssql.ConnectionPool(config)
     // Handle errors
     isConnected = false
     connectionError = err
-    console.log(err)
+    console.log('connection error', err)
   });
 // Upon connection, create user table if it doesn't exist
 (function createUserTable () {
@@ -44,12 +44,12 @@ let pools = new mssql.ConnectionPool(config)
           user_id int IDENTITY(1,1) PRIMARY KEY,
           first_name varchar(50),
           last_name varchar(50),
-          email_address varchar(50),
+          email_address varchar(50) NOT NULL,
           image_url varchar(255),
-          hash varchar(255)
+          hash varchar(255) NOT NULL
           )`)
   }).then(result => {
-    console.log('user table created', result)
+    // console.log('user table created', result)
   }).catch(err => {
     console.log('user table creation error', err)
   })
@@ -72,7 +72,7 @@ function createUser (userInfo, res) {
     })
     // Send back the result
     .then(result => {
-      console.log('create users', result)
+      // console.log('create users', result)
       // some info doesn't need to be sent to front-end
       delete info.userID
       delete info.hash
@@ -87,60 +87,72 @@ function createUser (userInfo, res) {
 
 function findUser (userInfo, signin, res) {
   let info = userInfo
-  let hash = info.hash
+  let email = info.emailAddress
   pools
     // Run query
     .then((pool) => {
       return pool.request()
         .query(`SELECT *
         FROM users
-        WHERE hash = '${hash}'`)
+        WHERE email_address = '${email}'`)
     })
     // both ID/Email match sought after in case of possible duplication of either ID/Email
     .then(result => {
       // console.log('query result', result)
       // if no match is found, it must be a new user
       if (result.recordset.length === 0) {
-        // console.log('length', Object.keys(info))
-        if (Object.keys(info).length === 4) {
-          // Only sign-in requests have 4 objects: email/password/image/hash
+        info.userType = 'newUser'
+        // if user doesn't exist and tries to sign in
+        if (signin) {
+          delete info.emailAddress
+          delete info.password
+          delete info.hash
+          delete info.image
+          delete info.firstName
+          delete info.lastName
+          res.send(info)
+        } else {
+          createUser(info, res)
+        }
+      } else {
+        info.userType = 'currentUser'
+        // console.log('changed to current')
+        // account that does exist and is trying to register
+        if (!signin) {
+          // console.log('trying to register')
+          delete info.emailAddress
+          delete info.password
+          delete info.hash
+          delete info.image
+          delete info.firstName
+          delete info.lastName
+          res.send(info)
+        } else if (result.recordset[0].hash === info.hash) {
+          // account that exists and is trying to sign in with the correct password
+          // console.log('correct sign in')
+          info.firstName = result.recordset[0].first_name
+          info.lastName = result.recordset[0].last_name
+          info.emailAddress = result.recordset[0].email_address
+          // some info doesn't need to be sent to front-end
+          delete info.userID
+          delete info.hash
+          // console.log('lastly current', info)
+          res.send(info)
+        } else {
+          // account that exists and is trying to sign in with the wrong password
+          // console.log('incorrect sign in')
           info.userType = 'incorrectUser'
           // some info doesn't need to be sent to front-end
           delete info.emailAddress
           delete info.password
           delete info.hash
           delete info.image
-          // console.log('lastly incorrect user', info)
           res.send(info)
-        } else {
-          info.userType = 'newUser'
-          if (signin) {
-            delete info.emailAddress
-            delete info.password
-            delete info.hash
-            delete info.image
-            delete info.firstName
-            delete info.lastName
-            res.send(info)
-          } else {
-            // console.log('about to create', info)
-            createUser(info, res)
-          }
         }
-      } else {
-        info.userType = 'currentUser'
-        info.firstName = result.recordset[0].first_name
-        info.lastName = result.recordset[0].last_name
-        info.emailAddress = result.recordset[0].email_address
-        // some info doesn't need to be sent to front-end
-        delete info.userID
-        delete info.hash
-        // console.log('lastly current', info)
-        res.send(info)
       }
     })
     .catch(err => {
-      console.log('find user', err)
+      console.log('find user error', err)
     })
 }
 
