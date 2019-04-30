@@ -15,7 +15,10 @@ function signInInit () {
           url: '/google-auth',
           method: 'POST',
           contentType: 'application/json',
-          data: JSON.stringify({ idToken: googleUser.getAuthResponse().id_token }),
+          data: JSON.stringify({
+            idToken: googleUser.getAuthResponse().id_token,
+            signin: false
+          }),
           success: function (response) {
             // console.log('response', response)
             let name = JSON.stringify(response.firstName + ' ' + response.lastName)
@@ -26,7 +29,7 @@ function signInInit () {
             if (response.userType === 'currentUser') {
               window.location = '/trip'
             } else if (response.userType === 'newUser') {
-              window.location = '/terms_and_conditions'
+              window.location = '/trip'
             } else {
               console.error('bad google response', response)
             }
@@ -64,9 +67,23 @@ $(document).ready(() => {
     window.location = '/sign-in'
   })
 
+  $('#TCLink').click(() => { window.open('/terms_and_conditions') })
+
   $('#registerButton').click(() => {
-    if ($('#registerInputPassword').val !== $('#registerInputConfirmPassword').val) {
-      return
+    if ($('#registerInputPassword').val() !== $('#registerInputConfirmPassword').val()) {
+      return false
+    }
+    var isAnyFieldEmpty = false
+    $('input[class="form-control"]').each(function () {
+      if ($(this).val() === '') {
+        isAnyFieldEmpty = true
+      }
+    })
+    if (isAnyFieldEmpty) {
+      return false
+    }
+    if (!$('#TCCheck').prop('checked')) {
+      return false
     }
 
     let userInfo = {
@@ -92,7 +109,7 @@ $(document).ready(() => {
         if (response.userType === 'currentUser') {
           window.location = '/trip'
         } else if (response.userType === 'newUser') {
-          window.location = '/terms_and_conditions'
+          window.location = '/trip'
         } else {
           console.error('bad response', response)
         }

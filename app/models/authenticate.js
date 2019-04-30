@@ -4,7 +4,8 @@ let db = require('./db')
 const crypto = require('crypto')
 
 function googleUserAccountDatabaseConnection (req, res) {
-  let token = req.body.idToken
+  const token = req.body.idToken
+  const signin = req.body.signin
   const client = new OAuth2Client(keys.web.client_id)
   client.verifyIdToken({
     idToken: token,
@@ -12,23 +13,25 @@ function googleUserAccountDatabaseConnection (req, res) {
   }).then(result => {
     const payload = result.getPayload()
     const userid = payload['sub']
+    const imageURL = '\'' + payload['picture'] + '\''
     var userInfo = {
       userID: userid,
       firstName: payload['given_name'],
       lastName: payload['family_name'],
       emailAddress: payload['email'],
-      image: payload['picture']
+      image: imageURL
     }
     userInfo = createHashKey(userInfo, true)
-    db.findUser(userInfo, res)
+    db.findUser(userInfo, signin, res)
   })
 }
 
 function userAccountDatabaseConnection (req, res) {
   let userInfo = req.body
+  const signin = req.body.signin
   userInfo.image = null
   userInfo = createHashKey(userInfo, false)
-  db.findUser(userInfo, res)
+  db.findUser(userInfo, signin, res)
 }
 
 function createHashKey (userInfo, isGoogleUser) {
