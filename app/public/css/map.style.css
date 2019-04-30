@@ -3,12 +3,30 @@
 }
 html, body, .container, #map {
   width: 100%;
-  height: 92%;
+  height: 100%;
   max-width: none;
+  max-height: 800px;
 }
 #map {
   position: relative;
+  width: 100%;
+  height: 92%;
 }
+
+fixed-height {
+  min-width: 100%;
+  min-height: 100%;
+  height: 100%;
+  max-width: 360px;
+  max-height: 660px;
+}
+
+/* #mainContainer {
+  min-width: 100%;
+  min-height: 100%;
+  max-width: none;
+} */
+
 /* Makes the sample page fill the window. */
 html, body {
   height: 100%;
@@ -85,4 +103,31 @@ html, body {
 }
 h1, .h1 {
   font-size: 12pt;
+}
+
+td:hover{
+  cursor:move;
+  }
+
+  table {
+    table-layout: fixed;
+    /* word-wrap: break-word; */
+}
+
+#tripTitle {
+  padding: 25px
+}
+
+#saveTrip {
+  position: absolute!important;
+  right: 40px;
+  bottom: 20px!important;
+}
+
+#deleteDestinations {
+  position: absolute!important;
+  width: 50px;
+  height: 44px;
+  right: 180px;
+  bottom: 22px!important;
 }

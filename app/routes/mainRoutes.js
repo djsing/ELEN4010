@@ -12,6 +12,7 @@ app.use(bodyParser.urlencoded({
 
 let authenticate = require('../models/authenticate')
 let termsModel = require('../models/termsAndConditionsModel')
+let tripManagerModel = require('../models/tripManagerModel')
 let tripModel = require('../models/tripModel')
 
 mainRouter.get('/', function (req, res) {
@@ -24,6 +25,10 @@ mainRouter.get('/terms_and_conditions', function (req, res) {
 
 mainRouter.get('/terms_and_conditions/data', function (req, res) {
   res.send(termsModel.getTermsAndCondtions())
+})
+
+mainRouter.get('/test', function (req, res) {
+  res.sendFile('test.html', { root: req.app.get('views') })
 })
 
 mainRouter.get('/profile', function (req, res) {
@@ -54,21 +59,35 @@ mainRouter.get(['/trip-manager', '/trips'], function (req, res) {
   res.sendFile('/trip-manager.html', { root: req.app.get('views') })
 })
 
+mainRouter.post('/trip/data', function (req, res) {
+  res.sendStatus(200)
+  tripModel.storeItinerary(req.body.destinationList, res)
+})
+
+mainRouter.get('/trip/data', function (req, res) {
+  res.send(tripModel.getIntinerary())
+})
+
+mainRouter.delete('/trip/data', function (req, res) {
+  tripModel.deleteDestination(req.body.destInput, req.body.destName)
+  res.sendStatus(200)
+})
+
 mainRouter.get(['/trip-manager/data', '/trips/data'], function (req, res) {
-  res.send(tripModel.getTripTitles())
+  res.send(tripManagerModel.getTripTitles())
 })
 
 mainRouter.post(['/trip-manager/data', '/trips/data'], function (req, res) {
-  tripModel.saveTripTitle(req.body.tripTitle)
-  res.send(tripModel.getTripTitles())
+  tripManagerModel.saveTripTitle(req.body.tripTitle)
+  res.send(tripManagerModel.getTripTitles())
 })
 
 mainRouter.delete(['/trip-manager/data', '/trips/data'], function (req, res) {
-  tripModel.removeTrip(req.body.tripTitle)
+  tripManagerModel.removeTrip(req.body.tripTitle)
 })
 
 mainRouter.put(['/trip-manager/data', '/trips/data'], function (req, res) {
-  tripModel.updateTrip(req.body.oldTripTitle, req.body.newTripTitle)
+  tripManagerModel.updateTrip(req.body.oldTripTitle, req.body.newTripTitle)
 })
 
 mainRouter.post('/google-auth', (req, res) => {
