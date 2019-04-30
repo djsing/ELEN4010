@@ -44,9 +44,9 @@ let pools = new mssql.ConnectionPool(config)
           user_id int IDENTITY(1,1) PRIMARY KEY,
           first_name varchar(50),
           last_name varchar(50),
-          email_address varchar(50),
+          email_address varchar(50) NOT NULL,
           image_url varchar(255),
-          hash varchar(255)
+          hash varchar(255) NOT NULL
           )`)
   }).then(result => {
     // console.log('user table created', result)
