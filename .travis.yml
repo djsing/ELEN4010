@@ -4,5 +4,5 @@ node_js:
 deploy:
 - provider: script
   verbose: true
-  script: git fetch --unshallow && git push https://$AZURE_WA_USERNAME:$AZURE_WA_PASSWORD@awaywego.scm.azurewebsites.net:443/awaywego.git HEAD:master
+  script: git fetch --unshallow && git push -f https://$AZURE_WA_USERNAME:$AZURE_WA_PASSWORD@awaywego.scm.azurewebsites.net:443/awaywego.git HEAD:refs/heads/master
   on: master
