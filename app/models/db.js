@@ -215,6 +215,7 @@ function saveTrip (destList, res) {
       trip_id: ''
     }
     createDestination(destInfo, res)
+    // console.log(destInfo.la)
   })
 }
 
