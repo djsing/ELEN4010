@@ -3,12 +3,30 @@
 }
 html, body, .container, #map {
   width: 100%;
-  height: 92%;
+  height: 100%;
   max-width: none;
+  max-height: 800px;
 }
 #map {
   position: relative;
+  width: 100%;
+  height: 92%;
 }
+
+fixed-height {
+  min-width: 100%;
+  min-height: 100%;
+  height: 100%;
+  max-width: 360px;
+  max-height: 660px;
+}
+
+/* #mainContainer {
+  min-width: 100%;
+  min-height: 100%;
+  max-width: none;
+} */
+
 /* Makes the sample page fill the window. */
 html, body {
   height: 100%;
@@ -103,5 +121,5 @@ td:hover{
 #savetrip {
   position: absolute!important;
   right: 56px;
-  bottom: 80px!important;
+  bottom: 20px!important;
 }

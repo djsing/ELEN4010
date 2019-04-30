@@ -13,6 +13,13 @@ class Destination {
     this.order = order
   }
 }
+function saveToLocal () {
+  localStorage.setItem('destinations', JSON.stringify(destinationList))
+}
+
+function getFromLocal () {
+  destinationList = JSON.parse(localStorage.getItem('destinations'))
+}
 
 function addMarker (latLng, id, placeName, label) {
   let marker = new google.maps.Marker({
@@ -22,6 +29,7 @@ function addMarker (latLng, id, placeName, label) {
   })
   markersOnMap.push(marker)
   addDestination(latLng, id, placeName)
+  drawDestination(destinationList[destinationList.length - 1])
 }
 
 function placeDestinationBySearch (place, marker) {
@@ -135,19 +143,22 @@ let addDestination = function (latLng, id, placeName) {
   let order = destinationList.length + 1
   let newDestination = new Destination(latLng, id, placeName, order)
   destinationList.push(newDestination)
+  saveToLocal()
+}
 
+let drawDestination = function (dest) {
   let row = document.createElement('tr')
-  row.id = id
+  row.id = dest.id
   row.className = 'destinationsTableRow'
 
   let destNum = document.createElement('td')
-  destNum.innerHTML = String(destinationList.length)
+  destNum.innerHTML = String(dest.order)
   destNum.classList.add('indexClass')
   destNum.setAttribute('style', 'width: 10%')
   row.appendChild(destNum)
+
   let destPlace = document.createElement('td')
-  destPlace.innerHTML = placeName
-  // destNum.append(destPlace)
+  destPlace.innerHTML = dest.place
   row.appendChild(destPlace)
 
   let deleteButtonCell = document.createElement('td')
@@ -157,9 +168,6 @@ let addDestination = function (latLng, id, placeName) {
   deleteButton.id = 'deleteButton'
   deleteButton.className = 'fas'
   deleteButton.classList.add('fa-trash-alt')
-  // deleteButton.className = 'btn-xs'
-  // deleteButton.classList.add('mini')
-  // deleteButton.classList.add('red-stripe')
   deleteButtonCell.appendChild(deleteButton)
 
   row.appendChild(deleteButtonCell)
@@ -191,18 +199,15 @@ $('#destinationTable').sortable({
       let numbering = i + 1
       $(this).text(numbering)
       for (let j = 0; j < destinationList.length; j++) {
-        // console.log(Number($(this)[0].parentNode.id))
-        // console.log(destinationList[j].id)
         if (destinationList[j].id === Number($(this)[0].parentNode.id)) {
           destinationList[j].order = numbering
-          // console.log(numbering)
-          // console.log('Match!')
         }
       }
     })
     destinationList.sort((a, b) => (a.order > b.order) ? 1 : -1)
     clearMarkers()
     renderMarkers()
+    saveToLocal()
   }
 })
 
@@ -224,7 +229,18 @@ $(document).on('click', '#deleteButton', function (e) {
   }
   clearMarkers()
   renderMarkers()
+  saveToLocal()
 })
+
+// upon page reload, this function is called
+function renderOnReload () {
+  getFromLocal()
+  console.log(destinationList)
+  for (let i = destinationList.length - 1; i >= 0; i--) {
+    drawDestination(destinationList[i])
+  }
+  renderMarkers()
+}
 
 // Thabang still working on this
 
@@ -252,7 +268,7 @@ $('#savetrip').on('click', function () {
 //     contentType: 'application/json',
 //     success: (res) => {
 //       for (let i = 0; i < res.destInputs.length; i++) {
-//         addDestination(res.destInputs[i], res.destNames[i])
+//         drawDestination(res.destInputs[i], res.destNames[i])
 //       }
 //     }
 //   })
