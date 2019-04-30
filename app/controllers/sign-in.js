@@ -53,13 +53,6 @@ function signInInit () {
   })
 }
 
-function signOut () {
-  let authInstance = gapi.auth2.getAuthInstance()
-  authInstance.signOut().then(function () {
-    console.log('User signed out.')
-  })
-}
-
 $(document).ready(() => {
   $('#signInPageSignInButton').click(() => {
     var isAnyFieldEmpty = false
@@ -74,7 +67,8 @@ $(document).ready(() => {
 
     let userInfo = {
       emailAddress: $('#inputEmail').val(),
-      password: $('#inputPassword').val()
+      password: $('#inputPassword').val(),
+      signin: true
     }
     // console.log('sign in info', userInfo)
 
@@ -93,9 +87,9 @@ $(document).ready(() => {
         if (response.userType === 'currentUser') {
           window.location = '/trip'
         } else if (response.userType === 'incorrectUser') {
-          window.alert('Username or Password Incorrect.')
-        } else {
-          console.error('bad sign in response', response)
+          window.alert('Your password is incorrect.')
+        } else if (response.userType === 'newUser') {
+          window.alert('No account with this email address exists.\nPlease register.')
         }
       }
     })

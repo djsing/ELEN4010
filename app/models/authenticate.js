@@ -27,7 +27,13 @@ function googleUserAccountDatabaseConnection (req, res) {
 }
 
 function userAccountDatabaseConnection (req, res) {
-  let userInfo = req.body
+  // console.log('req', req)
+  let userInfo = {
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
+    emailAddress: req.body.emailAddress,
+    password: req.body.password
+  }
   const signin = req.body.signin
   userInfo.image = null
   userInfo = createHashKey(userInfo, false)
