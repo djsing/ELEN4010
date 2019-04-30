@@ -136,13 +136,16 @@ let addDestination = function (latLng, id, placeName) {
 
   let row = document.createElement('tr')
   row.id = id
+  row.className = 'destinationsTableRow'
+
   let destNum = document.createElement('td')
+  destNum.innerHTML = String(destinationList.length)
+  destNum.classList.add('indexClass')
+  row.appendChild(destNum)
   let destPlace = document.createElement('td')
-  let number = document.createTextNode(destinationList.length)
-  destNum.innerHTML = number
-  destPlace.append(destNum)
-  destPlace.append(document.createTextNode(placeName))
-  row.append(destPlace)
+  destPlace.innerHTML = placeName
+  // destNum.append(destPlace)
+  row.appendChild(destPlace)
 
   let deleteButtonCell = document.createElement('td')
   let deleteButton = document.createElement('input')
@@ -176,18 +179,41 @@ let renderMarkers = function () {
   }
 }
 
-let updateIndex = function (e, ui) {
-  $('td.index', ui.item.parent()).each(function (i) {
-    $(this).html(i + 1)
-  })
+// $('destinationTableBody').sortable({
+//   onDrop: function ($item, container, _super, event) {
+//     $('destinationsTable td').removeClass('dragged')
+//     $('body').removeClass('dragging')
+//     $('destinationsTable indexClass').each(function (i) {
+//       var Num = i + 1
+//       $(this).html(Num + '')
+//     })
+//   }
+// })
 
-  $('input[type=text]', ui.item.parent()).each(function (i) {
-    $(this).val(i + 1)
-  })
-}
+// $('#destinationTable').sortable()
+
 $('#destinationTable').sortable({
-  stop: updateIndex
+  update: function (event, ui) {
+    $('.destinationsTableRow').each(function (i) {
+      var numbering = i + 1
+      $(this).text(numbering)
+    })
+  }
 })
+
+// let updateIndex = function (e, ui) {
+//   $('td.index', ui.item.parent('indexClass')).each(function (i) {
+//     $(this).html(i + 1)
+//   })
+
+//   $('input[type=text]', ui.item.parent('indexClass')).each(function (i) {
+//     $(this).val(i + 1)
+//   })
+// }
+
+// $('#destinationTable').sortable({
+//   stop: updateIndex
+// })
 
 $(document).on('click', '#deleteButton', function (e) {
   let id = $(this).parents('tr')[0].id
