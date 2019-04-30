@@ -60,7 +60,8 @@ mainRouter.get(['/trip-manager', '/trips'], function (req, res) {
 })
 
 mainRouter.post('/trip/data', function (req, res) {
-  tripModel.storeItinerary(req.body.destInputs, req.body.destNames)
+  res.sendStatus(200)
+  // tripModel.storeItinerary(req.body.destInputs, req.body.destNames)
 })
 
 mainRouter.get('/trip/data', function (req, res) {

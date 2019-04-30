@@ -226,6 +226,20 @@ $(document).on('click', '#deleteButton', function (e) {
   renderMarkers()
 })
 
+$('#savetrip').on('click', function () {
+  let itinerary = {
+    'destinationList': destinationList
+  }
+  $.ajax({
+    url: '/trip/data',
+    method: 'POST',
+    contentType: 'application/json',
+    data: JSON.stringify(itinerary),
+    success: function (res) {
+    }
+  })
+})
+
 // upon page reload, this function is called
 // let renderDestinations = function () {
 //   $('#indexTableBody').empty()
