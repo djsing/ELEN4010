@@ -144,6 +144,26 @@ function findUser (userInfo, signin, res) {
     })
 }
 
+(function createDestinationTable () {
+  pools.then((pool) => {
+    return pool.request()
+      .query(`IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='destinations' and xtype='TT')
+          CREATE TABLE destinations (
+          destination_id int IDENTITY(1,1) PRIMARY KEY,
+          destination_name varchar(50),
+          destination_place varchar(50),
+          latLng varchar(255),
+          destination_date date,
+          trip_id varchar(255),
+          )`)
+  }).then(result => {
+    console.log('destinations table created', result)
+  }).catch(err => {
+    console.log('destinations table creation error', err)
+  })
+}
+)()
+
 module.exports = {
   sql: mssql,
   pools: pools,
