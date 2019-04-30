@@ -153,7 +153,7 @@ function findUser (userInfo, signin, res) {
           dest_name varchar(50),
           dest_place varchar(50),
           latLng varchar(255),
-          dest_date date,
+          -- dest_date date,
           trip_id varchar(255),
           )`)
   }).then(result => {
@@ -193,22 +193,24 @@ function createDestination (destInfo, res) {
     })
 }
 
-// function saveTrip (destList, res) {
-//   destList.forEach((dest) => {
-//     let destInfo = new Object{
-//       'dest_name',
-//       'dest_place',
-//       'latLng',
-//       'dest_date',
-//       'trip_id'
-//     }
-//   })
-// }
+function saveTrip (destList, res) {
+  destList.forEach((dest) => {
+    let destInfo = {
+      'dest_name': dest.input,
+      'dest_place': dest.place,
+      'latLng': dest.latLng,
+      // 'dest_date': null,
+      'trip_id': ''
+    }
+    createDestination(destInfo, res)
+  })
+}
 
 module.exports = {
   sql: mssql,
   pools: pools,
   isConnected: isConnected,
   connectionError: connectionError,
-  findUser: findUser
+  findUser: findUser,
+  saveTrip: saveTrip
 }

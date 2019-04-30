@@ -226,6 +226,8 @@ $(document).on('click', '#deleteButton', function (e) {
   renderMarkers()
 })
 
+// Thabang still working on this
+
 $('#savetrip').on('click', function () {
   let itinerary = {
     'destinationList': destinationList
