@@ -30,8 +30,4 @@ $(document).ready(() => {
       addTermsToSubsection($('#OtherSites'), data.otherSites, 'li')
     }
   })
-
-  $('#agreeButton').click(() => {
-    window.location = '/profile'
-  })
 })

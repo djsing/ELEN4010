@@ -2,7 +2,6 @@
 
 let express = require('express')
 let app = express()
-// let path = require('path')
 let mainRouter = express.Router()
 
 let bodyParser = require('body-parser')
@@ -11,8 +10,7 @@ app.use(bodyParser.urlencoded({
   extended: true
 }))
 
-// let db = require('../models/db.js')
-let auth = require('../models/authenticate')
+let authenticate = require('../models/authenticate')
 let termsModel = require('../models/termsAndConditionsModel')
 let tripManagerModel = require('../models/tripManagerModel')
 let tripModel = require('../models/tripModel')
@@ -91,9 +89,12 @@ mainRouter.put(['/trip-manager/data', '/trips/data'], function (req, res) {
   tripManagerModel.updateTrip(req.body.oldTripTitle, req.body.newTripTitle)
 })
 
-mainRouter.post('/auth', function (req, res) {
-  auth.authenticateToken(req)
-  res.send('authenticated')
+mainRouter.post('/google-auth', (req, res) => {
+  authenticate.googleUserAccountDatabaseConnection(req, res)
+})
+
+mainRouter.post('/auth', (req, res) => {
+  authenticate.userAccountDatabaseConnection(req, res)
 })
 
 mainRouter.get('*', function (req, res) {
