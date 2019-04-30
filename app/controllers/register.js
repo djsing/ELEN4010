@@ -83,6 +83,7 @@ $(document).ready(() => {
       return false
     }
     if (!$('#TCCheck').prop('checked')) {
+      window.alert('Please Accept the Terms and Conditions.')
       return false
     }
 

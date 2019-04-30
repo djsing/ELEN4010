@@ -93,7 +93,7 @@ $(document).ready(() => {
         if (response.userType === 'currentUser') {
           window.location = '/trip'
         } else if (response.userType === 'incorrectUser') {
-          window.alert('Username or Password Incorrect.')
+          window.alert('Username or Password incorrect.')
         } else {
           console.error('bad sign in response', response)
         }
