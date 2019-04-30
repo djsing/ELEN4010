@@ -5,86 +5,105 @@
     <title>Away We Go trip planner</title>
     <meta name="viewport" content="width=device-width,initial-scale=1, shrink-to-fit=no">
     <meta charset="utf-8">
-
-    <script src='map.js'></script>
+    
     <script src="/js/jquery-3.4.0.min.js"></script>
+    <script src="/js/jquery-ui-1.12.1.min.js"></script>
     <script src='info.js'></script>
-    <script src="/js/platform.js"></script>
-    <script src="sign-in.js"></script>
+    <script src='trip.js'></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.8.1/js/all.js" integrity="sha384-g5uSoOSBd7KkhAMlnQILrecXvzst9TdC09/VM+pjDTCM+1il8RHz5fKANTFFb+gQ" crossorigin="anonymous"></script>
+
+
     <link rel="stylesheet" href="/css/bootstrap.lux.min.css" />
     <link rel="stylesheet" href="/css/general.css" />
     <link rel="stylesheet" href="/css/map.style.css" />
   </head>
 
-  <body onload="signInInit()">
-    <nav class="navbar navbar-expand-md navbar-light bg-light">
-      <a class="navbar-brand" href="#">
-        <img src="/img/logo.svg" width="30" height="30" class="d-inline-block align-top" alt="">
-        Away We Go</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault"
-        aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-
-      <div class="collapse navbar-collapse" id="navbarsExampleDefault">
-        <ul class="navbar-nav mr-auto">
-          <li class="nav-item active">
-            <a class="nav-link" href="/trip">New Trip <span class="sr-only">(current)</span></a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/trip-manager">Trip Manager</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link disabled" href="#">My Groups</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/hotels">Hotel Finder</a>
-          </li>
-        </ul>
-
-        <ul class="navbar-nav ml-auto">
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="usernameTag" role="button" data-toggle="dropdown"
-              aria-haspopup="true" aria-expanded="false">username</a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <a class="dropdown-item small" id='emailTag'>email</a>
-              <a class="dropdown-item" href="/profile">My Account</a>
-              <div class="dropdown-divider"></div>
-              <a id="signOutButton" class="dropdown-item" href="#">Sign Out</a><!-- Doesnt do anything yet -->
-            </div>
-          </li>
-        </ul>
-      </div>
-    </nav>
-
-    <div class="pac-card" id="pac-card">
-      <div>
-        <div id="title">
-          Search for a destination:
-        </div>
-      </div>
-
-      <div id="pac-container">
-        <input id="pac-input" type="text" placeholder="Enter a location">
-      </div>
-    </div>
-
-    <div id="infowindow-content">
-      <img src="" width="16" height="16" id="place-icon">
-      <span id="place-name" class="title"></span><br>
-      <span id="place-address"></span>
-    </div>
-
-    <div class="container">
-      <div class="row">
-        <div class="col-sm-9" id="map"></div>
-        <div class="col-sm-3" id="destination">Destinations Go Here</div>
-      </div>
-    </div>
-    </div>
+  <body onload='renderOnReload();signInInit()'>
+                <nav class="navbar navbar-expand-md navbar-light bg-light">
+                  <a class="navbar-brand" href="#">
+                      <img src="/img/logo.svg" width="30" height="30" class="d-inline-block align-top" alt="">
+                      Away We Go</a>
+                  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                  </button>
+                  
+                  <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+                    <ul class="navbar-nav mr-auto">
+                      <li class="nav-item active">
+                        <a class="nav-link" href="/trip">New Trip <span class="sr-only">(current)</span></a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" href="/trip-manager">Trip Manager</a>
+                      </li>
+                      <li class="nav-item">
+                          <a class="nav-link disabled" href="#">My Groups</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" href="/hotels">Hotel Finder</a>
+                      </li>
+                    </ul>
+          
+                    <ul class="navbar-nav ml-auto">
+                      <li class="nav-item dropdown">
+                          <a class="nav-link dropdown-toggle" href="#" id="usernameTag" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">username</a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item small" id='emailTag'>email</a>
+                                <a class="dropdown-item" href="/profile">My Account</a>
+                                <div class="dropdown-divider"></div>
+                                <a id="signOutButton" class="dropdown-item" href="#">Sign Out</a><!-- Doesnt do anything yet -->
+                              </div>
+                      </li>
+                    </ul>
+                  </div>
+                </nav>
+          
+                <div class="pac-card" id="pac-card">
+                  <div>
+                    <div id="title">
+                      Search for a destination:
+                    </div>
+                  </div>
+          
+                  <div id="pac-container">
+                    <input id="pac-input" type="text"
+                        placeholder="Enter a location">
+                  </div>
+                </div>
+          
+                <div class="container overflow-hidden;" id="mainContainer" >
+                  <div class="row">
+                      <div class="col-sm-9" id="map"></div>
+                      <div class="col-sm-3"  id="destination">
+                          <div class="input-group mb-1">
+                              <div class="md-form form-sm">
+                                  <label >Trip Itinerary</label>
+                                  <input type="text" class="form-control" id="formGroupExampleInput" placeholder="New Trip...">                      
+                              </div> 
+                              <div class="input-group-append">
+                                <!-- <button class="btn btn-outline-secondary" type="button" fa-trash-alt">Save</button> -->
+                              </div>
+                            </div>
+                        <div style="overflow-y: scroll; height: 600px;" class=" fixed-height">
+                          <table class="table" id="destinationTable">
+                              <!-- destination-cells get created here -->
+                          </table>
+                          <footer class="footer fixed-bottom">
+                              <div class="container">                                                    
+                                    <button type="button" class="btn btn-sm btn-outline-secondary" id='deleteDestinations'><i class="fas fa-trash-alt"></i>
+                                      <a class="small">all</a></button>
+                                    <button type="button" class="btn btn-md btn-primary" id='saveTrip'>Save Trip</button>
+                                <!-- </span> -->
+                              </div>
+                            </footer>
+                        </div>
+                      </div>
+                      </div>
+                </div>
 
     <script src="/js/bootstrap.bundle.min.js"></script>
     <script defer src='/js/loadmap.js'></script>
+    <script src="/js/platform.js"></script>
+    <script src="sign-in.js"></script>
   </body>
 
 </html>

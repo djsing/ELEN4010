@@ -156,10 +156,74 @@ function findUser (userInfo, signin, res) {
     })
 }
 
+(function createDestinationTable () {
+  pools.then((pool) => {
+    return pool.request()
+      .query(`IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='destinations' and xtype='U')
+          CREATE TABLE destinations (
+          dest_id int IDENTITY(1,1) PRIMARY KEY,
+          dest_name varchar(50),
+          dest_place varchar(50),
+          latLng varchar(255),
+          dest_date date,
+          trip_id varchar(255),
+          )`)
+  }).then(result => {
+    console.log('destinations table created', result)
+  }).catch(err => {
+    console.log('destinations table creation error', err)
+  })
+}
+)()
+
+function createDestination (destInfo, res) {
+  let info = destInfo
+  // console.log('create', info)
+  pools
+    // Run query
+    .then((pool) => {
+      return pool.request()
+        .query(`INSERT INTO destinations VALUES(
+          '${info.dest_name}',
+          '${info.dest_place}',
+          '${info.latLng}',
+          '${info.dest_date}',
+          '${info.trip_id}')`)
+    })
+    // Send back the result
+    .then(result => {
+      // console.log('create destinations', result)
+      // // some info doesn't need to be sent to front-end
+      // delete info.dest_id
+      // delete info.trip_id
+      // // console.log('lastly new', info)
+      // res.send(info)
+    })
+    // If there's an error, return that with some description
+    .catch(err => {
+      console.log('create destinations error', err)
+    })
+}
+
+function saveTrip (destList, res) {
+  destList.forEach((dest) => {
+    let destInfo = {
+      dest_name: dest.input,
+      dest_place: dest.place,
+      latLng: dest.latLng,
+      dest_date: '2008-11-11',
+      trip_id: ''
+    }
+    createDestination(destInfo, res)
+    // console.log(destInfo.la)
+  })
+}
+
 module.exports = {
   sql: mssql,
   pools: pools,
   isConnected: isConnected,
   connectionError: connectionError,
-  findUser: findUser
+  findUser: findUser,
+  saveTrip: saveTrip
 }
