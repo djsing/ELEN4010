@@ -278,14 +278,12 @@ var generateTripId = function () {
 let getTripTitle = function () {
   let title = document.getElementById('formGroupExampleInput')
   tripTitle = title.value
-  }
 }
 
 let setTripTitle = function () {
   document.getElementById('formGroupExampleInput').value = tripTitle
 }
 
-})
 // $('#saveTrip').on('click', function () {
 //   let itinerary = {
 //     'destinationList': destinationList
