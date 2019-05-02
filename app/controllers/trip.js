@@ -283,19 +283,17 @@ let setTripTitle = function () {
   document.getElementById('formGroupExampleInput').value = tripTitle
 }
 
-// $('#saveTrip').on('click', function () {
-//   let itinerary = {
-//     'destinationList': destinationList
-//   }
-//   $.ajax({
-//     url: '/trip/data',
-//     method: 'POST',
-//     contentType: 'application/json',
-//     data: JSON.stringify(itinerary),
-//     success: function (res) {
-//     }
-//   })
-// })
+$(document).on('click', '#saveTrip', function () {
+  let newTrip = new Trip(tripTitle, destinationList, generateTripId())
+  $.ajax({
+    url: '/trip/data',
+    method: 'POST',
+    contentType: 'application/json',
+    data: JSON.stringify(newTrip),
+    success: function (res) {
+    }
+  })
+})
 
 // upon page reload, this function is called
 // let renderDestinations = function () {
