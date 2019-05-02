@@ -13,12 +13,29 @@ class Destination {
     this.order = order
   }
 }
+
+class Trip {
+  constructor (destinationList, tripId) {
+    this.destinationList = destinationList
+    this.tripId = tripId
+  }
+}
+
+var generateTripId = function () {
+  // Math.random should be unique because of its seeding algorithm.
+  // Convert it to base 36 (numbers + letters), and grab the first 9 characters
+  // after the decimal.
+  return '_' + Math.random().toString(36).substr(2, 9)
+}
+
 function saveToLocal () {
-  localStorage.setItem('destinations', JSON.stringify(destinationList))
+  let newTrip = new Trip(destinationList, generateTripId())
+  localStorage.setItem('destinations', JSON.stringify(newTrip))
 }
 
 function getFromLocal () {
-  destinationList = JSON.parse(localStorage.getItem('destinations'))
+  let trip = JSON.parse(localStorage.getItem('destinations'))
+  destinationList = trip.destinationList
 }
 
 function addMarker (latLng, id, placeName, label) {
