@@ -30,11 +30,11 @@ var generateTripId = function () {
 
 function saveToLocal () {
   let newTrip = new Trip(destinationList, generateTripId())
-  localStorage.setItem('destinations', JSON.stringify(newTrip))
+  localStorage.setItem('trip', JSON.stringify(newTrip))
 }
 
 function getFromLocal () {
-  let trip = JSON.parse(localStorage.getItem('destinations'))
+  let trip = JSON.parse(localStorage.getItem('trip'))
   destinationList = trip.destinationList
 }
 
@@ -261,7 +261,7 @@ $(document).on('click', '#deleteDestinations', function () {
 
 // upon page reload, this function is called
 function renderOnReload () {
-  if (localStorage.getItem('destinations') !== null) {
+  if (localStorage.getItem('trip') !== null) {
     getFromLocal()
     for (let i = 0; i < destinationList.length; i++) {
       drawDestination(destinationList[i])
