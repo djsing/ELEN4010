@@ -10,3 +10,9 @@ deploy:
   verbose: true
   script: git fetch --unshallow && git push https://$AZURE_WA_USERNAME:$AZURE_WA_PASSWORD@testawaywego.scm.azurewebsites.net:443/testawaywego.git HEAD:refs/heads/development
   on: development
+before script: 
+  - npm install coveralls --save-dev
+script:
+  - npm run coveralls
+after_success:
+  - coveralls-lcov coverage/lcov.info
