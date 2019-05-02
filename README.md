@@ -1,5 +1,5 @@
 [![Build Status](https://travis-ci.com/witseie-elen4010/2019-005-project.svg?token=52xQs3WNRQyhnpMyQJpC&branch=master)](https://travis-ci.com/witseie-elen4010/2019-005-project)
-<!-- [![Coverage Status](https://coveralls.io/repos/github/witseie-elen4010/2019-005-project/badge.svg?branch=coveralls_setup&t=31ncXA)](https://coveralls.io/github/witseie-elen4010/2019-005-project?branch=coveralls_setup) -->
+[![Coverage Status](https://coveralls.io/repos/github/witseie-elen4010/2019-005-project/badge.svg?branch=master)](https://coveralls.io/github/witseie-elen4010/2019-005-project?branch=master)
 
 # Away We Go # 
 ## A group travel trip planning web application.##
