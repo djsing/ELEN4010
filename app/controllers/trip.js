@@ -295,6 +295,10 @@ $(document).on('click', '#saveTrip', function () {
   })
 })
 
+$(document).change('#formGroupExampleInput', function () {
+  saveToLocal()
+})
+
 // upon page reload, this function is called
 // let renderDestinations = function () {
 //   $('#indexTableBody').empty()
