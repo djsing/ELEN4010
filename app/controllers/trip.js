@@ -25,14 +25,13 @@ class Trip {
 
 function saveToLocal () {
   getTripTitle()
-  let newTrip = new Trip(tripTitle, destinationList, generateTripId())
-  localStorage.setItem('trip', JSON.stringify(newTrip))
+  localStorage.setItem('destinations', JSON.stringify(destinationList))
+  localStorage.setItem('title', JSON.stringify(tripTitle))
 }
 
 function getFromLocal () {
-  let trip = JSON.parse(localStorage.getItem('trip'))
-  destinationList = trip.destinationList
-  tripTitle = trip.title
+  destinationList = JSON.parse(localStorage.getItem('destinations'))
+  tripTitle = JSON.parse(localStorage.getItem('title'))
   setTripTitle()
 }
 
@@ -259,7 +258,7 @@ $(document).on('click', '#deleteDestinations', function () {
 
 // upon page reload, this function is called
 function renderOnReload () {
-  if (localStorage.getItem('trip') !== null) {
+  if (localStorage.getItem('destinations') !== null) {
     getFromLocal()
     for (let i = 0; i < destinationList.length; i++) {
       drawDestination(destinationList[i])
