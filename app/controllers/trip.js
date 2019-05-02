@@ -3,6 +3,7 @@
 let map, service
 let markersOnMap = []
 let destinationList = []
+let tripTitle = ''
 
 class Destination {
   constructor (latLng, id, place, order) {
@@ -15,27 +16,24 @@ class Destination {
 }
 
 class Trip {
-  constructor (destinationList, tripId) {
+  constructor (title, destinationList, tripId) {
+    this.title = title
     this.destinationList = destinationList
     this.tripId = tripId
   }
 }
 
-var generateTripId = function () {
-  // Math.random should be unique because of its seeding algorithm.
-  // Convert it to base 36 (numbers + letters), and grab the first 9 characters
-  // after the decimal.
-  return '_' + Math.random().toString(36).substr(2, 9)
-}
-
 function saveToLocal () {
-  let newTrip = new Trip(destinationList, generateTripId())
+  getTripTitle()
+  let newTrip = new Trip(tripTitle, destinationList, generateTripId())
   localStorage.setItem('trip', JSON.stringify(newTrip))
 }
 
 function getFromLocal () {
   let trip = JSON.parse(localStorage.getItem('trip'))
   destinationList = trip.destinationList
+  tripTitle = trip.title
+  setTripTitle()
 }
 
 function addMarker (latLng, id, placeName, label) {
@@ -270,21 +268,37 @@ function renderOnReload () {
   }
 }
 
-// Thabang still working on this
+var generateTripId = function () {
+  // Math.random should be unique because of its seeding algorithm.
+  // Convert it to base 36 (numbers + letters), and grab the first 9 characters
+  // after the decimal.
+  return '_' + Math.random().toString(36).substr(2, 9)
+}
 
-$('#saveTrip').on('click', function () {
-  let itinerary = {
-    'destinationList': destinationList
+let getTripTitle = function () {
+  let title = document.getElementById('formGroupExampleInput')
+  tripTitle = title.value
   }
-  $.ajax({
-    url: '/trip/data',
-    method: 'POST',
-    contentType: 'application/json',
-    data: JSON.stringify(itinerary),
-    success: function (res) {
-    }
-  })
+}
+
+let setTripTitle = function () {
+  document.getElementById('formGroupExampleInput').value = tripTitle
+}
+
 })
+// $('#saveTrip').on('click', function () {
+//   let itinerary = {
+//     'destinationList': destinationList
+//   }
+//   $.ajax({
+//     url: '/trip/data',
+//     method: 'POST',
+//     contentType: 'application/json',
+//     data: JSON.stringify(itinerary),
+//     success: function (res) {
+//     }
+//   })
+// })
 
 // upon page reload, this function is called
 // let renderDestinations = function () {
