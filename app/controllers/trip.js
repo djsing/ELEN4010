@@ -256,7 +256,6 @@ $(document).on('click', '#deleteDestinations', function () {
 function renderOnReload () {
   if (localStorage.getItem('trip') !== null) {
     getFromLocal()
-    console.log(newTrip.destinationList)
     for (let i = 0; i < newTrip.destinationList.length; i++) {
       drawDestination(newTrip.destinationList[i])
     }
@@ -308,55 +307,3 @@ let clearLocalStorage = function () {
 //     }
 //   })
 // }
-
-// let saveItinerary = function () {
-//   let destInputs = []
-//   let destNames = []
-//   let destTable = document.getElementById('destinationsTable')
-//   for (let i = 0, rows; rows = destTable.rows[i]; i++) {
-//     let inputField = rows.cells[0].childNodes[0]
-//     let text = rows.cells[0].textContent
-//     destInputs.push(inputField.value)
-//     destNames.push(text)
-//   }
-//   let itinerary = {
-//     'destInputs': destInputs,
-//     'destNames': destNames
-//   }
-
-//   $.ajax({
-//     url: '/trip/data',
-//     method: 'POST',
-//     contentType: 'application/json',
-//     data: JSON.stringify(itinerary),
-//     success: function (res) {
-//     }
-//   })
-// }
-
-// $('#destinationsTable').on('click', '.deleteButton', function () {
-//   let oldRow = $(this).closest('tr')
-//   let destInput = oldRow.find('input.destInput')
-//   let destInputValue = destInput.val()
-//   let destName = oldRow.find('td:eq(0)').html()
-//   oldRow.index()
-//   let indexTable = $('#indexTableBody')
-//   let removeRow = indexTable.find('tr:eq(' + oldRow.index() + ')')
-//   removeRow.remove()
-
-//   let destination = {
-//     'destInput': destInputValue,
-//     'destName': destName
-//   }
-//   $.ajax({
-//     url: '/trip/data',
-//     method: 'DELETE',
-//     contentType: 'application/json',
-//     data: JSON.stringify(destination),
-//     success: function (res) {
-//       renderItinerary()
-//     }
-//   })
-
-//   oldRow.remove()
-// })

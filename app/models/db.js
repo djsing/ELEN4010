@@ -19,6 +19,7 @@ let config = {
     idleTimeoutMillis: 30000
   }
 }
+
 // Get a mssql connection instance
 let isConnected = true
 let connectionError = null
