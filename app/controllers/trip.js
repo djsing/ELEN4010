@@ -13,18 +13,11 @@ class Destination {
   }
 }
 
-var generateid = function () {
-  // Math.random should be unique because of its seeding algorithm.
-  // Convert it to base 36 (numbers + letters), and grab the first 9 characters
-  // after the decimal.
-  return '_' + Math.random().toString(36).substr(2, 9)
-}
-
 class Trip {
   constructor () {
-    let title = ''
-    let destinationList = []
-    let id = ''
+    this.title = ''
+    this.destinationList = []
+    this.id = (new Date()).getTime()
   }
 }
 
@@ -263,6 +256,7 @@ $(document).on('click', '#deleteDestinations', function () {
 function renderOnReload () {
   if (localStorage.getItem('trip') !== null) {
     getFromLocal()
+    console.log(newTrip.destinationList)
     for (let i = 0; i < newTrip.destinationList.length; i++) {
       drawDestination(newTrip.destinationList[i])
     }
@@ -286,6 +280,7 @@ $(document).on('click', '#saveTrip', function () {
     contentType: 'application/json',
     data: JSON.stringify(newTrip),
     success: function (res) {
+      console.log(res)
     }
   })
 })

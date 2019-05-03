@@ -1,8 +1,10 @@
 'use strict'
 
-function populateDestinationTable (trip, res) {
+let db = require('./db')
+
+function createDestinationQuery (trip, res) {
   let tripInfo = trip.body
-  let queryString = ''
+  let queryString = `DELETE FROM destinations WHERE trip_id = ${tripInfo.id};`
   for (let i = 0; i < tripInfo.destinationList.length; i++) {
     queryString = queryString + `INSERT INTO destinations VALUES(
       '${tripInfo.destinationList[i].id}',
@@ -11,12 +13,12 @@ function populateDestinationTable (trip, res) {
       '${tripInfo.destinationList[i].latLng}',
       '${tripInfo.destinationList[i].placeId}',
       '${tripInfo.destinationList[i].order}',
-      '${tripInfo.id}')
-      ;`
+      '${tripInfo.id}');`
   }
-  console.log(queryString)
+
+  db.populateDestionationsTable(res, queryString)
 }
 
 module.exports = {
-  populateDestinationTable: populateDestinationTable
+  createDestinationQuery: createDestinationQuery
 }

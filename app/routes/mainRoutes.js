@@ -60,7 +60,7 @@ mainRouter.get(['/trip-manager', '/trips'], function (req, res) {
 })
 
 mainRouter.post('/trip/data', function (req, res) {
-  tripModel.populateDestinationTable(req, res)
+  tripModel.createDestinationQuery(req, res)
 })
 
 mainRouter.get(['/trip-manager/data', '/trips/data'], function (req, res) {

@@ -161,13 +161,13 @@ function findUser (userInfo, signin, res) {
     return pool.request()
       .query(`IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='destinations' and xtype='U')
           CREATE TABLE destinations (
-          id int PRIMARY KEY, 
+          id varchar(255) PRIMARY KEY, 
           name varchar(50),
           place varchar(255),
           latLng varchar(255),
           place_id varchar(255),
           dest_order int,
-          trip_id varchar(255),
+          trip_id varchar(255)
           )`)
   }).then(result => {
     console.log('destinations table created', result)
@@ -177,18 +177,20 @@ function findUser (userInfo, signin, res) {
 }
 )()
 
-function saveTrip (destList, res) {
-  destList.forEach((dest) => {
-    let destInfo = {
-      dest_name: dest.input,
-      dest_place: dest.place,
-      latLng: dest.latLng,
-      dest_date: '2008-11-11',
-      trip_id: ''
-    }
-    createDestination(destInfo, res)
-    // console.log(destInfo.la)
-  })
+function populateDestionationsTable (res, queryString) {
+  pools
+    .then(pool => {
+      console.log('populate QS: ', queryString)
+      return pool.request()
+        .query(queryString)
+    })
+    .then(result => {
+      console.log('population result ', result)
+      res.send('DestinationTablePopulated')
+    })
+    .catch(err => {
+      console.log('populate destination table error:', err)
+    })
 }
 
 module.exports = {
@@ -197,5 +199,5 @@ module.exports = {
   isConnected: isConnected,
   connectionError: connectionError,
   findUser: findUser,
-  saveTrip: saveTrip
+  populateDestionationsTable: populateDestionationsTable
 }
