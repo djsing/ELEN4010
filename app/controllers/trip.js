@@ -286,11 +286,14 @@ $(document).on('click', '#inviteEmailAddressButton', function () {
 
   // Validate the email address
   // If it's valid, proceed to post it, if not, clear the field and warn the user
-  if (isValidEmail(emailAddress)) {
-    console.log('Valid email address')
-  } else {
-    console.log('Invalid email address')
+  if (!isValidEmail(emailAddress)) {
+    // Clear the input field
+    emailAddressField.val('')
+    // Tell the user that an invalid email address has been entered
+    $('#invalidEmailMessage').hide()
+    $('#invalidEmailMessage').show('slow')
   }
+
   $.ajax({
     url: '/invite',
     method: 'POST',

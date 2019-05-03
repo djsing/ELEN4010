@@ -162,3 +162,8 @@ input.modal-element {
 input[type="text"].modal-element {
   width: 400px
 }
+
+#invalidEmailMessage{
+  display: none; 
+  color: #9b3336;
+}
