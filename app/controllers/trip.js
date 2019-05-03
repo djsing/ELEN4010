@@ -269,6 +269,10 @@ $('#saveTrip').on('click', function () {
   })
 })
 
+$(document).on('click', '#inviteEditorButton', function () {
+  console.log('Inivte button pressed')
+})
+
 // upon page reload, this function is called
 // let renderDestinations = function () {
 //   $('#indexTableBody').empty()
