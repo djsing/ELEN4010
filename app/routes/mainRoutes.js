@@ -29,7 +29,7 @@ mainRouter.get('/terms_and_conditions/data', function (req, res) {
 })
 
 mainRouter.get('/test', function (req, res) {
-  res.sendFile('test.html', { root: req.app.get('views') })
+  res.sendFile('/emailTemplate.html', { root: req.app.get('views') })
 })
 
 mainRouter.get('/profile', function (req, res) {
@@ -106,6 +106,10 @@ mainRouter.get('*', function (req, res) {
 mainRouter.post('/invite', function (req, res) {
   mailManager.sendInvite(req.body.emailAddress)
   res.sendStatus(200)
+})
+
+mainRouter.get('/emails', function (req, res) {
+  res.sendFile('/emailTemplate.html', { root: req.app.get('views') })
 })
 
 module.exports = mainRouter
