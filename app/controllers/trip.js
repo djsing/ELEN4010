@@ -20,8 +20,12 @@ class Trip {
 
 // Declare global variables
 let map, service
-let markersOnMap = []
 let newTrip = new Trip()
+let startLocation = randomProperty(countries)
+// let startLocation = {
+//   center: { lat: 10, lng: 330 },
+//   zoom: 2.8
+// }
 
 function getTripTitle () {
   let title = document.getElementById('formGroupExampleInput')
@@ -32,15 +36,14 @@ function setTripTitle () {
   document.getElementById('formGroupExampleInput').value = newTrip.title
 }
 
-function addMarker (latLng, placeName, label) {
-  let marker = new google.maps.Marker({
-    position: latLng,
-    map: map,
-    label: label
-  })
-  markersOnMap.push(marker)
-  addDestination(latLng, placeName)
-  drawDestination(newTrip.destinationList[newTrip.destinationList.length - 1])
+function saveToLocal () {
+  getTripTitle()
+  window.sessionStorage.setItem('trip', JSON.stringify(newTrip))
+}
+
+function getFromLocal () {
+  newTrip = JSON.parse(window.sessionStorage.getItem('trip'))
+  setTripTitle()
 }
 
 let addDestination = function (latLng, placeName) {
@@ -48,59 +51,12 @@ let addDestination = function (latLng, placeName) {
   let newDestination = new Destination(latLng, placeName, order)
   newTrip.destinationList.push(newDestination)
   saveToLocal()
-}
-
-let drawDestination = function (dest) {
-  let row = document.createElement('tr')
-  row.id = dest.id
-  row.className = 'destinationsTableRow'
-
-  let destNum = document.createElement('td')
-  destNum.innerHTML = String(dest.order)
-  destNum.classList.add('indexClass')
-  destNum.setAttribute('style', 'width: 20%')
-  row.appendChild(destNum)
-
-  let destPlace = document.createElement('td')
-  destPlace.innerHTML = dest.place
-  row.appendChild(destPlace)
-
-  let deleteButtonCell = document.createElement('td')
-  let deleteButton = document.createElement('i')
-  deleteButton.type = 'button'
-  deleteButton.value = ''
-  deleteButton.id = 'deleteButton'
-  deleteButton.className = 'fas'
-  deleteButton.classList.add('fa-trash-alt')
-  deleteButton.setAttribute('style', 'float: right')
-  deleteButtonCell.appendChild(deleteButton)
-
-  row.appendChild(deleteButtonCell)
-  document.getElementById('destinationTable').appendChild(row)
-}
-
-let clearMarkers = function () {
-  for (let i = 0; i < markersOnMap.length; i++) {
-    markersOnMap[i].setMap(null)
-  }
-  markersOnMap = []
-}
-
-let renderMarkers = function () {
-  for (let j = 0; j < newTrip.destinationList.length; j++) {
-    let marker = new google.maps.Marker({
-      position: newTrip.destinationList[j].latLng,
-      map: map,
-      label: String(newTrip.destinationList[j].order)
-    })
-    markersOnMap.push(marker)
-  }
+  $('#deleteDestinations').show()
 }
 
 function placeDestinationBySearch (place, marker) {
   if (!place.geometry) {
-    // User entered the name of a Place that was not suggested and
-    // pressed the Enter key, or the Place Details request failed.
+    // User entered the name of a Place that was not suggested or the Place Details request failed.
     window.alert("No details available for input: '" + place.name + "'")
     return
   }
@@ -115,15 +71,6 @@ function placeDestinationBySearch (place, marker) {
   marker.setPosition(place.geometry.location)
   marker.setVisible(false)
 
-  // let address = ''
-  // if (place.address_components) {
-  //   address = [
-  //     ((place.address_components[0] && place.address_components[0].short_name) || ''),
-  //     ((place.address_components[1] && place.address_components[1].short_name) || ''),
-  //     ((place.address_components[2] && place.address_components[2].short_name) || '')
-  //   ].join(' ')
-  // }
-
   let placeName = place.name
   let label = String(newTrip.destinationList.length + 1)
   addMarker(place.geometry.location, placeName, label)
@@ -131,7 +78,7 @@ function placeDestinationBySearch (place, marker) {
 
 function placeDestinationByClick (latLng) {
   let request = {
-    bounds: map.bounds,
+    bounds: map.bounds * 1000000,
     location: latLng,
     rankBy: google.maps.places.RankBy.DISTANCE,
     type: ['regions', 'cities'],
@@ -155,15 +102,17 @@ function placeDestinationByClick (latLng) {
 
 function initMap () {
   map = new google.maps.Map(document.getElementById('map'), {
-    center: { lat: 10, lng: 350 },
-    zoom: 3,
-    mapTypeControl: false,
+    center: startLocation.center,
+    zoom: startLocation.zoom,
+    mapTypeControl: true,
     panControl: false,
     zoomControl: false,
     streetViewControl: false,
     fullscreenControl: false,
-    draggableCursor: 'default'
+    draggableCursor: 'default',
+    mapTypeId: 'roadmap'
   })
+  map.setTilt(45)
 
   let card = document.getElementById('pac-card')
   let input = document.getElementById('pac-input')
@@ -241,6 +190,17 @@ $(document).on('click', '#deleteButton', function (e) {
   clearMarkers()
   renderMarkers()
   saveToLocal()
+  if (newTrip.destinationList.length < 1) {
+    $('#deleteDestinations').hide()
+  }
+})
+
+$(document).on('click', '.destinationClass', function (e) {
+  let id = $(this).parents('tr')[0].id
+  let dest = newTrip.destinationList.find(function (obj) { return obj.id === Number(id) })
+  map.panTo(dest.latLng)
+  map.setZoom(10)
+  // markersOnMap[dest.order - 1].setAnimation(google.maps.Animation.BOUNCE)
 })
 
 $(document).on('click', '#deleteDestinations', function () {
@@ -248,6 +208,7 @@ $(document).on('click', '#deleteDestinations', function () {
   $('#destinationTable').empty()
   newTrip.destinationList = []
   saveToLocal()
+  $('#deleteDestinations').hide()
 })
 
 $(document).on('click', '#saveTrip', function () {
@@ -262,27 +223,36 @@ $(document).on('click', '#saveTrip', function () {
   })
 })
 
+$(document).ready(function () {
+  $('#success-alert').hide()
+  $('#saveTrip').click(function showAlert () {
+    $('#success-alert').fadeTo(2000, 500).slideUp(500, function () {
+      $('#success-alert').slideUp(500)
+    })
+  })
+})
+
 $(document).change('#formGroupExampleInput', function () {
   saveToLocal()
 })
 
 // upon page reload, this function is called
 function renderOnReload () {
+  $('#deleteDestinations').hide()
   if (window.sessionStorage.getItem('trip') !== null) {
     getFromLocal()
     for (let i = 0; i < newTrip.destinationList.length; i++) {
       drawDestination(newTrip.destinationList[i])
     }
     renderMarkers()
+    let bounds = new google.maps.LatLngBounds()
+    if (newTrip.destinationList.length < 1) {
+    } else {
+      $('#deleteDestinations').show()
+      for (let i = 0; i < markersOnMap.length; i++) {
+        bounds.extend(markersOnMap[i].getPosition())
+      }
+      map.fitBounds(bounds)
+    }
   }
-}
-
-function saveToLocal () {
-  getTripTitle()
-  window.sessionStorage.setItem('trip', JSON.stringify(newTrip))
-}
-
-function getFromLocal () {
-  newTrip = JSON.parse(window.sessionStorage.getItem('trip'))
-  setTripTitle()
 }
