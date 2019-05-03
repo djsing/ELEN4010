@@ -19,6 +19,10 @@
   </head>
 
   <body onload='renderOnReload();signInInit()'>
+              <div class="modal-content">
+                <span class="close">&times;</span>
+                <p>Some text in the Modal..</p>
+              </div>
                 <nav class="navbar navbar-expand-md navbar-light bg-light">
                   <a class="navbar-brand" href="#">
                       <img src="/img/logo.svg" width="30" height="30" class="d-inline-block align-top" alt="">
@@ -69,7 +73,7 @@
                         placeholder="Enter a location">
                   </div>
                 </div>
-          
+                
                 <div class="container overflow-hidden;" id="mainContainer" >
                   <div class="row">
                       <div class="col-sm-9" id="map"></div>
@@ -85,6 +89,7 @@
                               <div class="invite-group">
                                   <input type="button" value="Invite editors" id="inviteEditorButton">
                               </div>
+                              
                             </div>
                         <div style="overflow-y: scroll; height: 600px;" class=" fixed-height">
                           <table class="table" id="destinationTable">
