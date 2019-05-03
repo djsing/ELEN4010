@@ -299,6 +299,10 @@ $(document).change('#formGroupExampleInput', function () {
   saveToLocal()
 })
 
+let clearLocalStorage = function () {
+  localStorage.clear()
+}
+
 // upon page reload, this function is called
 // let renderDestinations = function () {
 //   $('#indexTableBody').empty()
