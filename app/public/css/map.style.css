@@ -114,8 +114,12 @@ td:hover{
     /* word-wrap: break-word; */
 }
 
-#tripTitle {
+#tripTitle  {
   padding: 25px
+}
+
+.form-control {
+  display: inline;
 }
 
 #saveTrip {

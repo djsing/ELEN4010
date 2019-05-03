@@ -1,12 +1,9 @@
 'use strict'
 
-let map, service
-let markersOnMap = []
-
 class Destination {
-  constructor (latLng, id, place, order) {
+  constructor (latLng, place, order) {
     this.latLng = latLng
-    this.id = id
+    this.id = (new Date()).getTime()
     this.place = place
     this.name = ''
     this.order = order
@@ -21,27 +18,83 @@ class Trip {
   }
 }
 
+// Declare global variables
+let map, service
+let markersOnMap = []
 let newTrip = new Trip()
 
-function saveToLocal () {
-  getTripTitle()
-  sessionStorage.setItem('trip', JSON.stringify(newTrip))
+function getTripTitle () {
+  let title = document.getElementById('formGroupExampleInput')
+  newTrip.title = title.value
 }
 
-function getFromLocal () {
-  newTrip = JSON.parse(sessionStorage.getItem('trip'))
-  setTripTitle()
+function setTripTitle () {
+  document.getElementById('formGroupExampleInput').value = newTrip.title
 }
 
-function addMarker (latLng, id, placeName, label) {
+function addMarker (latLng, placeName, label) {
   let marker = new google.maps.Marker({
     position: latLng,
     map: map,
     label: label
   })
   markersOnMap.push(marker)
-  addDestination(latLng, id, placeName)
+  addDestination(latLng, placeName)
   drawDestination(newTrip.destinationList[newTrip.destinationList.length - 1])
+}
+
+let addDestination = function (latLng, placeName) {
+  let order = newTrip.destinationList.length + 1
+  let newDestination = new Destination(latLng, placeName, order)
+  newTrip.destinationList.push(newDestination)
+  saveToLocal()
+}
+
+let drawDestination = function (dest) {
+  let row = document.createElement('tr')
+  row.id = dest.id
+  row.className = 'destinationsTableRow'
+
+  let destNum = document.createElement('td')
+  destNum.innerHTML = String(dest.order)
+  destNum.classList.add('indexClass')
+  destNum.setAttribute('style', 'width: 20%')
+  row.appendChild(destNum)
+
+  let destPlace = document.createElement('td')
+  destPlace.innerHTML = dest.place
+  row.appendChild(destPlace)
+
+  let deleteButtonCell = document.createElement('td')
+  let deleteButton = document.createElement('i')
+  deleteButton.type = 'button'
+  deleteButton.value = ''
+  deleteButton.id = 'deleteButton'
+  deleteButton.className = 'fas'
+  deleteButton.classList.add('fa-trash-alt')
+  deleteButton.setAttribute('style', 'float: right')
+  deleteButtonCell.appendChild(deleteButton)
+
+  row.appendChild(deleteButtonCell)
+  document.getElementById('destinationTable').appendChild(row)
+}
+
+let clearMarkers = function () {
+  for (let i = 0; i < markersOnMap.length; i++) {
+    markersOnMap[i].setMap(null)
+  }
+  markersOnMap = []
+}
+
+let renderMarkers = function () {
+  for (let j = 0; j < newTrip.destinationList.length; j++) {
+    let marker = new google.maps.Marker({
+      position: newTrip.destinationList[j].latLng,
+      map: map,
+      label: String(newTrip.destinationList[j].order)
+    })
+    markersOnMap.push(marker)
+  }
 }
 
 function placeDestinationBySearch (place, marker) {
@@ -62,19 +115,18 @@ function placeDestinationBySearch (place, marker) {
   marker.setPosition(place.geometry.location)
   marker.setVisible(false)
 
-  let address = ''
-  if (place.address_components) {
-    address = [
-      ((place.address_components[0] && place.address_components[0].short_name) || ''),
-      ((place.address_components[1] && place.address_components[1].short_name) || ''),
-      ((place.address_components[2] && place.address_components[2].short_name) || '')
-    ].join(' ')
-  }
+  // let address = ''
+  // if (place.address_components) {
+  //   address = [
+  //     ((place.address_components[0] && place.address_components[0].short_name) || ''),
+  //     ((place.address_components[1] && place.address_components[1].short_name) || ''),
+  //     ((place.address_components[2] && place.address_components[2].short_name) || '')
+  //   ].join(' ')
+  // }
 
-  let id = (new Date()).getTime()
   let placeName = place.name
   let label = String(newTrip.destinationList.length + 1)
-  addMarker(place.geometry.location, id, placeName, label)
+  addMarker(place.geometry.location, placeName, label)
 }
 
 function placeDestinationByClick (latLng) {
@@ -94,10 +146,9 @@ function placeDestinationByClick (latLng) {
       destinationName = results[0].name
     }
 
-    let id = (new Date()).getTime()
     let placeName = destinationName
     let label = String(markersOnMap.length + 1)
-    addMarker(latLng, id, placeName, label)
+    addMarker(latLng, placeName, label)
     map.panTo(latLng)
   })
 }
@@ -147,59 +198,6 @@ function initMap () {
     let place = autocomplete.getPlace()
     placeDestinationBySearch(place, marker)
   })
-}
-
-let addDestination = function (latLng, id, placeName) {
-  let order = newTrip.destinationList.length + 1
-  let newDestination = new Destination(latLng, id, placeName, order)
-  newTrip.destinationList.push(newDestination)
-  saveToLocal()
-}
-
-let drawDestination = function (dest) {
-  let row = document.createElement('tr')
-  row.id = dest.id
-  row.className = 'destinationsTableRow'
-
-  let destNum = document.createElement('td')
-  destNum.innerHTML = String(dest.order)
-  destNum.classList.add('indexClass')
-  destNum.setAttribute('style', 'width: 10%')
-  row.appendChild(destNum)
-
-  let destPlace = document.createElement('td')
-  destPlace.innerHTML = dest.place
-  row.appendChild(destPlace)
-
-  let deleteButtonCell = document.createElement('td')
-  let deleteButton = document.createElement('i')
-  deleteButton.type = 'button'
-  deleteButton.value = ''
-  deleteButton.id = 'deleteButton'
-  deleteButton.className = 'fas'
-  deleteButton.classList.add('fa-trash-alt')
-  deleteButtonCell.appendChild(deleteButton)
-
-  row.appendChild(deleteButtonCell)
-  document.getElementById('destinationTable').appendChild(row)
-}
-
-let clearMarkers = function () {
-  for (let i = 0; i < markersOnMap.length; i++) {
-    markersOnMap[i].setMap(null)
-  }
-  markersOnMap = []
-}
-
-let renderMarkers = function () {
-  for (let j = 0; j < newTrip.destinationList.length; j++) {
-    let marker = new google.maps.Marker({
-      position: newTrip.destinationList[j].latLng,
-      map: map,
-      label: String(newTrip.destinationList[j].order)
-    })
-    markersOnMap.push(marker)
-  }
 }
 
 $(document).ready(function () {
@@ -252,26 +250,6 @@ $(document).on('click', '#deleteDestinations', function () {
   saveToLocal()
 })
 
-// upon page reload, this function is called
-function renderOnReload () {
-  if (sessionStorage.getItem('trip') !== null) {
-    getFromLocal()
-    for (let i = 0; i < newTrip.destinationList.length; i++) {
-      drawDestination(newTrip.destinationList[i])
-    }
-    renderMarkers()
-  }
-}
-
-let getTripTitle = function () {
-  let title = document.getElementById('formGroupExampleInput')
-  newTrip.title = title.value
-}
-
-let setTripTitle = function () {
-  document.getElementById('formGroupExampleInput').value = newTrip.title
-}
-
 $(document).on('click', '#saveTrip', function () {
   $.ajax({
     url: '/trip/data',
@@ -288,22 +266,23 @@ $(document).change('#formGroupExampleInput', function () {
   saveToLocal()
 })
 
-let clearsessionStorage = function () {
-  sessionStorage.clear()
+// upon page reload, this function is called
+function renderOnReload () {
+  if (window.sessionStorage.getItem('trip') !== null) {
+    getFromLocal()
+    for (let i = 0; i < newTrip.destinationList.length; i++) {
+      drawDestination(newTrip.destinationList[i])
+    }
+    renderMarkers()
+  }
 }
 
-// upon page reload, this function is called
-// let renderDestinations = function () {
-//   $('#indexTableBody').empty()
-//   $('#destinationsTableBody').empty()
-//   $.ajax({
-//     url: '/trip/data',
-//     method: 'GET',
-//     contentType: 'application/json',
-//     success: (res) => {
-//       for (let i = 0; i < res.destInputs.length; i++) {
-//         drawDestination(res.destInputs[i], res.destNames[i])
-//       }
-//     }
-//   })
-// }
+function saveToLocal () {
+  getTripTitle()
+  window.sessionStorage.setItem('trip', JSON.stringify(newTrip))
+}
+
+function getFromLocal () {
+  newTrip = JSON.parse(window.sessionStorage.getItem('trip'))
+  setTripTitle()
+}

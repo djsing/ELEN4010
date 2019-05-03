@@ -8,3 +8,7 @@ function updateProfile () {
 $(document).ready(function () {
   updateProfile()
 })
+
+function clearTripSessionStorage () {
+  window.sessionStorage.removeItem('trip')
+}
