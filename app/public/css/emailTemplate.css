@@ -4,9 +4,9 @@ body {
     margin: 0;
     padding: 0;
     -webkit-font-smoothing: antialiased;
-    mso-margin-top-alt: 0px;
+    /* mso-margin-top-alt: 0px;
     mso-margin-bottom-alt: 0px;
-    mso-padding-alt: 0px 0px 0px 0px;
+    mso-padding-alt: 0px 0px 0px 0px; */
 }
 
 p,
@@ -18,6 +18,9 @@ h4 {
     margin-bottom: 0;
     padding-top: 0;
     padding-bottom: 0;
+    font-family: "Nunito Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    font-weight: 300;
+    font-size: 80px;
 }
 
 span.preheader {
