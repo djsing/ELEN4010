@@ -11,11 +11,12 @@ let transporter = mailer.createTransport({
 
 let sendInvite = function (text) {
   let emailAddress = String(text)
+  let tripname = 'New Trip'
   let helperOptions = {
     from: '"Away We Go" <awaywegoinvites@gmail.com',
     to: emailAddress,
     subject: 'Invite to collaborate on a trip',
-    text: 'You have been invited to collaborate on a trip!'
+    html: { path: 'app/views/email templates/email.html' }
   }
 
   transporter.sendMail(helperOptions, (err, inf) => {

@@ -273,13 +273,6 @@ $(document).on('click', '#inviteEditorButton', function () {
   createInvitePopup()
   // Show the model popup
   $('.modal').show('slow')
-  $.ajax({
-    url: '/invite',
-    method: 'POST',
-    contentType: 'application/json',
-    success: function (res) {
-    }
-  })
 })
 
 $(document).on('click', '.close', function () {
