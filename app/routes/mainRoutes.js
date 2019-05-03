@@ -14,6 +14,7 @@ let authenticate = require('../models/authenticate')
 let termsModel = require('../models/termsAndConditionsModel')
 let tripManagerModel = require('../models/tripManagerModel')
 let tripModel = require('../models/tripModel')
+let mailManager = require('../models/email_manager')
 
 mainRouter.get('/', function (req, res) {
   res.sendFile('/index.html', { root: req.app.get('views') })
@@ -100,6 +101,10 @@ mainRouter.post('/auth', (req, res) => {
 
 mainRouter.get('*', function (req, res) {
   res.status(404).send('404 Error: page not found')
+})
+
+mainRouter.post('/invite', function (req, res) {
+  mailManager.sendInvite()
 })
 
 module.exports = mainRouter

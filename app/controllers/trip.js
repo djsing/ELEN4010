@@ -270,7 +270,13 @@ $('#saveTrip').on('click', function () {
 })
 
 $(document).on('click', '#inviteEditorButton', function () {
-  console.log('Inivte button pressed')
+  $.ajax({
+    url: '/invite',
+    method: 'POST',
+    contentType: 'application/json',
+    success: function (res) {
+    }
+  })
 })
 
 // upon page reload, this function is called

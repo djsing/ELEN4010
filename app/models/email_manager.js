@@ -1,5 +1,3 @@
-let fs = require('fs')
-let path = require('path')
 let mailer = require('nodemailer')
 let transporter = mailer.createTransport({
   host: 'smtp.gmail.com',
@@ -18,9 +16,13 @@ let helperOptions = {
   text: 'You have been invited to collaborate on a trip!'
 }
 
-transporter.sendMail(helperOptions, (err, inf) => {
-  if (err) {
-    return console.log(err)
-  }
-  console.log('The email got sent!')
-})
+let sendInvite = function () {
+  transporter.sendMail(helperOptions, (err, inf) => {
+    if (err) {
+      return console.log(err)
+    }
+    console.log('The email got sent!')
+  })
+}
+
+module.exports = { sendInvite }
