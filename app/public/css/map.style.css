@@ -167,3 +167,11 @@ input[type="text"].modal-element {
   display: none; 
   color: #9b3336;
 }
+
+#inviteSendHeader{
+  font-size: 40px;
+}
+
+#emailAddress { 
+  font-size: 30px;
+}

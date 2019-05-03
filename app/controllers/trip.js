@@ -270,6 +270,8 @@ $('#saveTrip').on('click', function () {
 })
 
 $(document).on('click', '#inviteEditorButton', function () {
+  createInvitePopup()
+  // Show the model popup
   $('.modal').show('slow')
   $.ajax({
     url: '/invite',
@@ -278,6 +280,11 @@ $(document).on('click', '#inviteEditorButton', function () {
     success: function (res) {
     }
   })
+})
+
+$(document).on('click', '.close', function () {
+  let modalBox = $('div.modal')
+  modalBox.hide()
 })
 
 $(document).on('click', '#inviteEmailAddressButton', function () {
@@ -292,16 +299,51 @@ $(document).on('click', '#inviteEmailAddressButton', function () {
     // Tell the user that an invalid email address has been entered
     $('#invalidEmailMessage').hide()
     $('#invalidEmailMessage').show('slow')
+  } else {
+    // Display to user that an invite has been sent to the desired email address
+    displayInviteSentMessage(emailAddress)
+    $.ajax({
+      url: '/invite',
+      method: 'POST',
+      contentType: 'application/json',
+      success: function (res) {
+      }
+    })
   }
-
-  $.ajax({
-    url: '/invite',
-    method: 'POST',
-    contentType: 'application/json',
-    success: function (res) {
-    }
-  })
 })
+
+let createInvitePopup = function () {
+  // Clear the existing modal area
+  $('#modalArea').empty()
+
+  // Create modal div
+  let modalDiv = $('<div class="modal"></div>')
+  $('#modalArea').append(modalDiv)
+
+  // Add the exit button
+  let exitButtonArea = $('<span class="close">&times;</span>')
+  modalDiv.append(exitButtonArea)
+
+  // Add header
+  let header = $('<h1> Invite A Group Member </h1>')
+  modalDiv.append(header)
+
+  // Add prompt text
+  let promptText = $('<p class="modal-element">Please type in the email address of a desired group member</p>')
+  modalDiv.append(promptText)
+
+  // Add email field
+  let emailField = $('<input class="modal-element" type="text" id="emailAddressField">')
+  modalDiv.append(emailField)
+
+  // Add invite button
+  let inviteButton = $('<input class="modal-element" type="button" value="Invite" id="inviteEmailAddressButton">')
+  modalDiv.append(inviteButton)
+
+  // Add invalid email message
+  let invalidEmailMessage = $('<p class="modal-element" id="invalidEmailMessage">The email address you have entered is invalid </p>')
+  modalDiv.append(invalidEmailMessage)
+}
 
 let isValidEmail = function (emailAddress) {
   // See if the email conforms to regex for emails
@@ -311,6 +353,25 @@ let isValidEmail = function (emailAddress) {
     return false
   }
   return true
+}
+
+let displayInviteSentMessage = function (emailAddress) {
+  // Empty the modal box
+  let modalBox = $('div.modal')
+  modalBox.empty()
+
+  // Add the exit button
+  let exitButtonArea = $('<span class="close">&times;</span>')
+  modalBox.append(exitButtonArea)
+
+  // Create invite sent header
+  let headerMessage = $('<h1 class="modal-element" id="inviteSendHeader">')
+  headerMessage.text('Group invite sent to:')
+  modalBox.append(headerMessage)
+
+  // Display email address
+  let emailAddressText = $('<p class="modal-element" id="emailAddress"> ' + emailAddress + ' </p>')
+  modalBox.append(emailAddressText)
 }
 
 // upon page reload, this function is called
