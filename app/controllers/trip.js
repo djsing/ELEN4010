@@ -8,29 +8,27 @@ class Destination {
     this.latLng = latLng
     this.id = id
     this.place = place
-    this.input = ''
+    this.name = ''
     this.order = order
   }
 }
 
-var generateTripId = function () {
+var generateid = function () {
   // Math.random should be unique because of its seeding algorithm.
   // Convert it to base 36 (numbers + letters), and grab the first 9 characters
   // after the decimal.
   return '_' + Math.random().toString(36).substr(2, 9)
 }
+
 class Trip {
   constructor () {
-    let tripTitle = ''
+    let title = ''
     let destinationList = []
-    let tripId = ''
+    let id = ''
   }
 }
 
 let newTrip = new Trip()
-newTrip.tripTitle = ''
-newTrip.destinationList = []
-newTrip.tripId = generateTripId()
 
 function saveToLocal () {
   getTripTitle()
@@ -274,11 +272,11 @@ function renderOnReload () {
 
 let getTripTitle = function () {
   let title = document.getElementById('formGroupExampleInput')
-  newTrip.tripTitle = title.value
+  newTrip.title = title.value
 }
 
 let setTripTitle = function () {
-  document.getElementById('formGroupExampleInput').value = newTrip.tripTitle
+  document.getElementById('formGroupExampleInput').value = newTrip.title
 }
 
 $(document).on('click', '#saveTrip', function () {

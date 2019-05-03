@@ -49,7 +49,7 @@ let pools = new mssql.ConnectionPool(config)
           hash varchar(255) NOT NULL
           )`)
   }).then(result => {
-    // console.log('user table created', result)
+    console.log('user table created', result)
   }).catch(err => {
     console.log('user table creation error', err)
   })
@@ -67,7 +67,7 @@ function createUser (userInfo, res) {
           '${info.firstName}',
           '${info.lastName}',
           '${info.emailAddress}',
-          ${info.image},
+           ${info.image},
           '${info.hash}')`)
     })
     // Send back the result
@@ -161,11 +161,12 @@ function findUser (userInfo, signin, res) {
     return pool.request()
       .query(`IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='destinations' and xtype='U')
           CREATE TABLE destinations (
-          dest_id int IDENTITY(1,1) PRIMARY KEY,
-          dest_name varchar(50),
-          dest_place varchar(50),
+          id int PRIMARY KEY, 
+          name varchar(50),
+          place varchar(255),
           latLng varchar(255),
-          dest_date date,
+          place_id varchar(255),
+          dest_order int,
           trip_id varchar(255),
           )`)
   }).then(result => {
@@ -175,35 +176,6 @@ function findUser (userInfo, signin, res) {
   })
 }
 )()
-
-function createDestination (destInfo, res) {
-  let info = destInfo
-  // console.log('create', info)
-  pools
-    // Run query
-    .then((pool) => {
-      return pool.request()
-        .query(`INSERT INTO destinations VALUES(
-          '${info.dest_name}',
-          '${info.dest_place}',
-          '${info.latLng}',
-          '${info.dest_date}',
-          '${info.trip_id}')`)
-    })
-    // Send back the result
-    .then(result => {
-      // console.log('create destinations', result)
-      // // some info doesn't need to be sent to front-end
-      // delete info.dest_id
-      // delete info.trip_id
-      // // console.log('lastly new', info)
-      // res.send(info)
-    })
-    // If there's an error, return that with some description
-    .catch(err => {
-      console.log('create destinations error', err)
-    })
-}
 
 function saveTrip (destList, res) {
   destList.forEach((dest) => {

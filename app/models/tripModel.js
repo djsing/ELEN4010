@@ -1,45 +1,22 @@
 'use strict'
 
-let db = require('./db')
-
-let destInputsInt = []
-let destNamesInt = []
-
-let storeItinerary = function (itinerary, res) {
-  db.saveTrip(itinerary, res)
-  // // Initialize destination array
-  // destInputsInt = []
-  // // Store new destinations into destinations array
-  // destInputs.forEach((dest) => {
-  //   destInputsInt.push(dest)
-  // })
-
-  // // Initialize destination array
-  // destNamesInt = []
-  // // Store new place names into place name array
-  // destNames.forEach((placeName) => {
-  //   destNamesInt.push(placeName)
-  // })
-}
-
-let getIntinerary = function () {
-  return {
-    'destInputs': destInputsInt,
-    'destNames': destNamesInt
+function populateDestinationTable (trip, res) {
+  let tripInfo = trip.body
+  let queryString = ''
+  for (let i = 0; i < tripInfo.destinationList.length; i++) {
+    queryString = queryString + `INSERT INTO destinations VALUES(
+      '${tripInfo.destinationList[i].id}',
+      '${tripInfo.destinationList[i].name}',
+      '${tripInfo.destinationList[i].place}',
+      '${tripInfo.destinationList[i].latLng}',
+      '${tripInfo.destinationList[i].placeId}',
+      '${tripInfo.destinationList[i].order}',
+      '${tripInfo.id}')
+      ;`
   }
-}
-
-let deleteDestination = function (destInput, destName) {
-  destInputsInt = destInputsInt.filter((value, index, array) => {
-    return value !== destInput
-  })
-  destNamesInt = destNamesInt.filter((value, index, array) => {
-    return value !== destName
-  })
+  console.log(queryString)
 }
 
 module.exports = {
-  storeItinerary,
-  getIntinerary,
-  deleteDestination
+  populateDestinationTable: populateDestinationTable
 }
