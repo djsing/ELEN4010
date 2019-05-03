@@ -2,8 +2,6 @@
 
 let map, service
 let markersOnMap = []
-let destinationList = []
-let tripTitle = ''
 
 class Destination {
   constructor (latLng, id, place, order) {
@@ -15,23 +13,32 @@ class Destination {
   }
 }
 
+var generateTripId = function () {
+  // Math.random should be unique because of its seeding algorithm.
+  // Convert it to base 36 (numbers + letters), and grab the first 9 characters
+  // after the decimal.
+  return '_' + Math.random().toString(36).substr(2, 9)
+}
 class Trip {
-  constructor (title, destinationList, tripId) {
-    this.title = title
-    this.destinationList = destinationList
-    this.tripId = tripId
+  constructor () {
+    let tripTitle = ''
+    let destinationList = []
+    let tripId = ''
   }
 }
 
+let newTrip = new Trip()
+newTrip.tripTitle = ''
+newTrip.destinationList = []
+newTrip.tripId = generateTripId()
+
 function saveToLocal () {
   getTripTitle()
-  localStorage.setItem('destinations', JSON.stringify(destinationList))
-  localStorage.setItem('title', JSON.stringify(tripTitle))
+  localStorage.setItem('trip', JSON.stringify(newTrip))
 }
 
 function getFromLocal () {
-  destinationList = JSON.parse(localStorage.getItem('destinations'))
-  tripTitle = JSON.parse(localStorage.getItem('title'))
+  newTrip = JSON.parse(localStorage.getItem('trip'))
   setTripTitle()
 }
 
@@ -43,7 +50,7 @@ function addMarker (latLng, id, placeName, label) {
   })
   markersOnMap.push(marker)
   addDestination(latLng, id, placeName)
-  drawDestination(destinationList[destinationList.length - 1])
+  drawDestination(newTrip.destinationList[newTrip.destinationList.length - 1])
 }
 
 function placeDestinationBySearch (place, marker) {
@@ -75,7 +82,7 @@ function placeDestinationBySearch (place, marker) {
 
   let id = (new Date()).getTime()
   let placeName = place.name
-  let label = String(destinationList.length + 1)
+  let label = String(newTrip.destinationList.length + 1)
   addMarker(place.geometry.location, id, placeName, label)
 }
 
@@ -151,12 +158,10 @@ function initMap () {
   })
 }
 
-// let saveTripTitle = function () {}
-
 let addDestination = function (latLng, id, placeName) {
-  let order = destinationList.length + 1
+  let order = newTrip.destinationList.length + 1
   let newDestination = new Destination(latLng, id, placeName, order)
-  destinationList.push(newDestination)
+  newTrip.destinationList.push(newDestination)
   saveToLocal()
 }
 
@@ -196,11 +201,11 @@ let clearMarkers = function () {
 }
 
 let renderMarkers = function () {
-  for (let j = 0; j < destinationList.length; j++) {
+  for (let j = 0; j < newTrip.destinationList.length; j++) {
     let marker = new google.maps.Marker({
-      position: destinationList[j].latLng,
+      position: newTrip.destinationList[j].latLng,
       map: map,
-      label: String(destinationList[j].order)
+      label: String(newTrip.destinationList[j].order)
     })
     markersOnMap.push(marker)
   }
@@ -214,13 +219,13 @@ $(document).ready(function () {
       $('.destinationsTableRow .indexClass').each(function (i) {
         let numbering = i + 1
         $(this).text(numbering)
-        for (let j = 0; j < destinationList.length; j++) {
-          if (destinationList[j].id === Number($(this)[0].parentNode.id)) {
-            destinationList[j].order = numbering
+        for (let j = 0; j < newTrip.destinationList.length; j++) {
+          if (newTrip.destinationList[j].id === Number($(this)[0].parentNode.id)) {
+            newTrip.destinationList[j].order = numbering
           }
         }
       })
-      destinationList.sort((a, b) => (a.order > b.order) ? 1 : -1)
+      newTrip.destinationList.sort((a, b) => (a.order > b.order) ? 1 : -1)
       clearMarkers()
       renderMarkers()
       saveToLocal()
@@ -231,14 +236,14 @@ $(document).ready(function () {
 $(document).on('click', '#deleteButton', function (e) {
   let id = $(this).parents('tr')[0].id
   $(this).parents('tr').remove()
-  let i = destinationList.length
+  let i = newTrip.destinationList.length
   while (i--) {
-    if (destinationList[i].id === Number(id)) {
-      destinationList.splice(i, 1)
+    if (newTrip.destinationList[i].id === Number(id)) {
+      newTrip.destinationList.splice(i, 1)
     }
   }
-  for (let j = destinationList.length - 1; j >= 0; j--) {
-    destinationList[j].order = Number(j + 1)
+  for (let j = newTrip.destinationList.length - 1; j >= 0; j--) {
+    newTrip.destinationList[j].order = Number(j + 1)
     $('.destinationsTableRow .indexClass').each(function (k) {
       let numbering = k + 1
       $(this).text(numbering)
@@ -252,39 +257,31 @@ $(document).on('click', '#deleteButton', function (e) {
 $(document).on('click', '#deleteDestinations', function () {
   clearMarkers()
   $('#destinationTable').empty()
-  destinationList = []
+  newTrip.destinationList = []
   saveToLocal()
 })
 
 // upon page reload, this function is called
 function renderOnReload () {
-  if (localStorage.getItem('destinations') !== null) {
+  if (localStorage.getItem('trip') !== null) {
     getFromLocal()
-    for (let i = 0; i < destinationList.length; i++) {
-      drawDestination(destinationList[i])
+    for (let i = 0; i < newTrip.destinationList.length; i++) {
+      drawDestination(newTrip.destinationList[i])
     }
     renderMarkers()
   }
 }
 
-var generateTripId = function () {
-  // Math.random should be unique because of its seeding algorithm.
-  // Convert it to base 36 (numbers + letters), and grab the first 9 characters
-  // after the decimal.
-  return '_' + Math.random().toString(36).substr(2, 9)
-}
-
 let getTripTitle = function () {
   let title = document.getElementById('formGroupExampleInput')
-  tripTitle = title.value
+  newTrip.tripTitle = title.value
 }
 
 let setTripTitle = function () {
-  document.getElementById('formGroupExampleInput').value = tripTitle
+  document.getElementById('formGroupExampleInput').value = newTrip.tripTitle
 }
 
 $(document).on('click', '#saveTrip', function () {
-  let newTrip = new Trip(tripTitle, destinationList, generateTripId())
   $.ajax({
     url: '/trip/data',
     method: 'POST',
