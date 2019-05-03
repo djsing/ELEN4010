@@ -132,7 +132,7 @@ td:hover{
   bottom: 22px!important;
 }
 
-.modal-content{
+.modal{
   background-color: #fff;
   border: 1px solid #424242;
   position: absolute;
@@ -145,4 +145,5 @@ td:hover{
   height: 40%;
   margin: 0 auto;
   z-index: 1;
+  display: none; 
 }

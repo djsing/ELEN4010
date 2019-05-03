@@ -270,6 +270,7 @@ $('#saveTrip').on('click', function () {
 })
 
 $(document).on('click', '#inviteEditorButton', function () {
+  $('.modal').show('slow')
   $.ajax({
     url: '/invite',
     method: 'POST',

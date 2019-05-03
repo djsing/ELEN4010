@@ -104,7 +104,7 @@ mainRouter.get('*', function (req, res) {
 })
 
 mainRouter.post('/invite', function (req, res) {
-  mailManager.sendInvite()
+  // mailManager.sendInvite()
 })
 
 module.exports = mainRouter
