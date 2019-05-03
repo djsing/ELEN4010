@@ -48,6 +48,10 @@ mainRouter.get(['/sign-in', '/login', '/signin'], function (req, res) {
 })
 
 mainRouter.get(['/trip', '/map'], function (req, res) {
+  // Session ID
+  if (req.session.isNew) {
+    req.session.views = (req.session.views || 0) + 1
+  }
   res.sendFile('/trip.html', { root: req.app.get('views') })
 })
 
