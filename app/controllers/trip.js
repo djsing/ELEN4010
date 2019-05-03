@@ -283,7 +283,14 @@ $(document).on('click', '#inviteEditorButton', function () {
 $(document).on('click', '#inviteEmailAddressButton', function () {
   let emailAddressField = $('#emailAddressField')
   let emailAddress = emailAddressField.val()
-  console.log(emailAddress)
+
+  // Validate the email address
+  // If it's valid, proceed to post it, if not, clear the field and warn the user
+  if (isValidEmail(emailAddress)) {
+    console.log('Valid email address')
+  } else {
+    console.log('Invalid email address')
+  }
   $.ajax({
     url: '/invite',
     method: 'POST',
@@ -292,6 +299,16 @@ $(document).on('click', '#inviteEmailAddressButton', function () {
     }
   })
 })
+
+let isValidEmail = function (emailAddress) {
+  // See if the email conforms to regex for emails
+  let regexForEmails = /[A-Z0-9._%+-]+@[A-Z0-9.-]+.[A-Z]{2,4}/igm
+
+  if (emailAddress === '' || !regexForEmails.test(emailAddress)) {
+    return false
+  }
+  return true
+}
 
 // upon page reload, this function is called
 // let renderDestinations = function () {
