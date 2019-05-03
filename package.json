@@ -40,6 +40,7 @@
     "express": "4.16.4",
     "google-auth-library": "^3.1.2",
     "mssql": "5.0.5",
+    "nodemailer": "^6.1.1",
     "serve-favicon": "^2.5.0"
   },
   "devDependencies": {
