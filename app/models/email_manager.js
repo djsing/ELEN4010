@@ -9,14 +9,15 @@ let transporter = mailer.createTransport({
   }
 })
 
-let helperOptions = {
-  from: '"Away We Go" <awaywegoinvites@gmail.com',
-  to: '1364103@students.wits.ac.za',
-  subject: 'Invite to collaborate on a trip',
-  text: 'You have been invited to collaborate on a trip!'
-}
+let sendInvite = function (text) {
+  let emailAddress = String(text)
+  let helperOptions = {
+    from: '"Away We Go" <awaywegoinvites@gmail.com',
+    to: emailAddress,
+    subject: 'Invite to collaborate on a trip',
+    text: 'You have been invited to collaborate on a trip!'
+  }
 
-let sendInvite = function () {
   transporter.sendMail(helperOptions, (err, inf) => {
     if (err) {
       return console.log(err)

@@ -300,13 +300,18 @@ $(document).on('click', '#inviteEmailAddressButton', function () {
     $('#invalidEmailMessage').hide()
     $('#invalidEmailMessage').show('slow')
   } else {
-    // Display to user that an invite has been sent to the desired email address
-    displayInviteSentMessage(emailAddress)
+    // Send the email address to the back-end server
+    let emailAddressObj = {
+      'emailAddress': emailAddress
+    }
     $.ajax({
       url: '/invite',
       method: 'POST',
       contentType: 'application/json',
+      data: JSON.stringify(emailAddressObj),
       success: function (res) {
+        // Display to user that an invite has been sent to the desired email address
+        displayInviteSentMessage(emailAddress)
       }
     })
   }
