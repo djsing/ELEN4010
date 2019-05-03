@@ -280,6 +280,19 @@ $(document).on('click', '#inviteEditorButton', function () {
   })
 })
 
+$(document).on('click', '#inviteEmailAddressButton', function () {
+  let emailAddressField = $('#emailAddressField')
+  let emailAddress = emailAddressField.val()
+  console.log(emailAddress)
+  $.ajax({
+    url: '/invite',
+    method: 'POST',
+    contentType: 'application/json',
+    success: function (res) {
+    }
+  })
+})
+
 // upon page reload, this function is called
 // let renderDestinations = function () {
 //   $('#indexTableBody').empty()
