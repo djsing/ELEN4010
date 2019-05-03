@@ -25,11 +25,11 @@ let newTrip = new Trip()
 
 function saveToLocal () {
   getTripTitle()
-  localStorage.setItem('trip', JSON.stringify(newTrip))
+  sessionStorage.setItem('trip', JSON.stringify(newTrip))
 }
 
 function getFromLocal () {
-  newTrip = JSON.parse(localStorage.getItem('trip'))
+  newTrip = JSON.parse(sessionStorage.getItem('trip'))
   setTripTitle()
 }
 
@@ -254,7 +254,7 @@ $(document).on('click', '#deleteDestinations', function () {
 
 // upon page reload, this function is called
 function renderOnReload () {
-  if (localStorage.getItem('trip') !== null) {
+  if (sessionStorage.getItem('trip') !== null) {
     getFromLocal()
     for (let i = 0; i < newTrip.destinationList.length; i++) {
       drawDestination(newTrip.destinationList[i])
@@ -288,8 +288,8 @@ $(document).change('#formGroupExampleInput', function () {
   saveToLocal()
 })
 
-let clearLocalStorage = function () {
-  localStorage.clear()
+let clearsessionStorage = function () {
+  sessionStorage.clear()
 }
 
 // upon page reload, this function is called
