@@ -42,12 +42,11 @@ let pools = new mssql.ConnectionPool(config)
       // This is only a test query, change it to whatever you need
       .query(`IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='users' and xtype='U')
           CREATE TABLE users (
-          user_id int IDENTITY(1,1) PRIMARY KEY,
           first_name varchar(50),
           last_name varchar(50),
           email_address varchar(50) NOT NULL,
           image_url varchar(255),
-          hash varchar(255) NOT NULL
+          hash varchar(255) PRIMARY KEY NOT NULL
           )`)
   }).then(result => {
     console.log('user table created', result)
@@ -73,11 +72,6 @@ function createUser (userInfo, res) {
     })
     // Send back the result
     .then(result => {
-      // console.log('create users', result)
-      // some info doesn't need to be sent to front-end
-      delete info.userID
-      delete info.hash
-      // console.log('lastly new', info)
       res.send(info)
     })
     // If there's an error, return that with some description
@@ -134,9 +128,7 @@ function findUser (userInfo, signin, res) {
           info.firstName = result.recordset[0].first_name
           info.lastName = result.recordset[0].last_name
           info.emailAddress = result.recordset[0].email_address
-          // some info doesn't need to be sent to front-end
-          delete info.userID
-          delete info.hash
+          info.hash = result.recordset[0].hash
           // console.log('lastly current', info)
           res.send(info)
         } else {
