@@ -149,3 +149,16 @@ td:hover{
   display: none; 
   text-align: center;
 }
+
+p.modal-element {
+  padding: 20px;
+}
+
+input.modal-element {
+  padding: 10px;
+  margin-top: 2%;
+}
+
+input[type="text"].modal-element {
+  width: 400px
+}
