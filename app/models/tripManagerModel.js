@@ -1,28 +1,17 @@
-let tripTitles = []
+'use strict'
 
-let saveTripTitle = function (tripTitle) {
-  tripTitles.push(tripTitle)
-}
+let db = require('./db')
 
-let getTripTitles = function () {
-  tripTitles.sort()
-  return { 'tripTitles': tripTitles }
-}
+function createTripQuery (trip, res) {
+  let tripInfo = trip.body
+  let queryString = `DELETE FROM trips WHERE id = ${tripInfo.id};`
+  queryString = queryString + `INSERT INTO trips VALUES(
+      '${tripInfo.id}',
+      '${tripInfo.title}');`
 
-let removeTrip = function (tripTitle) {
-  tripTitles = tripTitles.filter((value, index, array) => {
-    return value !== tripTitle
-  })
-}
-
-let updateTrip = function (oldTripTitle, newTripTitle) {
-  let index = tripTitles.findIndex((title) => { return title === oldTripTitle })
-  tripTitles[index] = newTripTitle
+  db.populateTripsTable(res, queryString)
 }
 
 module.exports = {
-  saveTripTitle,
-  getTripTitles,
-  removeTrip,
-  updateTrip
+  createTripQuery: createTripQuery
 }

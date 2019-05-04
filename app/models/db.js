@@ -202,11 +202,28 @@ function populateDestionationsTable (res, queryString) {
 }
 )()
 
+function populateTripsTable (res, queryString) {
+  pools
+    .then(pool => {
+      console.log('populate query string: ', queryString)
+      return pool.request()
+        .query(queryString)
+    })
+    .then(result => {
+      console.log('population result ', result)
+      res.send('TripsTablePopulated')
+    })
+    .catch(err => {
+      console.log('populate trips table error:', err)
+    })
+}
+
 module.exports = {
   sql: mssql,
   pools: pools,
   isConnected: isConnected,
   connectionError: connectionError,
   findUser: findUser,
-  populateDestionationsTable: populateDestionationsTable
+  populateDestionationsTable: populateDestionationsTable,
+  populateTripsTable: populateTripsTable
 }

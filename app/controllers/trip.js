@@ -221,6 +221,15 @@ $(document).on('click', '#saveTrip', function () {
       console.log(res)
     }
   })
+  $.ajax({
+    url: '/trip-manager/data',
+    method: 'POST',
+    contentType: 'application/json',
+    data: JSON.stringify(newTrip),
+    success: function (res) {
+      console.log(res)
+    }
+  })
 })
 
 $(document).ready(function () {
