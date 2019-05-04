@@ -1,4 +1,9 @@
 let mailer = require('nodemailer')
+let fs = require('fs')
+
+let tripname = 'Family Getaway'
+let htmlPage = eval('`' + fs.readFileSync('email.html', 'utf8') + '`')
+
 let transporter = mailer.createTransport({
   host: 'smtp.gmail.com',
   secure: true,
@@ -14,9 +19,10 @@ let sendInvite = function (text) {
   let tripname = 'New Trip'
   let helperOptions = {
     from: '"Away We Go" <awaywegoinvites@gmail.com',
-    to: emailAddress,
+    to: '1364103@students.wits.ac.za',
     subject: 'Invite to collaborate on a trip',
-    html: { path: 'app/views/email templates/email.html' }
+    html: htmlPage
+    // html: { path: 'app/views/email templates/email.html' }
   }
 
   transporter.sendMail(helperOptions, (err, inf) => {
@@ -26,5 +32,7 @@ let sendInvite = function (text) {
     console.log('The email got sent!')
   })
 }
+
+sendInvite()
 
 module.exports = { sendInvite }
