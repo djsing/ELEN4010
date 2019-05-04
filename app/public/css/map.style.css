@@ -21,13 +21,6 @@ fixed-height {
   max-height: 660px;
 }
 
-/* #mainContainer {
-  min-width: 100%;
-  min-height: 100%;
-  max-width: none;
-} */
-
-/* Makes the sample page fill the window. */
 html, body {
   height: 100%;
   margin: 0;
@@ -124,6 +117,7 @@ table {
 
 .form-control {
   display: inline;
+  padding: 0.5rem 1.5rem;
 }
 
 #saveTrip {
@@ -146,9 +140,21 @@ table {
   border-color: #919aa1!important;
 }
 
+.destinationLabelClass {
+  cursor:pointer;
+}
+
 #success-alert {
   width: 180px;
   position: absolute!important;
   right: 40px;
   bottom: 70px!important;
+}
+
+#deleteDestinations .svg-inline--fa {
+  font-size: 20px;
+}
+
+#tripNameForm {
+  width: 100%;
 }

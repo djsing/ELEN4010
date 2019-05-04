@@ -1,3 +1,5 @@
+'use strict'
+
 let countries = {
   'au': {
     center: { lat: -25.3, lng: 133.8 },
@@ -79,6 +81,10 @@ function randomBetween (min, max) {
 let randomProperty = function (obj) {
   let keys = Object.keys(obj)
   return obj[ keys[ keys.length * Math.random() << 0 ] ]
+}
+
+function randomLocation () {
+  return randomProperty(countries)
 }
 
 $(document).ready(function () {

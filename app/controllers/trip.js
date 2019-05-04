@@ -1,11 +1,14 @@
 'use strict'
 
+const $ = window.$
+
 class Destination {
-  constructor (latLng, place, order) {
+  constructor (latLng, place, placeID, order) {
     this.latLng = latLng
     this.id = (new Date()).getTime()
     this.place = place
     this.name = ''
+    this.placeID = placeID
     this.order = order
   }
 }
@@ -21,34 +24,49 @@ class Trip {
 // Declare global variables
 let map, service
 let newTrip = new Trip()
-let startLocation = randomProperty(countries)
-// let startLocation = {
-//   center: { lat: 10, lng: 330 },
-//   zoom: 2.8
-// }
+let startLocation = {
+  center: { lat: 10, lng: 330 },
+  zoom: 2.8
+}
 
 function getTripTitle () {
-  let title = document.getElementById('formGroupExampleInput')
+  let title = document.getElementById('tripNameFormInput')
   newTrip.title = title.value
 }
 
 function setTripTitle () {
-  document.getElementById('formGroupExampleInput').value = newTrip.title
+  document.getElementById('tripNameFormInput').value = newTrip.title
+}
+
+function getDestinationInputNames () {
+  // for (let i = 0; i < newTrip.destinationList.length; i++) {
+//     if (newTrip.destinationList[i].id === Number($(this)[0].parentNode.id)) {
+//       newTrip.destinationList[i].order = numbering
+//     }
+}
+
+function setDestinationInputNames () {
+  // for (let i = 0; i < newTrip.destinationList.length; i++) {
+//     if (newTrip.destinationList[i].id === Number($(this)[0].parentNode.id)) {
+//       newTrip.destinationList[i].order = numbering
+//     }
 }
 
 function saveToLocal () {
   getTripTitle()
+  getDestinationInputNames()
   window.sessionStorage.setItem('trip', JSON.stringify(newTrip))
 }
 
 function getFromLocal () {
   newTrip = JSON.parse(window.sessionStorage.getItem('trip'))
   setTripTitle()
+  setDestinationInputNames()
 }
 
-let addDestination = function (latLng, placeName) {
+let addDestination = function (latLng, placeName, placeID) {
   let order = newTrip.destinationList.length + 1
-  let newDestination = new Destination(latLng, placeName, order)
+  let newDestination = new Destination(latLng, placeName, placeID, order)
   newTrip.destinationList.push(newDestination)
   saveToLocal()
   $('#deleteDestinations').show()
@@ -72,8 +90,11 @@ function placeDestinationBySearch (place, marker) {
   marker.setVisible(false)
 
   let placeName = place.name
+  let placeID = place.place_id
   let label = String(newTrip.destinationList.length + 1)
   addMarker(place.geometry.location, placeName, label)
+  addDestination(latLng, placeName, placeID)
+  drawDestination(newTrip.destinationList[newTrip.destinationList.length - 1])
 }
 
 function placeDestinationByClick (latLng) {
@@ -86,16 +107,20 @@ function placeDestinationByClick (latLng) {
   }
 
   let destinationName = 'Destination'
+  let placeID = ''
   service = new google.maps.places.PlacesService(map)
   service.nearbySearch(request, function (results, status) {
     if (status === google.maps.places.PlacesServiceStatus.OK) {
       // ToDo some checks for valid info here, sort and process for sensible name
       destinationName = results[0].name
+      placeID = results[0].place_id
     }
 
     let placeName = destinationName
     let label = String(markersOnMap.length + 1)
     addMarker(latLng, placeName, label)
+    addDestination(latLng, placeName, placeID)
+    drawDestination(newTrip.destinationList[newTrip.destinationList.length - 1])
     map.panTo(latLng)
   })
 }
@@ -195,11 +220,11 @@ $(document).on('click', '#deleteButton', function (e) {
   }
 })
 
-$(document).on('click', '.destinationClass', function (e) {
+$(document).on('click', '.destinationLabelClass', function (e) {
   let id = $(this).parents('tr')[0].id
   let dest = newTrip.destinationList.find(function (obj) { return obj.id === Number(id) })
   map.panTo(dest.latLng)
-  map.setZoom(10)
+  map.setZoom(16)
   // markersOnMap[dest.order - 1].setAnimation(google.maps.Animation.BOUNCE)
 })
 
@@ -232,7 +257,11 @@ $(document).ready(function () {
   })
 })
 
-$(document).change('#formGroupExampleInput', function () {
+$(document).change('#tripNameFormInput', function () {
+  saveToLocal()
+})
+
+$(document).change('.destinationInputClass', function () {
   saveToLocal()
 })
 
@@ -254,5 +283,7 @@ function renderOnReload () {
       }
       map.fitBounds(bounds)
     }
+  } else {
+    startLocation = randomLocation
   }
 }

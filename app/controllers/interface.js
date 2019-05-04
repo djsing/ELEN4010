@@ -10,22 +10,43 @@ let drawDestination = function (dest) {
   let destNum = document.createElement('td')
   destNum.innerHTML = String(dest.order)
   destNum.classList.add('indexClass')
-  destNum.setAttribute('style', 'width: 20%')
+  destNum.setAttribute('style', 'width: 10%')
   row.appendChild(destNum)
 
-  let destPlace = document.createElement('td')
-  destPlace.innerHTML = dest.place
-  destPlace.classList.add('destinationClass')
-  row.appendChild(destPlace)
+  let destPlaceCell = document.createElement('td')
+  destPlaceCell.classList.add('destinationClass')
+  destPlaceCell.setAttribute('style', 'width: 80%')
+
+  let destInput = document.createElement('input')
+  destInput.classList.add('destinationInputClass')
+  destInput.setAttribute('style', 'font-size: 1rem; padding: 0.5rem 0rem;background-color: #fff0;')
+  destInput.type = 'text'
+  destInput.className = 'form-control'
+  // destInput.id = 'destinationInput'
+  destInput.setAttribute('placeholder', 'Destination name...')
+
+  let destLabel = document.createElement('label')
+  destLabel.classList.add('destinationLabelClass')
+  destLabel.setAttribute('style', 'font-size: 0.75rem;color: #aaa;')
+
+  destLabel.innerHTML = dest.place
+  destPlaceCell.appendChild(destInput)
+  destPlaceCell.appendChild(destLabel)
+
+  row.appendChild(destPlaceCell)
 
   let deleteButtonCell = document.createElement('td')
+  deleteButtonCell.className = 'deleteClass'
+  deleteButtonCell.setAttribute('style', 'width: 10%')
+
   let deleteButton = document.createElement('i')
   deleteButton.type = 'button'
   deleteButton.value = ''
   deleteButton.id = 'deleteButton'
   deleteButton.className = 'fas'
   deleteButton.classList.add('fa-trash-alt')
-  deleteButton.setAttribute('style', 'float: right; cursor: pointer')
+  deleteButton.setAttribute('style', 'float: right; position: relative; top: 20px; right: 5px; cursor: pointer; font-size: 1.5rem;')
+
   deleteButtonCell.appendChild(deleteButton)
 
   row.appendChild(deleteButtonCell)
@@ -40,8 +61,6 @@ function addMarker (latLng, placeName, label) {
     // animation: google.maps.Animation.DROP
   })
   markersOnMap.push(marker)
-  addDestination(latLng, placeName)
-  drawDestination(newTrip.destinationList[newTrip.destinationList.length - 1])
 }
 
 let clearMarkers = function () {
