@@ -192,7 +192,7 @@ function populateDestionationsTable (res, queryString) {
       .query(`IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='trips' and xtype='U')
           CREATE TABLE trips (
           id varchar(255), 
-          name varchar(50)
+          title varchar(50)
           )`)
   }).then(result => {
     console.log('trips table created', result)
@@ -217,6 +217,22 @@ function populateTripsTable (res, queryString) {
       console.log('populate trips table error:', err)
     })
 }
+
+(function createGroupsTable () {
+  pools.then((pool) => {
+    return pool.request()
+      .query(`IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='groups' and xtype='U')
+          CREATE TABLE groups (
+          user_hash varchar(255), 
+          trip_id varchar(255)
+          )`)
+  }).then(result => {
+    console.log('groups table created', result)
+  }).catch(err => {
+    console.log('groups table creation error', err)
+  })
+}
+)()
 
 module.exports = {
   sql: mssql,
