@@ -234,6 +234,22 @@ function populateTripsTable (res, queryString) {
 }
 )()
 
+function populateGroupsTable (res, queryString) {
+  pools
+    .then(pool => {
+      console.log('populate query string: ', queryString)
+      return pool.request()
+        .query(queryString)
+    })
+    .then(result => {
+      console.log('population result ', result)
+      res.send('GroupsTablePopulated')
+    })
+    .catch(err => {
+      console.log('populate groups table error:', err)
+    })
+}
+
 module.exports = {
   sql: mssql,
   pools: pools,
@@ -241,5 +257,6 @@ module.exports = {
   connectionError: connectionError,
   findUser: findUser,
   populateDestionationsTable: populateDestionationsTable,
-  populateTripsTable: populateTripsTable
+  populateTripsTable: populateTripsTable,
+  populateGroupsTable: populateGroupsTable
 }
