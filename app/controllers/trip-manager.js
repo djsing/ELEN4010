@@ -77,18 +77,11 @@ let addTitleEntry = function (title) {
 
 $(function () {
   $(document).ready(() => {
-    // $.ajax({
-    //   url: '/trip-manager/data',
-    //   method: 'GET',
-    //   contentType: 'application/json',
-    //   data: JSON.stringify({ 'tripTitle': tripTitle }),
-    //   success: function (res) {
-    //     $('#tripTitleTable').empty()
-    //     res.tripTitles.forEach((title) => {
-    //       addTitleEntry(title)
-    //     })
-    //   }
-    // })
+    getFromLocal()
+    for (let i = 0; i < trips.length; i++) {
+      let tripTitle = trips[i].title
+      addTitleEntry(tripTitle)
+    }
   })
 
   $('#addButton').click(() => {
