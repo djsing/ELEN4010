@@ -19,6 +19,7 @@ let config = {
     idleTimeoutMillis: 30000
   }
 }
+
 // Get a mssql connection instance
 let isConnected = true
 let connectionError = null
@@ -41,15 +42,14 @@ let pools = new mssql.ConnectionPool(config)
       // This is only a test query, change it to whatever you need
       .query(`IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='users' and xtype='U')
           CREATE TABLE users (
-          user_id int IDENTITY(1,1) PRIMARY KEY,
           first_name varchar(50),
           last_name varchar(50),
           email_address varchar(50) NOT NULL,
           image_url varchar(255),
-          hash varchar(255) NOT NULL
+          hash varchar(255) PRIMARY KEY NOT NULL
           )`)
   }).then(result => {
-    // console.log('user table created', result)
+    console.log('user table created', result)
   }).catch(err => {
     console.log('user table creation error', err)
   })
@@ -67,16 +67,11 @@ function createUser (userInfo, res) {
           '${info.firstName}',
           '${info.lastName}',
           '${info.emailAddress}',
-          ${info.image},
+           ${info.image},
           '${info.hash}')`)
     })
     // Send back the result
     .then(result => {
-      // console.log('create users', result)
-      // some info doesn't need to be sent to front-end
-      delete info.userID
-      delete info.hash
-      // console.log('lastly new', info)
       res.send(info)
     })
     // If there's an error, return that with some description
@@ -133,9 +128,7 @@ function findUser (userInfo, signin, res) {
           info.firstName = result.recordset[0].first_name
           info.lastName = result.recordset[0].last_name
           info.emailAddress = result.recordset[0].email_address
-          // some info doesn't need to be sent to front-end
-          delete info.userID
-          delete info.hash
+          info.hash = result.recordset[0].hash
           // console.log('lastly current', info)
           res.send(info)
         } else {
@@ -161,12 +154,13 @@ function findUser (userInfo, signin, res) {
     return pool.request()
       .query(`IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='destinations' and xtype='U')
           CREATE TABLE destinations (
-          dest_id int IDENTITY(1,1) PRIMARY KEY,
-          dest_name varchar(50),
-          dest_place varchar(50),
+          id varchar(255) PRIMARY KEY, 
+          name varchar(50),
+          place varchar(255),
           latLng varchar(255),
-          dest_date date,
-          trip_id varchar(255),
+          place_id varchar(255),
+          dest_order int,
+          trip_id varchar(255)
           )`)
   }).then(result => {
     console.log('destinations table created', result)
@@ -176,47 +170,20 @@ function findUser (userInfo, signin, res) {
 }
 )()
 
-function createDestination (destInfo, res) {
-  let info = destInfo
-  // console.log('create', info)
+function populateDestionationsTable (res, queryString) {
   pools
-    // Run query
-    .then((pool) => {
+    .then(pool => {
+      console.log('populate QS: ', queryString)
       return pool.request()
-        .query(`INSERT INTO destinations VALUES(
-          '${info.dest_name}',
-          '${info.dest_place}',
-          '${info.latLng}',
-          '${info.dest_date}',
-          '${info.trip_id}')`)
+        .query(queryString)
     })
-    // Send back the result
     .then(result => {
-      // console.log('create destinations', result)
-      // // some info doesn't need to be sent to front-end
-      // delete info.dest_id
-      // delete info.trip_id
-      // // console.log('lastly new', info)
-      // res.send(info)
+      console.log('population result ', result)
+      res.send('DestinationTablePopulated')
     })
-    // If there's an error, return that with some description
     .catch(err => {
-      console.log('create destinations error', err)
+      console.log('populate destination table error:', err)
     })
-}
-
-function saveTrip (destList, res) {
-  destList.forEach((dest) => {
-    let destInfo = {
-      dest_name: dest.input,
-      dest_place: dest.place,
-      latLng: dest.latLng,
-      dest_date: '2008-11-11',
-      trip_id: ''
-    }
-    createDestination(destInfo, res)
-    // console.log(destInfo.la)
-  })
 }
 
 module.exports = {
@@ -225,5 +192,5 @@ module.exports = {
   isConnected: isConnected,
   connectionError: connectionError,
   findUser: findUser,
-  saveTrip: saveTrip
+  populateDestionationsTable: populateDestionationsTable
 }

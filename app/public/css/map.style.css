@@ -107,27 +107,48 @@ h1, .h1 {
 
 td:hover{
   cursor:move;
-  }
-
-  table {
-    table-layout: fixed;
-    /* word-wrap: break-word; */
 }
 
-#tripTitle {
+tr:hover{
+  background-color: #e8e8e861;
+}
+
+table {
+  table-layout: fixed;
+  /* word-wrap: break-word; */
+}
+
+#tripTitle  {
   padding: 25px
+}
+
+.form-control {
+  display: inline;
 }
 
 #saveTrip {
   position: absolute!important;
-  right: 40px;
+  right: 38px;
   bottom: 20px!important;
+  border-style: solid;
+  border-width: 1px!important;
+  border-color: #919aa1!important;
 }
 
 #deleteDestinations {
   position: absolute!important;
   width: 50px;
-  height: 44px;
+  height: 50px;
   right: 180px;
-  bottom: 22px!important;
+  bottom: 20px!important;
+  border-style: solid;
+  border-width: 1px!important;
+  border-color: #919aa1!important;
+}
+
+#success-alert {
+  width: 180px;
+  position: absolute!important;
+  right: 40px;
+  bottom: 70px!important;
 }
