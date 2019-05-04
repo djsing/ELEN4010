@@ -16,7 +16,8 @@ function saveToLocal () {
 }
 
 function getFromLocal () {
-  trips = JSON.parse(window.localStorage.getItem('trips'))
+  let temp = JSON.parse(window.localStorage.getItem('trips'))
+  if (temp === null) { trips = [] } else { trips = temp }
 }
 
 let addTitleInputField = function () {
@@ -97,27 +98,22 @@ $(function () {
     addTitleEntry(tripTitle)
     newTrip.title = tripTitle
     trips.push(newTrip)
-    console.log(trips)
     saveToLocal()
+
+    $.ajax({
+      url: '/trip-manager/data',
+      method: 'POST',
+      contentType: 'application/json',
+      data: JSON.stringify(newTrip),
+      success: function (res) {
+      }
+    })
 
     $('#saveTripButton').remove()
     $('#tripTitleInputField').remove()
     $('#addButton').show()
   })
 })
-
-// $.ajax({
-//   url: '/trip-manager/data',
-//   method: 'POST',
-//   contentType: 'application/json',
-//   data: JSON.stringify({ 'tripTitle': tripTitle }),
-//   success: function (res) {
-//     $('#tripTitleTable').empty()
-//     res.tripTitles.forEach((title) => {
-//       addTitleEntry(title)
-//     })
-//   }
-// })
 
 // $('table').on('click', '.deleteButton', function () {
 //   let oldRow = $(this).closest('tr')
