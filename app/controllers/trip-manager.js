@@ -39,44 +39,44 @@ let addEditBtnToTitle = function (title, row) {
   row.appendChild(newEntry)
 }
 
-let addDeleteBtnToTitle = function (title, row) {
-  let newEntry = document.createElement('td')
-  let newButton = document.createElement('input')
-  newButton.type = 'button'
-  newButton.value = 'Delete'
-  newButton.className = 'deleteButton'
-  newButton.id = title
-  $('#title').on('click', () => {
-  })
-  row.appendChild(newButton)
-}
+// let addDeleteBtnToTitle = function (title, row) {
+//   let newEntry = document.createElement('td')
+//   let newButton = document.createElement('input')
+//   newButton.type = 'button'
+//   newButton.value = 'Delete'
+//   newButton.className = 'deleteButton'
+//   newButton.id = title
+//   $('#title').on('click', () => {
+//   })
+//   row.appendChild(newButton)
+// }
 
 let addTitleEntry = function (title) {
   let newRow = document.createElement('tr')
   addTitleDiplayField(title, newRow)
   addEditBtnToTitle(title, newRow)
-  addDeleteBtnToTitle(title, newRow)
+  // addDeleteBtnToTitle(title, newRow)
   $('#tripTitleTable').append(newRow)
 }
 
-let addSaveEditButton = function (tableCell) {
-  let newButton = document.createElement('input')
-  newButton.value = 'Save'
-  newButton.type = 'submit'
-  newButton.className = 'saveEdit'
-  newButton.addEventListener('click', () => {
-  })
-  tableCell.append(newButton)
-}
+// let addSaveEditButton = function (tableCell) {
+//   let newButton = document.createElement('input')
+//   newButton.value = 'Save'
+//   newButton.type = 'submit'
+//   newButton.className = 'saveEdit'
+//   newButton.addEventListener('click', () => {
+//   })
+//   tableCell.append(newButton)
+// }
 
-let addEditButton = function (title, tableCell) {
-  let newButton = document.createElement('input')
-  newButton.type = 'button'
-  newButton.value = 'Edit'
-  newButton.className = 'editButton'
-  newButton.id = title
-  tableCell.append(newButton)
-}
+// let addEditButton = function (title, tableCell) {
+//   let newButton = document.createElement('input')
+//   newButton.type = 'button'
+//   newButton.value = 'Edit'
+//   newButton.className = 'editButton'
+//   newButton.id = title
+//   tableCell.append(newButton)
+// }
 
 $(function () {
   $(document).ready(() => {
@@ -120,59 +120,59 @@ $(function () {
     $('#addButton').show()
   })
 
-  $('table').on('click', '.deleteButton', function () {
-    let oldRow = $(this).closest('tr')
-    let titleInput = oldRow.find('input.titleField')
-    let title = titleInput.val()
-    $.ajax({
-      url: '/trip-manager/data',
-      method: 'DELETE',
-      contentType: 'application/json',
-      data: JSON.stringify({ 'tripTitle': title }),
-      success: function (res) {
-        $('#tripTitleTable').empty()
-        res.tripTitles.forEach((title) => {
-          addTitleEntry(title)
-        })
-      }
-    })
+  // $('table').on('click', '.deleteButton', function () {
+  //   let oldRow = $(this).closest('tr')
+  //   let titleInput = oldRow.find('input.titleField')
+  //   let title = titleInput.val()
+  //   $.ajax({
+  //     url: '/trip-manager/data',
+  //     method: 'DELETE',
+  //     contentType: 'application/json',
+  //     data: JSON.stringify({ 'tripTitle': title }),
+  //     success: function (res) {
+  //       $('#tripTitleTable').empty()
+  //       res.tripTitles.forEach((title) => {
+  //         addTitleEntry(title)
+  //       })
+  //     }
+  //   })
 
-    oldRow.remove()
-  })
+  //   oldRow.remove()
+  // })
 
-  $('table').on('click', '.editButton', function () {
-    let oldRow = $(this).closest('tr')
-    let titleInput = oldRow.find('input.titleField')
-    titleInput.attr('disabled', false)
+  // $('table').on('click', '.editButton', function () {
+  //   let oldRow = $(this).closest('tr')
+  //   let titleInput = oldRow.find('input.titleField')
+  //   titleInput.attr('disabled', false)
 
-    let tableEntry = $(this).parent()
-    tableEntry.empty()
-    addSaveEditButton(tableEntry)
-  })
+  //   let tableEntry = $(this).parent()
+  //   tableEntry.empty()
+  //   addSaveEditButton(tableEntry)
+  // })
 
-  $('table').on('click', '.saveEdit', function () {
-    let oldRow = $(this).closest('tr')
-    let titleInput = oldRow.find('input.titleField')
-    let oldTripTitle = titleInput.attr('id')
-    let newTripTitle = titleInput.val()
-    titleInput.attr('disabled', true)
+  // $('table').on('click', '.saveEdit', function () {
+  //   let oldRow = $(this).closest('tr')
+  //   let titleInput = oldRow.find('input.titleField')
+  //   let oldTripTitle = titleInput.attr('id')
+  //   let newTripTitle = titleInput.val()
+  //   titleInput.attr('disabled', true)
 
-    $.ajax({
-      url: '/trip-manager/data',
-      method: 'PUT',
-      contentType: 'application/json',
-      data: JSON.stringify({ 'oldTripTitle': oldTripTitle,
-        'newTripTitle': newTripTitle }),
-      success: function (res) {
-        $('#tripTitleTable').empty()
-        res.tripTitles.forEach((title) => {
-          addTitleEntry(title)
-        })
-      }
-    })
+  //   $.ajax({
+  //     url: '/trip-manager/data',
+  //     method: 'PUT',
+  //     contentType: 'application/json',
+  //     data: JSON.stringify({ 'oldTripTitle': oldTripTitle,
+  //       'newTripTitle': newTripTitle }),
+  //     success: function (res) {
+  //       $('#tripTitleTable').empty()
+  //       res.tripTitles.forEach((title) => {
+  //         addTitleEntry(title)
+  //       })
+  //     }
+  //   })
 
-    let tableEntry = $(this).parent()
-    tableEntry.empty()
-    addEditButton(newTripTitle, tableEntry)
-  })
+  //   let tableEntry = $(this).parent()
+  //   tableEntry.empty()
+  //   addEditButton(newTripTitle, tableEntry)
+  // })
 })
