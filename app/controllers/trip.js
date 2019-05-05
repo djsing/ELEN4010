@@ -18,6 +18,17 @@ class Trip {
   }
 }
 
+class LogEvent {
+  constructor (id, who, what, date, time, importance) {
+    this.id = id
+    this.who = who
+    this.what = what
+    this.date = date
+    this.time = time
+    this.importance = importance
+  }
+}
+
 // Declare global variables
 let map, service
 let newTrip = new Trip()
