@@ -52,6 +52,7 @@ html, body {
   outline: none;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
   background-color: #fff;
+  width: 95%;
   /* font-family: Roboto; */
 }
 
@@ -79,7 +80,7 @@ html, body {
   margin-left: 12px;
   padding: 0 12px 0 12px;
   text-overflow: ellipsis;
-  width: 200px;
+  width: 98%;
 }
 
 #pac-input:focus {

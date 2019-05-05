@@ -126,18 +126,26 @@ function placeDestinationByClick (latLng) {
 }
 
 function initMap () {
+  let styledSilverMapType = new google.maps.StyledMapType((silverMapType), { name: 'Silver Map' })
+  let styledDarkMapType = new google.maps.StyledMapType((darkMapType), { name: 'Dark Map' })
+
   map = new google.maps.Map(document.getElementById('map'), {
     center: startLocation.center,
     zoom: startLocation.zoom,
-    mapTypeControl: true,
+    mapTypeControl: false,
     panControl: false,
     zoomControl: false,
     streetViewControl: false,
     fullscreenControl: false,
     draggableCursor: 'default',
-    mapTypeId: 'roadmap'
+    mapTypeId: 'styled_map'
+    // mapTypeControlOptions: {
+    //   mapTypeIds: ['roadmap', 'satellite', 'hybrid', 'terrain', 'styled_map']
+    // }
   })
   map.setTilt(45)
+  map.mapTypes.set('styled_map', styledSilverMapType)
+  map.setMapTypeId('styled_map')
 
   let card = document.getElementById('pac-card')
   let input = document.getElementById('pac-input')
