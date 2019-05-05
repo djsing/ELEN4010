@@ -6,6 +6,7 @@ class Trip {
   constructor () {
     this.title = ''
     this.user = JSON.parse(window.sessionStorage.getItem('Hash'))
+    this.destinationList = []
     this.id = (new Date()).getTime()
   }
 }
