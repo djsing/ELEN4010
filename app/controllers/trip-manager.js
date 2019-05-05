@@ -1,7 +1,6 @@
 'use strict'
 
 const $ = window.$
-let trips = []
 
 class Trip {
   constructor () {
@@ -67,6 +66,11 @@ let addTitleEntry = function (title) {
   $('#tripTitleTable').append(newRow)
 }
 
+let tripTitleExists = function (tripTitle) {
+  let trips = window.sessionStorage.getItem('tripList')
+  if (trips.includes(tripTitle)) { return true } else { return false }
+}
+
 $(function () {
   $(document).ready(() => {
     $.ajax({
@@ -75,12 +79,23 @@ $(function () {
       contentType: 'application/json',
       data: JSON.stringify({ userHash: window.sessionStorage.getItem('Hash') }),
       success: function (res) {
+        window.sessionStorage.setItem('tripList', JSON.stringify(res))
         for (let i = 0; i < res.length; i++) {
           addTitleEntry(res[i].title)
         }
       }
     })
   })
+
+  // $('table').on('click', '.editButton', function () {
+  //   let oldRow = $(this).closest('tr')
+  //   // let titleInput = oldRow.find('input.titleField')
+  //   // titleInput.attr('disabled', false)
+
+  //   // let tableEntry = $(this).parent()
+  //   // tableEntry.empty()
+  //   console.log(oldRow)
+  // })
 
   $('#addButton').click(() => {
     addTitleInputField()
@@ -94,19 +109,27 @@ $(function () {
     let newTrip = new Trip()
     newTrip.title = tripTitle
 
-    $.ajax({
-      url: '/trip-manager/data',
-      method: 'POST',
-      contentType: 'application/json',
-      data: JSON.stringify(newTrip),
-      success: function (res) {
-        addTitleEntry(res.title)
-      }
-    })
+    if (tripTitleExists(tripTitle) === false) {
+      $.ajax({
+        url: '/trip-manager/data',
+        method: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify(newTrip),
+        success: function (res) {
+          addTitleEntry(res.title)
+        }
+      })
 
-    $('#saveTripButton').remove()
-    $('#tripTitleInputField').remove()
-    $('#addButton').show()
+      $('#saveTripButton').remove()
+      $('#tripTitleInputField').remove()
+      $('#addButton').show()
+    } else {
+      window.alert('This trip title already exists.\n Please enter a new title.')
+    }
+
+    // var rows = $('#tripTitleTable')
+
+    // console.log(rows)
   })
 })
 
