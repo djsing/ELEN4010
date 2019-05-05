@@ -87,15 +87,17 @@ $(function () {
     })
   })
 
-  // $('table').on('click', '.editButton', function () {
-  //   let oldRow = $(this).closest('tr')
-  //   // let titleInput = oldRow.find('input.titleField')
-  //   // titleInput.attr('disabled', false)
-
-  //   // let tableEntry = $(this).parent()
-  //   // tableEntry.empty()
-  //   console.log(oldRow)
-  // })
+  $('table').on('click', '.editButton', function () {
+    let oldRow = $(this).closest('tr')[0].firstChild.firstChild.attributes['id'].nodeValue
+    console.log(oldRow)
+    let tripsList = JSON.parse(window.sessionStorage.getItem('tripList'))
+    let tripListTitle = []
+    for (let i = 0; i < tripsList.length; i++) {
+      tripListTitle.push(tripsList[i].title)
+    }
+    let index = $.inArray(oldRow, tripListTitle)
+    console.log(tripsList[index].id)
+  })
 
   $('#addButton').click(() => {
     addTitleInputField()
@@ -117,6 +119,11 @@ $(function () {
         data: JSON.stringify(newTrip),
         success: function (res) {
           addTitleEntry(res.title)
+          let currentTrips = JSON.parse(window.sessionStorage.getItem('tripList'))
+          currentTrips.push({
+            id: JSON.stringify(res.id),
+            title: res.title })
+          window.sessionStorage.setItem('tripList', JSON.stringify(currentTrips))
         }
       })
 
@@ -126,10 +133,6 @@ $(function () {
     } else {
       window.alert('This trip title already exists.\n Please enter a new title.')
     }
-
-    // var rows = $('#tripTitleTable')
-
-    // console.log(rows)
   })
 })
 
