@@ -202,7 +202,7 @@ function populateDestionationsTable (res, queryString) {
 }
 )()
 
-function populateTripsAndGroupsTable (res, queryString) {
+function populateTripsAndGroupsTable (res, queryString, tripInfo) {
   pools
     .then(pool => {
       console.log('populate query string: ', queryString)
@@ -211,7 +211,7 @@ function populateTripsAndGroupsTable (res, queryString) {
     })
     .then(result => {
       console.log('trips and groups population result ', result)
-      res.send('TripsTablePopulated')
+      res.send(tripInfo)
     })
     .catch(err => {
       console.log('populate trips table error:', err)

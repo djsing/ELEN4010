@@ -17,7 +17,7 @@ function populateTripAndGroupTableQuery (trip, res) {
       '${tripInfo.id}')
     END;`
 
-  db.populateTripsAndGroupsTable(res, queryString)
+  db.populateTripsAndGroupsTable(res, queryString, tripInfo)
 }
 
 function getTripsQuery (req, res) {

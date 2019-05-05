@@ -11,15 +11,6 @@ class Trip {
   }
 }
 
-// function saveToLocal () {
-//   // window.localStorage.setItem('trips', JSON.stringify(trips))
-// }
-
-// function getFromLocal () {
-//   // let temp = JSON.parse(window.localStorage.getItem('trips'))
-//   // if (temp === null) { trips = [] } else { trips = temp }
-// }
-
 let addTitleInputField = function () {
   let titleInputField = document.createElement('input')
   titleInputField.type = 'text'
@@ -116,8 +107,7 @@ $(function () {
       contentType: 'application/json',
       data: JSON.stringify(newTrip),
       success: function (res) {
-        // let tripInfo = JSON.parse(res)
-        // addTitleEntry(tripInfo.title)
+        addTitleEntry(res.title)
       }
     })
 
