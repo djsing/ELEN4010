@@ -226,10 +226,10 @@ function getTrips (queryString, res) {
     })
     .then(result => {
       console.log('get trips result ', result)
-      // res.send(result)
+      res.send(result.recordset)
     })
     .catch(err => {
-      console.log('Get trip titles error:', err)
+      console.log('Get trips error:', err)
     })
 }
 

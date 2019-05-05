@@ -69,22 +69,18 @@ let addTitleEntry = function (title) {
 
 $(function () {
   $(document).ready(() => {
-  //   let command = {
-  //     userHash: window.sessionStorage.getItem('Hash')
-  //   }
-
-  //   $.ajax({
-  //     url: '/trip-manager/data',
-  //     method: 'GET',
-  //     contentType: 'application/json',
-  //     data: JSON.stringify(command),
-  //     success: function (res) {
-  //       // for (let i = 0; i < trips.length; i++) {
-  //       //   let tripTitle = trips[i].title
-  //       //   addTitleEntry(tripTitle)
-  //       // }
-  //     }
-  //   })
+    $.ajax({
+      url: '/trip-manager/get-data',
+      method: 'POST',
+      contentType: 'application/json',
+      data: JSON.stringify({ userHash: window.sessionStorage.getItem('Hash') }),
+      success: function (res) {
+        // for (let i = 0; i < trips.length; i++) {
+        //   let tripTitle = trips[i].title
+        //   addTitleEntry(tripTitle)
+        // }
+      }
+    })
   })
 
   $('#addButton').click(() => {
