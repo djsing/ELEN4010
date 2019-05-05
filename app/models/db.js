@@ -186,6 +186,22 @@ function populateDestionationsTable (res, queryString) {
     })
 }
 
+(function createInvitesTable () {
+  pools.then((pool) => {
+    return pool.request()
+      .query(`IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='invites' and xtype='U')
+          CREATE TABLE invites (
+          trip_id varchar(255), 
+          email_address varchar(255)
+          )`)
+  }).then(result => {
+    console.log('invites table created', result)
+  }).catch(err => {
+    console.log('invites table creation error', err)
+  })
+}
+)()
+
 module.exports = {
   sql: mssql,
   pools: pools,
