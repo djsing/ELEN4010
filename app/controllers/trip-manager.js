@@ -69,20 +69,9 @@ let addTitleEntry = function (title) {
   $('#tripTitleTable').append(newRow)
 }
 
-// ------------------------
-// JQuery Event Listeners
-// ------------------------
-
-// Add trip button event
-$('#addButton').click(() => {
-  addTitleInputField()
-  addSaveTripButton()
-  $('#addButton').hide()
-})
-
-// ------------------
-// AJAX/Data Methods
-// ------------------
+// --------------------------------------------
+// AJAX/Data Methods / JQuery Event Listeners
+// --------------------------------------------
 
 // On Document load, propogate a list of trips. This is quite slow at present, could we preload it somehow?
 $(document).ready(() => {
@@ -100,62 +89,70 @@ $(document).ready(() => {
   })
 })
 
-// Edit an existing trip
-$('table').on('click', '.editButton', function () {
-  console.log('Got here')
-  let oldRow = $(this).closest('tr')[0].firstChild.firstChild.attributes['id'].nodeValue
-  let tripsList = JSON.parse(window.sessionStorage.getItem('tripList'))
-  let tripListTitle = []
-  for (let i = 0; i < tripsList.length; i++) {
-    tripListTitle.push(tripsList[i].title)
-  }
-  let index = $.inArray(oldRow, tripListTitle)
-  $.ajax({
-    url: '/trip-manager-interface/data',
-    method: 'POST',
-    contentType: 'application/json',
-    data: JSON.stringify({ tripId: tripsList[index].id }),
-    success: function (res) {
-      let newTrip = {
-        'id': tripsList[index].id,
-        'title': tripsList[index].title,
-        'destinationList': res,
-        'user': JSON.parse(window.sessionStorage.getItem('Hash'))
-      }
-      window.sessionStorage.setItem('trip', JSON.stringify(newTrip))
-      window.location = '/trip'
-    }
+$(function () {
+  // Add trip button event
+  $('#addButton').click(() => {
+    addTitleInputField()
+    addSaveTripButton()
+    $('#addButton').hide()
   })
-})
 
-// Create a new trip
-$('#newTrip').on('submit', (event) => {
-  event.preventDefault()
-  let title = $('#tripTitleInputField').val()
-  let id = (new Date()).getTime()
-  let user = JSON.parse(window.sessionStorage.getItem('Hash'))
-  let newTrip = new Trip(id, title, [], user)
-
-  if (tripTitleExists(title) === false) {
+  // Edit an existing trip
+  $('table').on('click', '.editButton', function () {
+    let oldRow = $(this).closest('tr')[0].firstChild.firstChild.attributes['id'].nodeValue
+    let tripsList = JSON.parse(window.sessionStorage.getItem('tripList'))
+    let tripListTitle = []
+    for (let i = 0; i < tripsList.length; i++) {
+      tripListTitle.push(tripsList[i].title)
+    }
+    let index = $.inArray(oldRow, tripListTitle)
     $.ajax({
-      url: '/trip-manager/data',
+      url: '/trip-manager-interface/data',
       method: 'POST',
       contentType: 'application/json',
-      data: JSON.stringify(newTrip),
+      data: JSON.stringify({ tripId: tripsList[index].id }),
       success: function (res) {
-        addTitleEntry(res.title)
-        let currentTrips = JSON.parse(window.sessionStorage.getItem('tripList'))
-        currentTrips.push({
-          id: JSON.stringify(res.id),
-          title: res.title })
-        window.sessionStorage.setItem('tripList', JSON.stringify(currentTrips))
+        let newTrip = {
+          'id': tripsList[index].id,
+          'title': tripsList[index].title,
+          'destinationList': res,
+          'user': JSON.parse(window.sessionStorage.getItem('Hash'))
+        }
+        window.sessionStorage.setItem('trip', JSON.stringify(newTrip))
+        window.location = '/trip'
       }
     })
+  })
 
-    $('#saveTripButton').remove()
-    $('#tripTitleInputField').remove()
-    $('#addButton').show()
-  } else {
-    window.alert('This trip title already exists.\n Please enter a new title.')
-  }
+  // Create a new trip
+  $('#newTrip').on('submit', (event) => {
+    event.preventDefault()
+    let title = $('#tripTitleInputField').val()
+    let id = (new Date()).getTime()
+    let user = JSON.parse(window.sessionStorage.getItem('Hash'))
+    let newTrip = new Trip(id, title, [], user)
+
+    if (tripTitleExists(title) === false) {
+      $.ajax({
+        url: '/trip-manager/data',
+        method: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify(newTrip),
+        success: function (res) {
+          addTitleEntry(res.title)
+          let currentTrips = JSON.parse(window.sessionStorage.getItem('tripList'))
+          currentTrips.push({
+            id: JSON.stringify(res.id),
+            title: res.title })
+          window.sessionStorage.setItem('tripList', JSON.stringify(currentTrips))
+        }
+      })
+
+      $('#saveTripButton').remove()
+      $('#tripTitleInputField').remove()
+      $('#addButton').show()
+    } else {
+      window.alert('This trip title already exists.\n Please enter a new title.')
+    }
+  })
 })

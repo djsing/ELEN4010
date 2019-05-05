@@ -5,13 +5,20 @@ const $ = window.$
 // Classes
 // -----------
 class Destination {
-  constructor (id, latLng, placeID, place, name, ordering) {
+  constructor (id, lat, lng, placeID, place, name, ordering) {
     this.id = id
-    this.latLng = latLng
+    this.lat = lat()
+    this.lng = lng()
     this.placeID = placeID
     this.place = place
     this.name = name
     this.ordering = ordering
+  }
+  getLatLng () {
+    return {
+      lat: Number(this.lat),
+      lng: Number(this.lng)
+    }
   }
 }
 
@@ -49,8 +56,7 @@ let addDestination = function (latLng, placeID, place) {
   let id = (new Date()).getTime()
   let name = ''
   let ordering = newTrip.destinationList.length + 1
-
-  let newDestination = new Destination(id, latLng, placeID, place, name, ordering)
+  let newDestination = new Destination(id, latLng.lat, latLng.lng, placeID, place, name, ordering)
   newTrip.destinationList.push(newDestination)
   saveToSessionStorage()
   $('#deleteDestinations').show()
@@ -186,8 +192,13 @@ let clearMarkers = function () {
 
 let renderMarkers = function () {
   for (let j = 0; j < newTrip.destinationList.length; j++) {
+    let latLng = {
+      lat: Number(newTrip.destinationList[j].lat),
+      lng: Number(newTrip.destinationList[j].lng)
+    }
+    console.log(latLng)
     let marker = new google.maps.Marker({
-      position: newTrip.destinationList[j].latLng,
+      position: latLng,
       map: map,
       label: String(newTrip.destinationList[j].ordering)
     })
@@ -316,7 +327,7 @@ $(document).on('click', '#deleteButton', function (e) {
 $(document).on('click', '.destinationLabelClass', function (e) {
   let id = $(this).parents('tr')[0].id
   let dest = newTrip.destinationList.find(function (obj) { return obj.id === Number(id) })
-  map.panTo(dest.latLng)
+  map.panTo(dest.getLatLng())
   map.setZoom(16)
 })
 
@@ -340,7 +351,7 @@ $(document).ready(function () {
 })
 
 // Save Trip name upon input change
-$(document).on('input paste', '#tripNameFormInput', function () {
+$(document).on('change paste', '#tripNameFormInput', function () {
   let name = document.getElementById('tripNameFormInput').value
   newTrip.title = name
   saveToSessionStorage()
