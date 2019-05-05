@@ -63,21 +63,16 @@ mainRouter.post('/trip/data', function (req, res) {
   tripModel.createDestinationQuery(req, res)
 })
 
-mainRouter.get(['/trip-manager/data', '/trips/data'], function (req, res) {
-  res.send(tripManagerModel.getTripTitles())
+mainRouter.post('/trip-manager/data', function (req, res) {
+  tripManagerModel.populateTripAndGroupTableQuery(req, res)
 })
 
-mainRouter.post(['/trip-manager/data', '/trips/data'], function (req, res) {
-  tripManagerModel.saveTripTitle(req.body.tripTitle)
-  res.send(tripManagerModel.getTripTitles())
+mainRouter.post('/trip-manager/get-data', function (req, res) {
+  tripManagerModel.getTripsQuery(req, res)
 })
 
-mainRouter.delete(['/trip-manager/data', '/trips/data'], function (req, res) {
-  tripManagerModel.removeTrip(req.body.tripTitle)
-})
-
-mainRouter.put(['/trip-manager/data', '/trips/data'], function (req, res) {
-  tripManagerModel.updateTrip(req.body.oldTripTitle, req.body.newTripTitle)
+mainRouter.post('/trip-manager-interface/data', function (req, res) {
+  tripManagerModel.getDestinationsQuery(req, res)
 })
 
 mainRouter.post('/google-auth', (req, res) => {
