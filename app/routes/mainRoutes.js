@@ -64,7 +64,7 @@ mainRouter.post('/trip/data', function (req, res) {
 })
 
 mainRouter.post('/trip-manager/data', function (req, res) {
-  tripManagerModel.populateTripTableQuery(req, res)
+  tripManagerModel.populateTripAndGroupTableQuery(req, res)
 })
 
 mainRouter.get('/trip-manager/data', function (req, res) {

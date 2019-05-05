@@ -2,14 +2,22 @@
 
 let db = require('./db')
 
-function populateTripTableQuery (trip, res) {
+function populateTripAndGroupTableQuery (trip, res) {
   let tripInfo = trip.body
-  let queryString = `DELETE FROM trips WHERE id = ${tripInfo.id};`
-  queryString = queryString + `INSERT INTO trips VALUES(
+  let queryString = `DELETE FROM trips WHERE id = ${tripInfo.id};` +
+  `INSERT INTO trips VALUES(
       '${tripInfo.id}',
-      '${tripInfo.title}');`
+      '${tripInfo.title}');` +
+  `IF NOT EXISTS (SELECT * FROM groups
+    WHERE user_hash = '${tripInfo.user}'
+    AND trip_id = '${tripInfo.id}')
+    BEGIN
+      INSERT INTO groups VALUES(
+      '${tripInfo.user}',
+      '${tripInfo.id}')
+    END;`
 
-  db.populateTripsTable(res, queryString)
+  db.populateTripsAndGroupsTable(res, queryString)
 }
 
 function getTripsQuery (req, res) {
@@ -20,6 +28,6 @@ function getTripsQuery (req, res) {
 }
 
 module.exports = {
-  populateTripTableQuery: populateTripTableQuery,
+  populateTripAndGroupTableQuery: populateTripAndGroupTableQuery,
   getTripsQuery: getTripsQuery
 }

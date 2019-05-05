@@ -6,19 +6,19 @@ let trips = []
 class Trip {
   constructor () {
     this.title = ''
-    this.destinationList = []
+    this.user = JSON.parse(window.sessionStorage.getItem('Hash'))
     this.id = (new Date()).getTime()
   }
 }
 
-function saveToLocal () {
-  window.localStorage.setItem('trips', JSON.stringify(trips))
-}
+// function saveToLocal () {
+//   // window.localStorage.setItem('trips', JSON.stringify(trips))
+// }
 
-function getFromLocal () {
-  let temp = JSON.parse(window.localStorage.getItem('trips'))
-  if (temp === null) { trips = [] } else { trips = temp }
-}
+// function getFromLocal () {
+//   // let temp = JSON.parse(window.localStorage.getItem('trips'))
+//   // if (temp === null) { trips = [] } else { trips = temp }
+// }
 
 let addTitleInputField = function () {
   let titleInputField = document.createElement('input')
@@ -78,28 +78,22 @@ let addTitleEntry = function (title) {
 
 $(function () {
   $(document).ready(() => {
-    getFromLocal()
-    for (let i = 0; i < trips.length; i++) {
-      let tripTitle = trips[i].title
-      addTitleEntry(tripTitle)
-    }
+  //   let command = {
+  //     userHash: window.sessionStorage.getItem('Hash')
+  //   }
 
-    let command = {
-      userHash: window.sessionStorage.getItem('Hash')
-    }
-
-    $.ajax({
-      url: '/trip-manager/data',
-      method: 'GET',
-      contentType: 'application/json',
-      data: JSON.stringify(command),
-      success: function (res) {
-        // for (let i = 0; i < trips.length; i++) {
-        //   let tripTitle = trips[i].title
-        //   addTitleEntry(tripTitle)
-        // }
-      }
-    })
+  //   $.ajax({
+  //     url: '/trip-manager/data',
+  //     method: 'GET',
+  //     contentType: 'application/json',
+  //     data: JSON.stringify(command),
+  //     success: function (res) {
+  //       // for (let i = 0; i < trips.length; i++) {
+  //       //   let tripTitle = trips[i].title
+  //       //   addTitleEntry(tripTitle)
+  //       // }
+  //     }
+  //   })
   })
 
   $('#addButton').click(() => {
@@ -112,10 +106,9 @@ $(function () {
     event.preventDefault()
     let tripTitle = $('#tripTitleInputField').val()
     let newTrip = new Trip()
-    addTitleEntry(tripTitle)
     newTrip.title = tripTitle
-    trips.push(newTrip)
-    saveToLocal()
+    // trips.push(newTrip)
+    // saveToLocal()
 
     $.ajax({
       url: '/trip-manager/data',
@@ -123,6 +116,8 @@ $(function () {
       contentType: 'application/json',
       data: JSON.stringify(newTrip),
       success: function (res) {
+        // let tripInfo = JSON.parse(res)
+        // addTitleEntry(tripInfo.title)
       }
     })
 
