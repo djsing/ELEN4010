@@ -205,12 +205,12 @@ function populateDestionationsTable (res, queryString) {
 function populateTripsAndGroupsTable (res, queryString, tripInfo) {
   pools
     .then(pool => {
-      console.log('populate query string: ', queryString)
+      // console.log('populate query string: ', queryString)
       return pool.request()
         .query(queryString)
     })
     .then(result => {
-      console.log('trips and groups population result ', result)
+      // console.log('trips and groups population result ', result)
       res.send(tripInfo)
     })
     .catch(err => {
@@ -227,12 +227,12 @@ function getTripTitles (trips, res) {
       }
       queryString = queryString.substring(0, queryString.length - 1)
       queryString = queryString + `);`
-      console.log('get trip titles QS ', queryString)
+      // console.log('get trip titles QS ', queryString)
       return pool.request()
         .query(queryString)
     })
     .then(result => {
-      console.log('get trip titles result ', result)
+      // console.log('get trip titles result ', result)
       res.send(result.recordset)
     })
     .catch(err => {
@@ -247,7 +247,7 @@ function getTrips (queryString, res) {
         .query(queryString)
     })
     .then(result => {
-      console.log('get trips result ', result)
+      // console.log('get trips result ', result)
       getTripTitles(result.recordset, res)
     })
     .catch(err => {

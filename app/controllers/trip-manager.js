@@ -93,8 +93,6 @@ $(function () {
     let tripTitle = $('#tripTitleInputField').val()
     let newTrip = new Trip()
     newTrip.title = tripTitle
-    // trips.push(newTrip)
-    // saveToLocal()
 
     $.ajax({
       url: '/trip-manager/data',
