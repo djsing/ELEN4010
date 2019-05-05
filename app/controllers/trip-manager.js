@@ -75,10 +75,9 @@ $(function () {
       contentType: 'application/json',
       data: JSON.stringify({ userHash: window.sessionStorage.getItem('Hash') }),
       success: function (res) {
-        // for (let i = 0; i < trips.length; i++) {
-        //   let tripTitle = trips[i].title
-        //   addTitleEntry(tripTitle)
-        // }
+        for (let i = 0; i < res.length; i++) {
+          addTitleEntry(res[i].title)
+        }
       }
     })
   })
