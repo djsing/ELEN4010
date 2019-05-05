@@ -5,21 +5,21 @@ const $ = window.$
 // Classes
 // -----------
 class Destination {
-  constructor (latLng, place, placeID, name, order, id) {
-    this.latLng = latLng
-    this.place = place
-    this.placeID = placeID
-    this.name = name
-    this.order = order
+  constructor (id, latLng, placeID, place, name, ordering) {
     this.id = id
+    this.latLng = latLng
+    this.placeID = placeID
+    this.place = place
+    this.name = name
+    this.ordering = ordering
   }
 }
 
 class Trip {
-  constructor (title, destinations, id, user) {
+  constructor (id, title, destinations, user) {
+    this.id = id
     this.title = title
     this.destinationList = destinations
-    this.id = id
     this.user = user
   }
 }
@@ -29,7 +29,7 @@ class Trip {
 // --------------------------
 let map, service
 let markersOnMap = []
-let newTrip = new Trip('', [], (new Date()).getTime(), JSON.parse(window.sessionStorage.getItem('Hash')))
+let newTrip = new Trip((new Date()).getTime(), '', [], JSON.parse(window.sessionStorage.getItem('Hash')))
 let startLocation = randomProperty(countries)
 // let startLocation = { center: { lat: 10, lng: 330 }, zoom: 2.8 }
 
@@ -45,12 +45,12 @@ function getFromSessionStorage () {
   document.getElementById('tripNameFormInput').value = newTrip.title
 }
 
-let addDestination = function (latLng, place, placeID) {
-  let name = ''
-  let order = newTrip.destinationList.length + 1
+let addDestination = function (latLng, placeID, place) {
   let id = (new Date()).getTime()
+  let name = ''
+  let ordering = newTrip.destinationList.length + 1
 
-  let newDestination = new Destination(latLng, place, placeID, name, order, id)
+  let newDestination = new Destination(id, latLng, placeID, place, name, ordering)
   newTrip.destinationList.push(newDestination)
   saveToSessionStorage()
   $('#deleteDestinations').show()
@@ -73,12 +73,12 @@ function placeDestinationBySearch (place, marker) {
   marker.setPosition(place.geometry.location)
   marker.setVisible(false)
 
-  let placeName = place.name
   let placeID = place.place_id
+  let placeName = place.name
   let label = String(newTrip.destinationList.length + 1)
 
   addMarker(place.geometry.location, placeName, label)
-  addDestination(latLng, placeName, placeID)
+  addDestination(place.geometry.location, placeID, placeName)
   drawDestination(newTrip.destinationList[newTrip.destinationList.length - 1])
 }
 
@@ -105,7 +105,7 @@ function placeDestinationByClick (latLng) {
     let label = String(markersOnMap.length + 1)
 
     addMarker(latLng, placeName, label)
-    addDestination(latLng, placeName, placeID)
+    addDestination(latLng, placeID, placeName)
     drawDestination(newTrip.destinationList[newTrip.destinationList.length - 1])
     map.panTo(latLng)
   })
@@ -121,7 +121,7 @@ let drawDestination = function (dest) {
   row.className = 'destinationsTableRow'
 
   let destNum = document.createElement('td')
-  destNum.innerHTML = String(dest.dest_order)
+  destNum.innerHTML = String(dest.ordering)
   destNum.classList.add('indexClass')
   destNum.setAttribute('style', 'width: 10%; vertical-align: middle; float: left; padding-top: 30px; padding-left: 1px; font-size: 1.2rem;')
   row.appendChild(destNum)
@@ -189,7 +189,7 @@ let renderMarkers = function () {
     let marker = new google.maps.Marker({
       position: newTrip.destinationList[j].latLng,
       map: map,
-      label: String(newTrip.destinationList[j].order)
+      label: String(newTrip.destinationList[j].ordering)
     })
     markersOnMap.push(marker)
   }
@@ -271,12 +271,12 @@ $(document).ready(function () {
         $(this).text(numbering)
         for (let j = 0; j < newTrip.destinationList.length; j++) {
           if (newTrip.destinationList[j].id === Number($(this)[0].parentNode.id)) {
-            newTrip.destinationList[j].order = numbering
+            newTrip.destinationList[j].ordering = numbering
           }
         }
       })
-      // Sort by order to keep things sane
-      newTrip.destinationList.sort((a, b) => (a.order > b.order) ? 1 : -1)
+      // Sort by ordering to keep things sane
+      newTrip.destinationList.sort((a, b) => (a.ordering > b.ordering) ? 1 : -1)
       clearMarkers()
       renderMarkers()
       saveToSessionStorage()
@@ -298,7 +298,7 @@ $(document).on('click', '#deleteButton', function (e) {
     }
   }
   for (let j = newTrip.destinationList.length - 1; j >= 0; j--) {
-    newTrip.destinationList[j].order = Number(j + 1)
+    newTrip.destinationList[j].ordering = Number(j + 1)
     $('.destinationsTableRow .indexClass').each(function (k) {
       let numbering = k + 1
       $(this).text(numbering)
@@ -386,7 +386,7 @@ function renderOnReload () {
 
 // Save trip to DB with Save Trip button
 $(document).on('click', '#saveTrip', function () {
-  saveToLocal()
+  saveToSessionStorage()
   $.ajax({
     url: '/trip/data',
     method: 'POST',

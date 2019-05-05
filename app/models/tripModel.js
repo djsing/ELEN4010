@@ -8,11 +8,11 @@ function createDestinationQuery (trip, res) {
   for (let i = 0; i < tripInfo.destinationList.length; i++) {
     queryString = queryString + `INSERT INTO destinations VALUES(
       '${tripInfo.destinationList[i].id}',
-      '${tripInfo.destinationList[i].name}',
-      '${tripInfo.destinationList[i].place}',
       '${tripInfo.destinationList[i].latLng}',
       '${tripInfo.destinationList[i].placeId}',
-      '${tripInfo.destinationList[i].order}',
+      '${tripInfo.destinationList[i].place}',
+      '${tripInfo.destinationList[i].name}',
+      '${tripInfo.destinationList[i].ordering}',
       '${tripInfo.id}');`
   }
   db.populateDestionationsTable(res, queryString)

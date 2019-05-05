@@ -6,10 +6,10 @@ const $ = window.$
 // Classes
 // -----------
 class Trip {
-  constructor (title, destinations, id, user) {
+  constructor (id, title, destinations, user) {
+    this.id = id
     this.title = title
     this.destinationList = destinations
-    this.id = id
     this.user = user
   }
 }
@@ -102,6 +102,7 @@ $(document).ready(() => {
 
 // Edit an existing trip
 $('table').on('click', '.editButton', function () {
+  console.log('Got here')
   let oldRow = $(this).closest('tr')[0].firstChild.firstChild.attributes['id'].nodeValue
   let tripsList = JSON.parse(window.sessionStorage.getItem('tripList'))
   let tripListTitle = []
@@ -116,9 +117,9 @@ $('table').on('click', '.editButton', function () {
     data: JSON.stringify({ tripId: tripsList[index].id }),
     success: function (res) {
       let newTrip = {
+        'id': tripsList[index].id,
         'title': tripsList[index].title,
         'destinationList': res,
-        'id': tripsList[index].id,
         'user': JSON.parse(window.sessionStorage.getItem('Hash'))
       }
       window.sessionStorage.setItem('trip', JSON.stringify(newTrip))
@@ -133,7 +134,7 @@ $('#newTrip').on('submit', (event) => {
   let title = $('#tripTitleInputField').val()
   let id = (new Date()).getTime()
   let user = JSON.parse(window.sessionStorage.getItem('Hash'))
-  let newTrip = new Trip(title, [], id, user)
+  let newTrip = new Trip(id, title, [], user)
 
   if (tripTitleExists(title) === false) {
     $.ajax({
