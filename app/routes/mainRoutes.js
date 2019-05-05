@@ -98,7 +98,8 @@ mainRouter.get('*', function (req, res) {
 })
 
 mainRouter.post('/invite', function (req, res) {
-  mailManager.sendInvite(req.body.emailAddress)
+  // mailManager.sendInvite(req.body.emailAddress)
+  tripModel.addInvite(res, req.body)
   res.sendStatus(200)
 })
 

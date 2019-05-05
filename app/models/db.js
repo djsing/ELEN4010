@@ -202,11 +202,47 @@ function populateDestionationsTable (res, queryString) {
 }
 )()
 
+function addToInvitesTable (res, tripID, emailAddress) {
+  pools
+    .then(pool => {
+      let id = tripID
+      let email = emailAddress
+      return pool.request()
+        .query(`SELECT *
+          FROM invites
+          WHERE email_address = '${email}'
+          AND trip_id = '${id}'`)
+    })
+    .then(result => {
+      console.log('Invites select result ', result)
+      if (result.recordset.length === 0) {
+        // If this entry does's already exist in the table,
+        // add it to the table
+        let id = tripID
+        let email = emailAddress
+        pools
+          .then(pool => {
+            return pool.request()
+              .query(`INSERT INTO invites VALUES(
+                '${id}',
+                '${email}');`)
+          }).then(result => {
+            console.log('Tries to add id: ' + id + ' and email: ' + email)
+            console.log('Invites add result ', result)
+          })
+      }
+    })
+    .catch(err => {
+      console.log('add invite table error:', err)
+    })
+}
+
 module.exports = {
   sql: mssql,
   pools: pools,
   isConnected: isConnected,
   connectionError: connectionError,
   findUser: findUser,
-  populateDestionationsTable: populateDestionationsTable
+  populateDestionationsTable: populateDestionationsTable,
+  addToInvitesTable: addToInvitesTable
 }

@@ -19,6 +19,11 @@ function createDestinationQuery (trip, res) {
   db.populateDestionationsTable(res, queryString)
 }
 
+function addInvite (res, invite) {
+  db.addToInvitesTable(res, invite.tripID, invite.emailAddress)
+}
+
 module.exports = {
-  createDestinationQuery: createDestinationQuery
+  createDestinationQuery: createDestinationQuery,
+  addInvite: addInvite
 }

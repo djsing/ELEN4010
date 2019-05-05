@@ -256,14 +256,16 @@ $(document).on('click', '#inviteEmailAddressButton', function () {
     $('#invalidEmailMessage').show('slow')
   } else {
     // Send the email address to the back-end server
-    let emailAddressObj = {
-      'emailAddress': emailAddress
+    console.log('The id for this trip is: ' + newTrip.id.toString())
+    let inviteInfo = {
+      'tripID': newTrip.id.toString(),
+      'emailAddress': emailAddress.toString()
     }
     $.ajax({
       url: '/invite',
       method: 'POST',
       contentType: 'application/json',
-      data: JSON.stringify(emailAddressObj),
+      data: JSON.stringify(inviteInfo),
       success: function (res) {
         // Display to user that an invite has been sent to the desired email address
         displayInviteSentMessage(emailAddress)
