@@ -10,7 +10,8 @@ let drawDestination = function (dest) {
   let destNum = document.createElement('td')
   destNum.innerHTML = String(dest.order)
   destNum.classList.add('indexClass')
-  destNum.setAttribute('style', 'width: 10%')
+  destNum.setAttribute('style', 'width: 10%; vertical-align: middle; float: left; padding-top: 30px; padding-left: 1px; font-size: 1.2rem;')
+  // destNum.setAttribute('style', 'width: 10%; float: left; vertical-align: middle; font-size: 1.2rem;')
   row.appendChild(destNum)
 
   let destPlaceCell = document.createElement('td')
@@ -18,7 +19,6 @@ let drawDestination = function (dest) {
   destPlaceCell.setAttribute('style', 'width: 80%')
 
   let destInput = document.createElement('input')
-  // destInput.className = 'form-control'
   destInput.className = 'destinationInputClass'
   destInput.setAttribute('style', 'font-size: 1rem; padding: 0.5rem 0rem;background-color: #fff0;')
   destInput.type = 'text'

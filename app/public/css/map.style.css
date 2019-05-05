@@ -111,7 +111,9 @@ table {
   table-layout: fixed;
   /* word-wrap: break-word; */
 }
-
+.table th, .table td {
+  padding: 0.5rem;
+}
 #tripTitle  {
   padding: 25px
 }

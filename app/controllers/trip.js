@@ -24,10 +24,11 @@ class Trip {
 // Declare global variables
 let map, service
 let newTrip = new Trip('', [], (new Date()).getTime())
-let startLocation = {
-  center: { lat: 10, lng: 330 },
-  zoom: 2.8
-}
+let startLocation = randomProperty(countries)
+// let startLocation = {
+//   center: { lat: 10, lng: 330 },
+//   zoom: 2.8
+// }
 
 function saveToSessionStorage () {
   window.sessionStorage.setItem('trip', JSON.stringify(newTrip))
