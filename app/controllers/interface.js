@@ -18,12 +18,14 @@ let drawDestination = function (dest) {
   destPlaceCell.setAttribute('style', 'width: 80%')
 
   let destInput = document.createElement('input')
-  destInput.classList.add('destinationInputClass')
+  // destInput.className = 'form-control'
+  destInput.className = 'destinationInputClass'
   destInput.setAttribute('style', 'font-size: 1rem; padding: 0.5rem 0rem;background-color: #fff0;')
   destInput.type = 'text'
-  destInput.className = 'form-control'
-  // destInput.id = 'destinationInput'
   destInput.setAttribute('placeholder', 'Destination name...')
+  if (dest.name !== '') {
+    destInput.setAttribute('value', dest.name)
+  }
 
   let destLabel = document.createElement('label')
   destLabel.classList.add('destinationLabelClass')

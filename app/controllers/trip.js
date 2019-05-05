@@ -3,72 +3,49 @@
 const $ = window.$
 
 class Destination {
-  constructor (latLng, place, placeID, order) {
+  constructor (latLng, place, placeID, name, order, id) {
     this.latLng = latLng
-    this.id = (new Date()).getTime()
     this.place = place
-    this.name = ''
     this.placeID = placeID
+    this.name = name
     this.order = order
+    this.id = id
   }
 }
 
 class Trip {
-  constructor () {
-    this.title = ''
-    this.destinationList = []
-    this.id = (new Date()).getTime()
+  constructor (title, destinations, id) {
+    this.title = title
+    this.destinationList = destinations
+    this.id = id
   }
 }
 
 // Declare global variables
 let map, service
-let newTrip = new Trip()
+let newTrip = new Trip('', [], (new Date()).getTime())
 let startLocation = {
   center: { lat: 10, lng: 330 },
   zoom: 2.8
 }
 
-function getTripTitle () {
-  let title = document.getElementById('tripNameFormInput')
-  newTrip.title = title.value
-}
-
-function setTripTitle () {
-  document.getElementById('tripNameFormInput').value = newTrip.title
-}
-
-function getDestinationInputNames () {
-  // for (let i = 0; i < newTrip.destinationList.length; i++) {
-//     if (newTrip.destinationList[i].id === Number($(this)[0].parentNode.id)) {
-//       newTrip.destinationList[i].order = numbering
-//     }
-}
-
-function setDestinationInputNames () {
-  // for (let i = 0; i < newTrip.destinationList.length; i++) {
-//     if (newTrip.destinationList[i].id === Number($(this)[0].parentNode.id)) {
-//       newTrip.destinationList[i].order = numbering
-//     }
-}
-
-function saveToLocal () {
-  getTripTitle()
-  getDestinationInputNames()
+function saveToSessionStorage () {
   window.sessionStorage.setItem('trip', JSON.stringify(newTrip))
 }
 
-function getFromLocal () {
+function getFromSessionStorage () {
   newTrip = JSON.parse(window.sessionStorage.getItem('trip'))
-  setTripTitle()
-  setDestinationInputNames()
+  document.getElementById('tripNameFormInput').value = newTrip.title
 }
 
-let addDestination = function (latLng, placeName, placeID) {
+let addDestination = function (latLng, place, placeID) {
+  let name = ''
   let order = newTrip.destinationList.length + 1
-  let newDestination = new Destination(latLng, placeName, placeID, order)
+  let id = (new Date()).getTime()
+
+  let newDestination = new Destination(latLng, place, placeID, name, order, id)
   newTrip.destinationList.push(newDestination)
-  saveToLocal()
+  saveToSessionStorage()
   $('#deleteDestinations').show()
 }
 
@@ -92,6 +69,7 @@ function placeDestinationBySearch (place, marker) {
   let placeName = place.name
   let placeID = place.place_id
   let label = String(newTrip.destinationList.length + 1)
+
   addMarker(place.geometry.location, placeName, label)
   addDestination(latLng, placeName, placeID)
   drawDestination(newTrip.destinationList[newTrip.destinationList.length - 1])
@@ -118,6 +96,7 @@ function placeDestinationByClick (latLng) {
 
     let placeName = destinationName
     let label = String(markersOnMap.length + 1)
+
     addMarker(latLng, placeName, label)
     addDestination(latLng, placeName, placeID)
     drawDestination(newTrip.destinationList[newTrip.destinationList.length - 1])
@@ -125,6 +104,9 @@ function placeDestinationByClick (latLng) {
   })
 }
 
+// ------------------------
+// Main Map Callback
+// ------------------------
 function initMap () {
   let styledSilverMapType = new google.maps.StyledMapType((silverMapType), { name: 'Silver Map' })
   let styledDarkMapType = new google.maps.StyledMapType((darkMapType), { name: 'Dark Map' })
@@ -181,12 +163,17 @@ function initMap () {
     placeDestinationBySearch(place, marker)
   })
 }
+// --- End of Main Map Callback ---
 
+// ------------------------
+// JQuery Event Listeners
+// ------------------------
+
+// Make the Destination list draggable
 $(document).ready(function () {
   $('#destinationTable').sortable({
     scroll: true,
     update: function (event, ui) {
-      let id
       $('.destinationsTableRow .indexClass').each(function (i) {
         let numbering = i + 1
         $(this).text(numbering)
@@ -196,18 +183,23 @@ $(document).ready(function () {
           }
         }
       })
+      // Sort by order to keep things sane
       newTrip.destinationList.sort((a, b) => (a.order > b.order) ? 1 : -1)
       clearMarkers()
       renderMarkers()
-      saveToLocal()
+      saveToSessionStorage()
     }
   })
 })
 
+// Delete a destination from the itinerary
 $(document).on('click', '#deleteButton', function (e) {
   let id = $(this).parents('tr')[0].id
   $(this).parents('tr').remove()
   let i = newTrip.destinationList.length
+
+  // Remove the destination from the Trip, using the shared ID between
+  // the 'tr' element and the destination object in the list
   while (i--) {
     if (newTrip.destinationList[i].id === Number(id)) {
       newTrip.destinationList.splice(i, 1)
@@ -222,28 +214,30 @@ $(document).on('click', '#deleteButton', function (e) {
   }
   clearMarkers()
   renderMarkers()
-  saveToLocal()
+  saveToSessionStorage()
   if (newTrip.destinationList.length < 1) {
     $('#deleteDestinations').hide()
   }
 })
 
+// Click on a destination label in the trip itinerary
 $(document).on('click', '.destinationLabelClass', function (e) {
   let id = $(this).parents('tr')[0].id
   let dest = newTrip.destinationList.find(function (obj) { return obj.id === Number(id) })
   map.panTo(dest.latLng)
   map.setZoom(16)
-  // markersOnMap[dest.order - 1].setAnimation(google.maps.Animation.BOUNCE)
 })
 
+// Trash all destinations
 $(document).on('click', '#deleteDestinations', function () {
   clearMarkers()
   $('#destinationTable').empty()
   newTrip.destinationList = []
-  saveToLocal()
+  saveToSessionStorage()
   $('#deleteDestinations').hide()
 })
 
+// Save trip to DB with Save Trip button
 $(document).on('click', '#saveTrip', function () {
   $.ajax({
     url: '/trip/data',
@@ -256,6 +250,7 @@ $(document).on('click', '#saveTrip', function () {
   })
 })
 
+// Save Trip Button alert popup
 $(document).ready(function () {
   $('#success-alert').hide()
   $('#saveTrip').click(function showAlert () {
@@ -265,19 +260,31 @@ $(document).ready(function () {
   })
 })
 
-$(document).change('#tripNameFormInput', function () {
-  saveToLocal()
+// Save Trip name upon input change
+$(document).on('input paste', '#tripNameFormInput', function () {
+  let name = document.getElementById('tripNameFormInput').value
+  newTrip.title = name
+  saveToSessionStorage()
 })
 
-$(document).change('.destinationInputClass', function () {
-  saveToLocal()
+// Save Destination name upon input change
+$(document).on('change paste', '.destinationInputClass', function () {
+  let id = $(this).parents('tr')[0].id
+  console.log(id)
+  console.log(this.value)
+  for (let j = 0; j < newTrip.destinationList.length; j++) {
+    if (newTrip.destinationList[j].id === Number(id)) {
+      newTrip.destinationList[j].name = this.value
+    }
+  }
+  saveToSessionStorage()
 })
 
 // upon page reload, this function is called
 function renderOnReload () {
   $('#deleteDestinations').hide()
   if (window.sessionStorage.getItem('trip') !== null) {
-    getFromLocal()
+    getFromSessionStorage()
     for (let i = 0; i < newTrip.destinationList.length; i++) {
       drawDestination(newTrip.destinationList[i])
     }
