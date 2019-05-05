@@ -271,8 +271,6 @@ $(document).on('input paste', '#tripNameFormInput', function () {
 // Save Destination name upon input change
 $(document).on('change paste', '.destinationInputClass', function () {
   let id = $(this).parents('tr')[0].id
-  console.log(id)
-  console.log(this.value)
   for (let j = 0; j < newTrip.destinationList.length; j++) {
     if (newTrip.destinationList[j].id === Number(id)) {
       newTrip.destinationList[j].name = this.value
