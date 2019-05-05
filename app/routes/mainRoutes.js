@@ -64,7 +64,11 @@ mainRouter.post('/trip/data', function (req, res) {
 })
 
 mainRouter.post('/trip-manager/data', function (req, res) {
-  tripManagerModel.createTripQuery(req, res)
+  tripManagerModel.populateTripTableQuery(req, res)
+})
+
+mainRouter.get('/trip-manager/data', function (req, res) {
+  tripManagerModel.getTripsQuery(req, res)
 })
 
 mainRouter.post('/google-auth', (req, res) => {

@@ -191,7 +191,7 @@ function populateDestionationsTable (res, queryString) {
     return pool.request()
       .query(`IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='trips' and xtype='U')
           CREATE TABLE trips (
-          id varchar(255), 
+          id varchar(255) PRIMARY KEY, 
           title varchar(50)
           )`)
   }).then(result => {
@@ -215,6 +215,21 @@ function populateTripsTable (res, queryString) {
     })
     .catch(err => {
       console.log('populate trips table error:', err)
+    })
+}
+
+function getTrips (queryString, res) {
+  pools
+    .then(pool => {
+      return pool.request()
+        .query(queryString)
+    })
+    .then(result => {
+      console.log('get trips result ', result)
+      // res.send(result)
+    })
+    .catch(err => {
+      console.log('Get trip titles error:', err)
     })
 }
 
@@ -258,5 +273,6 @@ module.exports = {
   findUser: findUser,
   populateDestionationsTable: populateDestionationsTable,
   populateTripsTable: populateTripsTable,
-  populateGroupsTable: populateGroupsTable
+  populateGroupsTable: populateGroupsTable,
+  getTrips: getTrips
 }
