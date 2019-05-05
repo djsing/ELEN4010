@@ -1,7 +1,9 @@
 'use strict'
 
 const $ = window.$
-
+// ----------
+// Classes
+// -----------
 class Destination {
   constructor (latLng, place, placeID, name, order, id) {
     this.latLng = latLng
@@ -18,19 +20,22 @@ class Trip {
     this.title = title
     this.destinationList = destinations
     this.id = id
-    this.user = JSON.parse(window.sessionStorage.getItem('Hash'))
+    this.user = user
   }
 }
 
+// -------------------------
 // Declare global variables
+// --------------------------
 let map, service
-let newTrip = new Trip('', [], (new Date()).getTime())
+let markersOnMap = []
+let newTrip = new Trip('', [], (new Date()).getTime(), JSON.parse(window.sessionStorage.getItem('Hash')))
 let startLocation = randomProperty(countries)
-// let startLocation = {
-//   center: { lat: 10, lng: 330 },
-//   zoom: 2.8
-// }
+// let startLocation = { center: { lat: 10, lng: 330 }, zoom: 2.8 }
 
+// ----------------
+// Logic Functions
+// -----------------
 function saveToSessionStorage () {
   window.sessionStorage.setItem('trip', JSON.stringify(newTrip))
 }
@@ -105,6 +110,91 @@ function placeDestinationByClick (latLng) {
     map.panTo(latLng)
   })
 }
+// --- End of Logic Functions ---
+
+// ------------------
+// Interface Methods
+// ------------------
+let drawDestination = function (dest) {
+  let row = document.createElement('tr')
+  row.id = dest.id
+  row.className = 'destinationsTableRow'
+
+  let destNum = document.createElement('td')
+  destNum.innerHTML = String(dest.dest_order)
+  destNum.classList.add('indexClass')
+  destNum.setAttribute('style', 'width: 10%; vertical-align: middle; float: left; padding-top: 30px; padding-left: 1px; font-size: 1.2rem;')
+  row.appendChild(destNum)
+
+  let destPlaceCell = document.createElement('td')
+  destPlaceCell.classList.add('destinationClass')
+  destPlaceCell.setAttribute('style', 'width: 80%')
+
+  let destInput = document.createElement('input')
+  destInput.className = 'destinationInputClass'
+  destInput.setAttribute('style', 'font-size: 1rem; padding: 0.5rem 0rem;background-color: #fff0;')
+  destInput.type = 'text'
+  destInput.setAttribute('placeholder', 'Destination name...')
+  if (dest.name !== '') {
+    destInput.setAttribute('value', dest.name)
+  }
+
+  let destLabel = document.createElement('label')
+  destLabel.classList.add('destinationLabelClass')
+  destLabel.setAttribute('style', 'font-size: 0.75rem;color: #aaa;')
+
+  destLabel.innerHTML = dest.place
+  destPlaceCell.appendChild(destInput)
+  destPlaceCell.appendChild(destLabel)
+
+  row.appendChild(destPlaceCell)
+
+  let deleteButtonCell = document.createElement('td')
+  deleteButtonCell.className = 'deleteClass'
+  deleteButtonCell.setAttribute('style', 'width: 10%')
+
+  let deleteButton = document.createElement('i')
+  deleteButton.type = 'button'
+  deleteButton.value = ''
+  deleteButton.id = 'deleteButton'
+  deleteButton.className = 'fas'
+  deleteButton.classList.add('fa-trash-alt')
+  deleteButton.setAttribute('style', 'float: right; position: relative; top: 20px; right: 5px; cursor: pointer; font-size: 1.5rem;')
+
+  deleteButtonCell.appendChild(deleteButton)
+
+  row.appendChild(deleteButtonCell)
+  document.getElementById('destinationTable').appendChild(row)
+}
+
+function addMarker (latLng, placeName, label) {
+  let marker = new google.maps.Marker({
+    position: latLng,
+    map: map,
+    label: label
+    // animation: google.maps.Animation.DROP
+  })
+  markersOnMap.push(marker)
+}
+
+let clearMarkers = function () {
+  for (let i = 0; i < markersOnMap.length; i++) {
+    markersOnMap[i].setMap(null)
+  }
+  markersOnMap = []
+}
+
+let renderMarkers = function () {
+  for (let j = 0; j < newTrip.destinationList.length; j++) {
+    let marker = new google.maps.Marker({
+      position: newTrip.destinationList[j].latLng,
+      map: map,
+      label: String(newTrip.destinationList[j].order)
+    })
+    markersOnMap.push(marker)
+  }
+}
+// --- End of Interface Methods ---
 
 // ------------------------
 // Main Map Callback
@@ -239,29 +329,6 @@ $(document).on('click', '#deleteDestinations', function () {
   $('#deleteDestinations').hide()
 })
 
-// Save trip to DB with Save Trip button
-$(document).on('click', '#saveTrip', function () {
-  saveToLocal()
-  $.ajax({
-    url: '/trip/data',
-    method: 'POST',
-    contentType: 'application/json',
-    data: JSON.stringify(newTrip),
-    success: function (res) {
-      console.log(res)
-    }
-  })
-  $.ajax({
-    url: '/trip-manager/data',
-    method: 'POST',
-    contentType: 'application/json',
-    data: JSON.stringify(newTrip),
-    success: function (res) {
-      console.log(res)
-    }
-  })
-})
-
 // Save Trip Button alert popup
 $(document).ready(function () {
   $('#success-alert').hide()
@@ -312,3 +379,30 @@ function renderOnReload () {
     startLocation = randomLocation
   }
 }
+
+// ------------------
+// AJAX/Data Methods
+// ------------------
+
+// Save trip to DB with Save Trip button
+$(document).on('click', '#saveTrip', function () {
+  saveToLocal()
+  $.ajax({
+    url: '/trip/data',
+    method: 'POST',
+    contentType: 'application/json',
+    data: JSON.stringify(newTrip),
+    success: function (res) {
+      console.log(res)
+    }
+  })
+  $.ajax({
+    url: '/trip-manager/data',
+    method: 'POST',
+    contentType: 'application/json',
+    data: JSON.stringify(newTrip),
+    success: function (res) {
+      console.log(res)
+    }
+  })
+})
