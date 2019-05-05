@@ -98,6 +98,24 @@ $(function () {
     }
     let index = $.inArray(oldRow, tripListTitle)
     console.log(tripsList[index].id)
+    $.ajax({
+      url: '/trip-manager-interface/data',
+      method: 'POST',
+      contentType: 'application/json',
+      data: JSON.stringify({ tripId: tripsList[index].id }),
+      success: function (res) {
+        let newTrip = {
+          'title': tripsList[index].title,
+          'user': JSON.parse(window.sessionStorage.getItem('Hash')),
+          'destinationList': res,
+          'id': tripsList[index].id
+        }
+        console.log('i get here ', res)
+        console.log(newTrip)
+        window.sessionStorage.setItem('trip', JSON.stringify(newTrip))
+        window.location = '/trip'
+      }
+    })
   })
 
   $('#addButton').click(() => {

@@ -274,6 +274,21 @@ function getTrips (queryString, res) {
 }
 )()
 
+function getDestinations (queryString, res) {
+  pools
+    .then(pool => {
+      return pool.request()
+        .query(queryString)
+    })
+    .then(result => {
+      console.log('get destinations result ', result.recordset)
+      res.send(result.recordset)
+    })
+    .catch(err => {
+      console.log('Get destinations error:', err)
+    })
+}
+
 module.exports = {
   sql: mssql,
   pools: pools,
@@ -283,5 +298,6 @@ module.exports = {
   populateDestionationsTable: populateDestionationsTable,
   populateTripsAndGroupsTable: populateTripsAndGroupsTable,
   getTrips: getTrips,
-  getTripTitles: getTripTitles
+  getTripTitles: getTripTitles,
+  getDestinations: getDestinations
 }

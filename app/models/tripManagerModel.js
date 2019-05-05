@@ -28,7 +28,15 @@ function getTripsQuery (req, res) {
   db.getTrips(queryString, res)
 }
 
+function getDestinationsQuery (req, res) {
+  let tripId = req.body.tripId
+  let queryString = `SELECT * FROM destinations WHERE trip_id = '${tripId}';`
+  console.log(queryString)
+  db.getDestinations(queryString, res)
+}
+
 module.exports = {
   populateTripAndGroupTableQuery: populateTripAndGroupTableQuery,
-  getTripsQuery: getTripsQuery
+  getTripsQuery: getTripsQuery,
+  getDestinationsQuery: getDestinationsQuery
 }
