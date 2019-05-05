@@ -19,6 +19,23 @@ function createDestinationQuery (trip, res) {
   db.populateDestionationsTable(res, queryString)
 }
 
+function createLogQuery (logInfo, res) {
+  let log = logInfo.body
+  let logQueryString = ``
+  for (let i = 0; i < log.length; i++) {
+    logQueryString = logQueryString + `INSERT INTO log VALUES(
+      '${log[i].id}',
+      '${log[i].who}',
+      '${log[i].what}',
+      '${log[i].when}',
+      '${log[i].importance}',
+      '${log[i].tripId}',);`
+  }
+
+  db.populateLogTable(res, logQueryString)
+}
+
 module.exports = {
-  createDestinationQuery: createDestinationQuery
+  createDestinationQuery: createDestinationQuery,
+  createLogQuery: createLogQuery
 }

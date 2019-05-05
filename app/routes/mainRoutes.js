@@ -15,6 +15,9 @@ let termsModel = require('../models/termsAndConditionsModel')
 let tripManagerModel = require('../models/tripManagerModel')
 let tripModel = require('../models/tripModel')
 
+// ------------
+// URL Routing
+// ------------
 mainRouter.get('/', function (req, res) {
   res.sendFile('/index.html', { root: req.app.get('views') })
 })
@@ -47,7 +50,7 @@ mainRouter.get(['/sign-in', '/login', '/signin'], function (req, res) {
   res.sendFile('/sign-in.html', { root: req.app.get('views') })
 })
 
-mainRouter.get(['/trip', '/map'], function (req, res) {
+mainRouter.get(['/trip'], function (req, res) {
   res.sendFile('/trip.html', { root: req.app.get('views') })
 })
 
@@ -57,6 +60,13 @@ mainRouter.get('/hotels', function (req, res) {
 
 mainRouter.get(['/trip-manager', '/trips'], function (req, res) {
   res.sendFile('/trip-manager.html', { root: req.app.get('views') })
+})
+
+// ----------------
+// RESTFUL Routing
+// ----------------
+mainRouter.post('/trip/log', function (log, res) {
+  tripModel.createLogQuery(log, res)
 })
 
 mainRouter.post('/trip/data', function (req, res) {
@@ -88,6 +98,9 @@ mainRouter.post('/auth', (req, res) => {
   authenticate.userAccountDatabaseConnection(req, res)
 })
 
+// -----------------------------
+// Error/Page Not Found Routing
+// ------------------------------
 mainRouter.get('*', function (req, res) {
   res.status(404).send('404 Error: page not found')
 })

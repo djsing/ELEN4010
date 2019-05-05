@@ -19,12 +19,12 @@ class Trip {
 }
 
 class LogEvent {
-  constructor (id, who, what, date, time, importance) {
+  constructor (id, who, what, when, trip_id, importance) {
     this.id = id
     this.who = who
     this.what = what
-    this.date = date
-    this.time = time
+    this.when = when
+    this.trip_id = trip_id
     this.importance = importance
   }
 }
@@ -32,11 +32,50 @@ class LogEvent {
 // Declare global variables
 let map, service
 let newTrip = new Trip()
+let newLog = []
 let startLocation = randomProperty(countries)
 // let startLocation = {
 //   center: { lat: 10, lng: 330 },
 //   zoom: 2.8
 // }
+
+function addLogEntry (eventCode) {
+/* Event codes:
+  0: "created the trip"
+  1: "renamed the trip"
+  2: "added a destination"
+  3: "removed a destination"
+  4: "rearranged the destinations"
+  5: "removed all destinations"
+  6: "invited [NEWUSER] to the trip"
+  7: "joined the trip"
+  8: UNUSED
+  9: UNUSED
+*/
+  let firstLogEntry
+  if (newLog.length > 1) {
+    firstLogEntry = true
+  } else {
+    firstLogEntry = false
+  }
+  let id = (new Date()).getTime()
+  let who = JSON.parse(window.sessionStorage.getItem('Hash')) // Should we do a proper check?
+  let what = eventCode
+  let when = new Date()
+  let trip_id = ''
+  let importance = firstLogEntry
+  let logEvent = new LogEvent(id, who, what, when, trip_id, importance)
+  newLog.push(logEvent)
+  // Debugging:
+  console.log('Event with ID ',
+    logEvent.id, ': At ',
+    logEvent.when, ', ',
+    logEvent.who, ' performed event with code ',
+    logEvent.what, '.')
+  if (logEvent.importance) {
+    console.log('It was a major event')
+  }
+}
 
 function getTripTitle () {
   let title = document.getElementById('formGroupExampleInput')
@@ -236,6 +275,15 @@ $(document).on('click', '#saveTrip', function () {
     method: 'POST',
     contentType: 'application/json',
     data: JSON.stringify(newTrip),
+    success: function (res) {
+      console.log(res)
+    }
+  })
+  $.ajax({
+    url: '/trip/log',
+    method: 'POST',
+    contentType: 'application/json',
+    data: JSON.stringify(newLog),
     success: function (res) {
       console.log(res)
     }

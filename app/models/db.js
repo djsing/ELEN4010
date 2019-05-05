@@ -186,11 +186,48 @@ function populateDestionationsTable (res, queryString) {
     })
 }
 
+(function createLogTable () {
+  pools.then((pool) => {
+    return pool.request()
+      .query(`IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='log' and xtype='D')
+          CREATE TABLE log (
+          id varchar(255) PRIMARY KEY, 
+          who varchar(50),
+          what tinyint,
+          when DATETIME,
+          important bit,
+          trip_id varchar(255)
+          )`)
+  }).then(result => {
+    console.log('log table created', result)
+  }).catch(err => {
+    console.log('log table creation error', err)
+  })
+}
+)()
+
+function populateLogTable (res, logQueryString) {
+  pools
+    .then(pool => {
+      console.log('populate QS: ', logQueryString)
+      return pool.request()
+        .query(logQueryString)
+    })
+    .then(result => {
+      console.log('population result ', result)
+      res.send('Log table added to entries')
+    })
+    .catch(err => {
+      console.log('populate log table error:', err)
+    })
+}
+
 module.exports = {
   sql: mssql,
   pools: pools,
   isConnected: isConnected,
   connectionError: connectionError,
   findUser: findUser,
-  populateDestionationsTable: populateDestionationsTable
+  populateDestionationsTable: populateDestionationsTable,
+  populateLogTable: populateLogTable
 }
