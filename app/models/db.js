@@ -227,7 +227,8 @@ function getTripTitles (trips, res) {
       }
       queryString = queryString.substring(0, queryString.length - 1)
       queryString = queryString + `);`
-      // console.log('get trip titles QS ', queryString)
+      console.log('get trip titles QS ', queryString)
+
       return pool.request()
         .query(queryString)
     })
@@ -247,8 +248,10 @@ function getTrips (queryString, res) {
         .query(queryString)
     })
     .then(result => {
-      // console.log('get trips result ', result)
-      getTripTitles(result.recordset, res)
+      console.log('get trips result ', result)
+      if (result.recordset.length !== 0) {
+        getTripTitles(result.recordset, res)
+      }
     })
     .catch(err => {
       console.log('Get trips error:', err)
