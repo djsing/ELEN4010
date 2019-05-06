@@ -28,7 +28,12 @@ mainRouter.get('/terms_and_conditions/data', function (req, res) {
 })
 
 mainRouter.get('/profile', function (req, res) {
-  res.sendFile('profile.html', { root: req.app.get('views') })
+  let isSession = req.session._ctx.headers.cookie.includes('awaywegosession')
+  if (isSession) {
+    res.sendFile('profile.html', { root: req.app.get('views') })
+  } else {
+    res.sendFile('/sign-in.html', { root: req.app.get('views') })
+  }
 })
 
 mainRouter.get('/about', function (req, res) {
@@ -49,14 +54,30 @@ mainRouter.get(['/trip', '/map'], function (req, res) {
     req.session.views = (req.session.views || 0) + 1
   }
   res.sendFile('/trip.html', { root: req.app.get('views') })
+  // } else if (!req.session._ctx.headers.cookie.includes('awaywegosession')) {
+  // res.sendFile('/sign-in.html', { root: req.app.get('views') })
+  // }
+  // let isSession = req.session._ctx.headers.cookie.includes('awaywegosession')
+  // if (isSession) {
+  // }
 })
 
 mainRouter.get('/hotels', function (req, res) {
-  res.sendFile('/hotels.html', { root: req.app.get('views') })
+  let isSession = req.session._ctx.headers.cookie.includes('awaywegosession')
+  if (isSession) {
+    res.sendFile('/hotels.html', { root: req.app.get('views') })
+  } else {
+    res.sendFile('/sign-in.html', { root: req.app.get('views') })
+  }
 })
 
 mainRouter.get(['/trip-manager', '/trips'], function (req, res) {
-  res.sendFile('/trip-manager.html', { root: req.app.get('views') })
+  let isSession = req.session._ctx.headers.cookie.includes('awaywegosession')
+  if (isSession) {
+    res.sendFile('/trip-manager.html', { root: req.app.get('views') })
+  } else {
+    res.sendFile('/sign-in.html', { root: req.app.get('views') })
+  }
 })
 
 mainRouter.post('/trip/data', function (req, res) {

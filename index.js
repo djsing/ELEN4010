@@ -16,7 +16,7 @@ app.use(bodyParser.urlencoded({
 app.set('trust proxy', 1) // trust first proxy
 
 app.use(cookieSession({
-  name: 'session',
+  name: 'awaywegosession',
   secret: OAuthKeys.web.client_secret,
   // Cookie Options
   maxAge: 24 * 60 * 60 * 1000, // 24 hours

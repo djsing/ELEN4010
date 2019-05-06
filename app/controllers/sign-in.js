@@ -55,6 +55,12 @@ function signInInit () {
     }
   })
 
+  function signOut () {
+    // normal sign-out
+    document.cookie = 'awaywegosession=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/'
+    document.cookie = 'awaywegosession.sig=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/'
+  }
+
   $(document).ready(() => {
     $('#signOutButton').click(() => {
       let authInstance = gapi.auth2.getAuthInstance()
@@ -62,9 +68,7 @@ function signInInit () {
         console.log('User signed out.')
         window.location = '/'
       })
-      // normal sign-out
-      document.cookie = 'session=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/'
-      document.cookie = 'session.sig=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/'
+      signOut()
     })
   })
 }
