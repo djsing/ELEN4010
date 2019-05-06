@@ -8,9 +8,9 @@
     
     <script src="/js/jquery-3.4.0.min.js"></script>
     <script src="/js/jquery-ui-1.12.1.min.js"></script>
-    <script src="/js/jquery.ui.touch-punch.min.js"></script>
-    <script src='utility.js'></script>
-    <script src='interface.js'></script>
+    <script src="/js/jquery.ui.touch-punch.0.2.3.min.js"></script>
+    <script src='/js/map.config.js'></script>
+    <script src='common.js'></script>
     <script src='trip.js'></script>
     <script defer src="https://use.fontawesome.com/releases/v5.8.1/js/all.js" integrity="sha384-g5uSoOSBd7KkhAMlnQILrecXvzst9TdC09/VM+pjDTCM+1il8RHz5fKANTFFb+gQ" crossorigin="anonymous"></script>
 
@@ -32,7 +32,7 @@
                   <div class="collapse navbar-collapse" id="navbarsExampleDefault">
                     <ul class="navbar-nav mr-auto">
                         <li class="nav-item">
-                            <a class="nav-link" href="/trip" onclick="clearTripSessionStorage()">New Trip <span class="sr-only">(current)</span></a>
+                            <a class="nav-link" href="/trip" onclick="clearTripFromSessionStorage()">New Trip <span class="sr-only">(current)</span></a>
                           </li> 
                         <li class="nav-item active">
                           <a class="nav-link" href="#">My Trip<span class="sr-only">(current)</span></a>
@@ -77,9 +77,9 @@
                       <div class="col-sm-9" id="map"></div>
                       <div class="col-sm-3"  id="destination">
                           <div class="input-group mb-1">
-                              <div class="md-form form-sm">
+                              <div class="md-form form-sm" id="tripNameForm">
                                   <label >Trip Itinerary</label>
-                                  <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Trip Name ...">                      
+                                  <input type="text" class="form-control" id="tripNameFormInput" placeholder="Trip Name ...">                      
                               </div> 
                               <div class="input-group-append">
                               </div>
@@ -91,7 +91,7 @@
                           <footer class="footer fixed-bottom">
                               <div class="container" >                                                    
                                     <button type="button" class="btn btn-sm btn-light" id='deleteDestinations' style="display: none;"><i class="fas fa-trash-alt"></i>
-                                      <a class="small">all</a></button>
+                                      <a>All</a></button>
                                     <button type="button" class="btn btn-md btn-light" id='saveTrip'>Save Trip</button>
                                     <div class="alert alert-success" id="success-alert">
                                         <button type="button" class="close small" data-dismiss="alert">x</button>

@@ -1,3 +1,5 @@
+'use strict'
+
 let countries = {
   'au': {
     center: { lat: -25.3, lng: 133.8 },
@@ -619,31 +621,3 @@ let silverMapType =
     ]
   }
 ]
-
-function updateProfile () {
-  let usernameTag = document.getElementById('usernameTag')
-  usernameTag.textContent = JSON.parse(window.sessionStorage.getItem('Name') + ' ')
-  let emailTag = document.getElementById('emailTag')
-  emailTag.textContent = JSON.parse(window.sessionStorage.getItem('Email') + ' ')
-}
-
-function clearTripSessionStorage () {
-  window.sessionStorage.removeItem('trip')
-}
-
-function randomBetween (min, max) {
-  if (min < 0) {
-    return min + Math.random() * (Math.abs(min) + max)
-  } else {
-    return min + Math.random() * max
-  }
-}
-
-let randomProperty = function (obj) {
-  let keys = Object.keys(obj)
-  return obj[ keys[ keys.length * Math.random() << 0 ] ]
-}
-
-$(document).ready(function () {
-  updateProfile()
-})
