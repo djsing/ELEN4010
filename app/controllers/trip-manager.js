@@ -153,60 +153,57 @@ $(function () {
       window.alert('This trip title already exists.\n Please enter a new title.')
     }
   })
+  displayInvites()
 })
 
-// $('table').on('click', '.deleteButton', function () {
-//   let oldRow = $(this).closest('tr')
-//   let titleInput = oldRow.find('input.titleField')
-//   let title = titleInput.val()
-//   $.ajax({
-//     url: '/trip-manager/data',
-//     method: 'DELETE',
-//     contentType: 'application/json',
-//     data: JSON.stringify({ 'tripTitle': title }),
-//     success: function (res) {
-//       $('#tripTitleTable').empty()
-//       res.tripTitles.forEach((title) => {
-//         addTitleEntry(title)
-//       })
-//     }
-//   })
+// -------------------------- Trip Invites  ---------------------------------------
+// let pendingTrips = [{ 'title': 'Malawi', 'tripID': '000001' }]
+let pendingTrips = []
 
-//   oldRow.remove()
-// })
+let displayInvites = function () {
+  // Clear the old table
+  $('#invitesTable').empty()
 
-// $('table').on('click', '.editButton', function () {
-//   let oldRow = $(this).closest('tr')
-//   let titleInput = oldRow.find('input.titleField')
-//   titleInput.attr('disabled', false)
+  // Display the heading if there are pendingInvites
+  if (pendingTrips.length > 0) {
+    // Display the heading if there are pendingInvites
 
-//   let tableEntry = $(this).parent()
-//   tableEntry.empty()
-//   addSaveEditButton(tableEntry)
-// })
+    $('#pendingTripInvitesHeading').show()
 
-// $('table').on('click', '.saveEdit', function () {
-//   let oldRow = $(this).closest('tr')
-//   let titleInput = oldRow.find('input.titleField')
-//   let oldTripTitle = titleInput.attr('id')
-//   let newTripTitle = titleInput.val()
-//   titleInput.attr('disabled', true)
+    pendingTrips.forEach((trip) => {
+      appendTripInvite(trip.title)
+    })
+  } else {
+    // Hide the heading if there are pendingInvites
+    $('#pendingTripInvitesHeading').hide()
+  }
+}
 
-//   $.ajax({
-//     url: '/trip-manager/data',
-//     method: 'PUT',
-//     contentType: 'application/json',
-//     data: JSON.stringify({ 'oldTripTitle': oldTripTitle,
-//       'newTripTitle': newTripTitle }),
-//     success: function (res) {
-//       $('#tripTitleTable').empty()
-//       res.tripTitles.forEach((title) => {
-//         addTitleEntry(title)
-//       })
-//     }
-//   })
+let appendTripInvite = function (tripName) {
+  let invitesTable = $('#invitesTable')
+  let newRow = document.createElement('tr')
 
-//   let tableEntry = $(this).parent()
-//   tableEntry.empty()
-//   addEditButton(newTripTitle, tableEntry)
-// })
+  // Add an entry for the name of the trip
+  let nameEntry = document.createElement('td')
+  nameEntry.innerHTML = tripName
+  newRow.append(nameEntry)
+
+  // Add an accept button for the invite
+  let acceptBtn = document.createElement('button')
+  acceptBtn.class = 'acceptButton'
+  acceptBtn.innerHTML = 'accept'
+  let acceptBtnCell = document.createElement('td')
+  acceptBtnCell.append(acceptBtn)
+  newRow.append(acceptBtnCell)
+
+  // Add a reject button for the invite
+  let rejectBtn = document.createElement('button')
+  rejectBtn.class = 'rejectButton'
+  rejectBtn.innerHTML = 'reject'
+  let rejectBtnCell = document.createElement('td')
+  rejectBtnCell.append(rejectBtn)
+  newRow.append(rejectBtnCell)
+
+  // Add row to table
+  invitesTable.append(newRow)
+}
