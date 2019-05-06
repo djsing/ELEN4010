@@ -195,7 +195,5 @@ $(function () {
     }
   })
 
-  $('[data-toggle="tooltip"]').tooltip({
-    content: 'Awesome title!'
-  })
+  $('[data-toggle="tooltip"]').tooltip()
 })
