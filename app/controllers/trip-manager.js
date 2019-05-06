@@ -22,10 +22,14 @@ let tripsList = []
 // ----------------
 // Logic Functions
 // -----------------
-// let tripTitleExists = function (tripTitle) {
-//   let trips = window.sessionStorage.getItem('tripList')
-//   if (trips.includes(tripTitle)) { return true } else { return false }
-// }
+let tripTitleExists = function (tripTitle) {
+  for (let i = 0; i < tripsList.length; i++) {
+    if (tripsList[i].title === tripTitle) {
+      return true
+    }
+  }
+  return false
+}
 
 // ------------------
 // Interface Methods
@@ -33,22 +37,22 @@ let tripsList = []
 let addTitleInputField = function () {
   let titleInputField = document.createElement('input')
   titleInputField.type = 'text'
-  titleInputField.className = 'tripTitleInputField'
+  titleInputField.id = 'tripTitleInputField'
   $('#tripTitle').append(titleInputField)
 }
 
 let addSaveTripButton = function () {
-  let savetripButton = document.createElement('input')
+  let savetripButton = document.createElement('Input')
   savetripButton.type = 'submit'
   savetripButton.value = 'Save'
-  savetripButton.className = 'saveTripButton'
+  savetripButton.id = 'saveTripButton'
   $('#tripTitle').append(savetripButton)
 }
 
 let addTitleDiplayField = function (title, row) {
   let newEntry = document.createElement('td')
   let titleDisplayField = document.createElement('input')
-  // titleDisplayField.id = trip.id
+  titleDisplayField.id = title
   titleDisplayField.className = 'titleField'
   titleDisplayField.value = title
   titleDisplayField.disabled = true
@@ -169,35 +173,32 @@ $(function () {
   // Create a new trip
   $('#newTrip').on('submit', (event) => {
     event.preventDefault()
-    let title = $('#tripTitleInputField').value
-    console.log(title)
+    let title = $('#tripTitleInputField').val()
     let id = (new Date()).getTime()
     let user = JSON.parse(window.sessionStorage.getItem('Hash'))
     let newTrip = new Trip(id, title, [], user)
-    // if (!tripTitleExists(title)) {
-    $.ajax({
-      url: '/trip-manager/data',
-      method: 'POST',
-      contentType: 'application/json',
-      data: JSON.stringify(newTrip),
-      success: function (res) {
-        tripsList.push(newTrip)
-        addTitleEntry(newTrip)
-        // let currentTrips = JSON.parse(window.sessionStorage.getItem('tripList'))
-        // currentTrips.push({
-        //   id: JSON.stringify(res.id),
-        //   title: res.title })
-        window.sessionStorage.setItem('tripList', JSON.stringify(tripsList))
-      }
-    })
-    $(function () {
+    if (tripTitleExists(title) === false) {
+      $.ajax({
+        url: '/trip-manager/data',
+        method: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify(newTrip),
+        success: function (res) {
+          addTitleEntry(newTrip)
+          tripsList.push({
+            id: JSON.stringify(id),
+            title: title })
+          window.sessionStorage.setItem('tripList', JSON.stringify(tripsList))
+          tripsList = JSON.parse(window.sessionStorage.getItem('tripList'))
+        }
+      })
+
       $('#saveTripButton').remove()
       $('#tripTitleInputField').remove()
       $('#addButton').show()
       $('#logButton').show()
-    })
-    // } else {
-    //   window.alert('This trip title already exists.\n Please enter a new title.')
-    // }
+    } else {
+      window.alert('This trip title already exists.\n Please enter a new title.')
+    }
   })
 })
