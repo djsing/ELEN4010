@@ -34,12 +34,12 @@ let tripTitleExists = function (tripTitle) {
 // ------------------
 // Interface Methods
 // ------------------
+
+// Trip rows
 let addTitleInputField = function () {
   let titleInputField = document.createElement('input')
   titleInputField.type = 'text'
   titleInputField.id = 'tripTitleInputField'
-  // titleInputField.className = ('btn btn-secondary')
-
   $('#tripTitle').append(titleInputField)
 }
 
@@ -48,10 +48,11 @@ let addSaveTripButton = function () {
   savetripButton.type = 'submit'
   savetripButton.value = 'Save'
   savetripButton.id = 'saveTripButton'
+  savetripButton.classList.add('btn', 'btn-sm', 'btn-secondary')
   $('#tripTitle').append(savetripButton)
 }
 
-let addTitleDiplayField = function (title, row) {
+let addTitleDisplayField = function (title, row) {
   let newEntry = document.createElement('td')
   let titleDisplayField = document.createElement('input')
   titleDisplayField.id = title
@@ -81,8 +82,31 @@ let addTitleEntry = function (trip) {
   let newRow = document.createElement('tr')
   newRow.id = trip.id
   addLogBtnToTitle(newRow)
-  addTitleDiplayField(trip.title, newRow)
+  addTitleDisplayField(trip.title, newRow)
   $('#tripTitleTable').append(newRow)
+}
+
+// Log rows
+let addLogLine = function (title, row) {
+  let newEntry = document.createElement('td')
+  let titleDisplayField = document.createElement('input')
+  titleDisplayField.id = title
+  titleDisplayField.className = 'titleField'
+  titleDisplayField.value = title
+  // titleDisplayField.type = 'button'
+  // titleDisplayField.setAttribute('style', 'min-width: 200px; width: 80%;  border-width: 0!important;font-size: medium;cursor: pointer;')
+  titleDisplayField.setAttribute('readonly', '1')
+  titleDisplayField.setAttribute('data-toggle', 'tooltip')
+  titleDisplayField.setAttribute('title', 'Click to edit')
+  newEntry.appendChild(titleDisplayField)
+  row.appendChild(newEntry)
+}
+
+let addLogEntry = function (logEntry) {
+  let newRow = document.createElement('tr')
+  newRow.id = logEntry.id
+  addLogLine(logEntry, newRow)
+  $('#logTable').append(newRow)
 }
 
 // --------------------------------------------
@@ -102,6 +126,7 @@ $(document).ready(() => {
       for (let i = 0; i < res.length; i++) {
         addTitleEntry(tripsList[i])
       }
+      $('#loader').remove()
     }
   })
 })
@@ -142,26 +167,26 @@ $(function () {
   })
 
   // view the trip log
-  // $('table').on('click', '.logButton', function () {
-  //   let row = $(this).closest('tr')[0].firstChild.firstChild.attributes['id'].nodeValue
-  //   let newLog = []
-  //   let currentTrip = JSON.parse(window.sessionStorage.getItem(''))
-  //   let index = $.inArray(row, tripListTitle)
-  //   $.ajax({
-  //     url: '/trip-manager-interface/log',
-  //     method: 'POST',
-  //     contentType: 'application/json',
-  //     data: JSON.stringify({ tripId: tripsList[index].id }),
-  //     success: function (res) {
-  //       let existingTrip = {
-  //         'id': Number(tripsList[index].id),
-  //         'title': tripsList[index].title,
-  //         'destinationList': res,
-  //         'user': JSON.parse(window.sessionStorage.getItem('Hash'))
-  //       }
-  //     }
-  //   })
-  // })
+  $('table').on('click', '.logButton', function () {
+    let row = $(this).closest('tr')[0].firstChild.firstChild.attributes['id'].nodeValue
+    let newLog = []
+    let currentTrip = JSON.parse(window.sessionStorage.getItem(''))
+    let index = $.inArray(row, tripListTitle)
+    $.ajax({
+      url: '/trip-manager-interface/log',
+      method: 'POST',
+      contentType: 'application/json',
+      data: JSON.stringify({ tripId: tripsList[index].id }),
+      success: function (res) {
+        let existingTrip = {
+          'id': Number(tripsList[index].id),
+          'title': tripsList[index].title,
+          'destinationList': res,
+          'user': JSON.parse(window.sessionStorage.getItem('Hash'))
+        }
+      }
+    })
+  })
 
   // Create a new trip
   $('#newTrip').on('submit', (event) => {
