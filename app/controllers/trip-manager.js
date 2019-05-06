@@ -136,6 +136,7 @@ $(function () {
   $('#addButton').click(() => {
     addTitleInputField()
     addSaveTripButton()
+    $('#info-text').hide()
     $('#addButton').hide()
   })
 
@@ -215,6 +216,7 @@ $(function () {
       $('#tripTitleInputField').remove()
       $('#addButton').show()
       $('#logButton').show()
+      $('#info-text').show()
     } else {
       window.alert('This trip title already exists.\n Please enter a new title.')
     }

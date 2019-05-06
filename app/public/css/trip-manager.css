@@ -1,5 +1,13 @@
-.h1 {
-  margin: 20px;
+#info-text {
+  padding: 38px 10px;
+  color: #d0d0d0;
+}
+
+#main-heading {
+  margin-top: 33px;
+  margin-right: 0;
+  margin-bottom: 0;
+  margin-left: 20px;
   font-weight: 600;
   letter-spacing: 8px;
 }
@@ -9,7 +17,7 @@ ul {
   }
 
 .titleField {
-  min-width: 400px;
+  min-width: 300px;
   width: 80%;
   border-width: 0!important;
   font-size: medium;
