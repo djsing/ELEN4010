@@ -5,20 +5,14 @@ const $ = window.$
 // Classes
 // -----------
 class Destination {
-  constructor (id, lat, lng, placeID, place, name, ordering) {
-    this.id = Number(id)
-    this.lat = lat()
-    this.lng = lng()
-    this.placeID = placeID
-    this.place = place
-    this.name = name
+  constructor (id, lat, lng, placeId, place, name, ordering) {
+    this.id = String(id)
+    this.lat = Number(lat())
+    this.lng = Number(lng())
+    this.placeId = String(placeId)
+    this.place = String(place)
+    this.name = String(name)
     this.ordering = Number(ordering)
-  }
-  getLatLng () {
-    return {
-      lat: Number(this.lat),
-      lng: Number(this.lng)
-    }
   }
 }
 
@@ -44,16 +38,14 @@ let startLocation = randomProperty(countries)
 // Data Methods
 // -------------
 function saveTripToSessionStorage () {
+  newTrip.destinationList.sort((a, b) => (a.ordering > b.ordering) ? 1 : -1)
   window.sessionStorage.setItem('trip', JSON.stringify(newTrip))
 }
 
 function getTripFromSessionStorage () {
   newTrip = JSON.parse(window.sessionStorage.getItem('trip'))
+  newTrip.destinationList.sort((a, b) => (a.ordering > b.ordering) ? 1 : -1)
   document.getElementById('tripNameFormInput').value = newTrip.title
-}
-
-function clearTripFromSessionStorage () {
-  window.sessionStorage.removeItem('trip')
 }
 
 // ----------------
@@ -76,11 +68,11 @@ function randomLocation () {
   return randomProperty(countries)
 }
 
-let addDestination = function (latLng, placeID, place) {
+let addDestination = function (latLng, placeId, place) {
   let id = (new Date()).getTime()
   let name = ''
   let ordering = newTrip.destinationList.length + 1
-  let newDestination = new Destination(id, latLng.lat, latLng.lng, placeID, place, name, ordering)
+  let newDestination = new Destination(id, latLng.lat, latLng.lng, placeId, place, name, ordering)
   newTrip.destinationList.push(newDestination)
   saveTripToSessionStorage()
   $('#deleteDestinations').show()
@@ -103,12 +95,12 @@ function placeDestinationBySearch (place, marker) {
   marker.setPosition(place.geometry.location)
   marker.setVisible(false)
 
-  let placeID = place.place_id
+  let placeId = place.place_id
   let placeName = place.name
   let label = String(newTrip.destinationList.length + 1)
 
   addMarker(place.geometry.location, placeName, label)
-  addDestination(place.geometry.location, placeID, placeName)
+  addDestination(place.geometry.location, placeId, placeName)
   drawDestination(newTrip.destinationList[newTrip.destinationList.length - 1])
 }
 
@@ -122,20 +114,20 @@ function placeDestinationByClick (latLng) {
   }
 
   let destinationName = 'Destination'
-  let placeID = ''
+  let placeId = ''
   service = new google.maps.places.PlacesService(map)
   service.nearbySearch(request, function (results, status) {
     if (status === google.maps.places.PlacesServiceStatus.OK) {
       // ToDo some checks for valid info here, sort and process for sensible name
       destinationName = results[0].name
-      placeID = results[0].place_id
+      placeId = results[0].place_id
     }
 
     let placeName = destinationName
     let label = String(markersOnMap.length + 1)
 
     addMarker(latLng, placeName, label)
-    addDestination(latLng, placeID, placeName)
+    addDestination(latLng, placeId, placeName)
     drawDestination(newTrip.destinationList[newTrip.destinationList.length - 1])
     map.panTo(latLng)
   })
@@ -305,7 +297,7 @@ $(document).ready(function () {
         $(this).text(numbering)
         for (let j = 0; j < newTrip.destinationList.length; j++) {
           if (Number(newTrip.destinationList[j].id) === Number($(this)[0].parentNode.id)) {
-            newTrip.destinationList[j].ordering = numbering
+            newTrip.destinationList[j].ordering = Number(numbering)
           }
         }
       })
@@ -323,7 +315,6 @@ $(document).on('click', '#deleteButton', function (e) {
   let id = $(this).parents('tr')[0].id
   $(this).parents('tr').remove()
   let i = newTrip.destinationList.length
-
   // Remove the destination from the Trip, using the shared ID between
   // the 'tr' element and the destination object in the list
   while (i--) {
@@ -349,8 +340,12 @@ $(document).on('click', '#deleteButton', function (e) {
 // Click on a destination label in the trip itinerary
 $(document).on('click', '.destinationLabelClass', function (e) {
   let id = $(this).parents('tr')[0].id
-  let dest = newTrip.destinationList.find(function (obj) { return obj.id === Number(id) })
-  map.panTo(dest.getLatLng())
+  let dest = newTrip.destinationList.find(function (obj) { return Number(obj.id) === Number(id) })
+  let latLng = {
+    lat: dest.lat,
+    lng: dest.lng
+  }
+  map.panTo(latLng)
   map.setZoom(16)
 })
 
@@ -385,11 +380,9 @@ $(document).on('change paste', '.destinationInputClass', function () {
   let id = $(this).parents('tr')[0].id
   for (let j = 0; j < newTrip.destinationList.length; j++) {
     if (Number(newTrip.destinationList[j].id) === Number(id)) {
-      console.log('Match!')
       newTrip.destinationList[j].name = this.value
     }
   }
-  console.log(this.value)
   saveTripToSessionStorage()
 })
 

@@ -113,7 +113,7 @@ $(function () {
       data: JSON.stringify({ tripId: tripsList[index].id }),
       success: function (res) {
         let newTrip = {
-          'id': tripsList[index].id,
+          'id': Number(tripsList[index].id),
           'title': tripsList[index].title,
           'destinationList': res,
           'user': JSON.parse(window.sessionStorage.getItem('Hash'))

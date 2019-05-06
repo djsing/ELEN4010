@@ -185,3 +185,7 @@ element.style {
 #tripNameForm {
   width: 100%;
 }
+
+input:focus::-webkit-input-placeholder {
+  opacity: 0;
+}

@@ -154,7 +154,7 @@ function findUser (userInfo, signin, res) {
     return pool.request()
       .query(`IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='destinations' and xtype='U')
           CREATE TABLE destinations (
-          id bigint PRIMARY KEY, 
+          id varchar(255) PRIMARY KEY, 
           lat float,
           lng float,
           place_id varchar(255),
