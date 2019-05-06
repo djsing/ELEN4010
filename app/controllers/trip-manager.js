@@ -13,6 +13,16 @@ class Trip {
     this.user = user
   }
 }
+class LogEvent {
+  constructor (id, userId, code, date, importance, tripId) {
+    this.id = id
+    this.userId = userId
+    this.code = code
+    this.date = date
+    this.importance = importance
+    this.tripId = tripId
+  }
+}
 
 // --------------
 // Globals
@@ -87,24 +97,34 @@ let addTitleEntry = function (trip) {
   $('#tripTitleTable').append(newRow)
 }
 
+// <tr id="log-row">
+// <td id="log-date">when</td>
+// <td id="log-time">around</td>
+// <td id="log-user">who</td>
+// <td id="log-event">what</td>
+
+// this.id = id
+// this.userId = userId
+// this.code = code
+// this.date = date
+// this.importance = importance
+// this.tripId = tripId
+
 // Log rows
-let addLogLine = function (title, row) {
-  let newEntry = document.createElement('td')
-  let titleDisplayField = document.createElement('input')
-  titleDisplayField.id = title
-  titleDisplayField.className = 'titleField'
-  titleDisplayField.value = title
-  // titleDisplayField.type = 'button'
-  // titleDisplayField.setAttribute('style', 'min-width: 200px; width: 80%;  border-width: 0!important;font-size: medium;cursor: pointer;')
-  titleDisplayField.setAttribute('readonly', '1')
-  titleDisplayField.setAttribute('data-toggle', 'tooltip')
-  titleDisplayField.setAttribute('title', 'Click to edit')
+let addLogLine = function (logEntry, row) {
+  let newEntryDate = document.createElement('td')
+  let newEntryTime = document.createElement('td')
+  let newEntryUser = document.createElement('td')
+  let newEntryEvent = document.createElement('td')
+  newEntryDate.value = logEntry.date
+
   newEntry.appendChild(titleDisplayField)
   row.appendChild(newEntry)
 }
 
 let addLogEntry = function (logEntry) {
   let newRow = document.createElement('tr')
+  newRow.className('log-row')
   newRow.id = logEntry.id
   addLogLine(logEntry, newRow)
   $('#logTable').append(newRow)
@@ -133,6 +153,7 @@ $(document).ready(() => {
   })
 })
 
+// JQuery stuff
 $(function () {
   // Add trip button event
   $('#addButton').click(() => {

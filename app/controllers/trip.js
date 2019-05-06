@@ -43,7 +43,9 @@ let map, service
 let newLog = []
 let markersOnMap = []
 let newTrip = new Trip((new Date()).getTime(), '', [], JSON.parse(window.sessionStorage.getItem('Hash')))
-let startLocation = { center: { lat: 10, lng: 330 }, zoom: 2.8 }
+let startLocation = randomProperty(countries)
+// let startLocation = randomLocation
+// let startLocation = { center: { lat: 10, lng: 330 }, zoom: 2.8 }
 
 // ----------------
 // Logic Functions
@@ -61,9 +63,9 @@ function randomProperty (obj) {
   return obj[ keys[ keys.length * Math.random() << 0 ] ]
 }
 
-function randomLocation () {
-  return randomProperty(countries)
-}
+// function randomLocation () {
+//   return randomProperty(countries)
+// }
 
 function addLogEntry (eventCode) {
   /* Event codes:
@@ -79,21 +81,21 @@ function addLogEntry (eventCode) {
     9: UNUSED
   */
   let id = String((new Date()).getTime())
-  let userId = JSON.parse(window.sessionStorage.getItem('Hash')) // Should we do a proper check?
+  let userHash = JSON.parse(window.sessionStorage.getItem('Hash')) // Should we do a proper check?
   let code = eventCode
-  let date = new Date()
+  let date = new Date().toISOString().slice(0, 19).replace('T', ' ')
   let importance = 0
   if (eventCode < 3) {
     importance = 1
   }
-  let tripId = ''
-  let logEvent = new LogEvent(id, userId, code, date, importance, tripId)
+  let tripId = newTrip.id
+  let logEvent = new LogEvent(id, userHash, code, date, importance, tripId)
   newLog.push(logEvent)
   // Debugging:
   console.log('Event with ID ',
     logEvent.id, ': At ',
     logEvent.date, ', ',
-    logEvent.userId, ' performed event with code ',
+    logEvent.userHash, ' performed event with code ',
     logEvent.code, '.')
   if (logEvent.importance) {
     console.log('It was a major event')
@@ -229,7 +231,6 @@ function addMarker (latLng, placeName, label) {
     position: latLng,
     map: map,
     label: label
-    // animation: google.maps.Animation.DROP
   })
   markersOnMap.push(marker)
 }
@@ -323,7 +324,7 @@ function initMap () {
 // ------------------------
 
 // destinations can be rearranged
-$(document).ready(function () {
+$(document).ready(() => {
   $('#destinationTable').sortable({
     scroll: true,
     update: function (event, ui) {
@@ -396,39 +397,9 @@ $(document).on('click', '#deleteDestinations', function () {
   $('#deleteDestinations').hide()
 })
 
-// Save Trip/Log -> post to DB
-$(document).on('click', '#saveTrip', function () {
-  $.ajax({
-    url: '/trip/data',
-    method: 'POST',
-    contentType: 'application/json',
-    data: JSON.stringify(newTrip),
-    success: function (res) {
-      console.log(res)
-      $('#success-alert').fadeTo(2000, 500).slideUp(500, function () {
-        $('#success-alert').slideUp(500)
-      })
-    }
-  })
-  $.ajax({
-    url: '/trip/log',
-    method: 'POST',
-    contentType: 'application/json',
-    data: JSON.stringify(newLog),
-    success: function (res) {
-      console.log(res)
-    }
-  })
-})
-
 // Pop-up saved confirmation alert
-$(document).ready(function () {
+$(document).ready(() => {
   $('#success-alert').hide()
-  // $('#saveTrip').click(function showAlert () {
-  //   $('#success-alert').fadeTo(2000, 500).slideUp(500, function () {
-  //     $('#success-alert').slideUp(500)
-  //   })
-  // })
 })
 
 // Save Trip name upon input change
@@ -469,8 +440,6 @@ function renderOnReload () {
       }
       map.fitBounds(bounds)
     }
-  } else {
-    startLocation = randomProperty(countries)
   }
 }
 
@@ -478,7 +447,7 @@ function renderOnReload () {
 // AJAX/Data Methods
 // ------------------
 
-// Save trip to DB with Save Trip button
+// Save trip and log to DB with Save Trip button
 $(document).on('click', '#saveTrip', function () {
   saveTripToSessionStorage()
   $.ajax({
@@ -487,6 +456,9 @@ $(document).on('click', '#saveTrip', function () {
     contentType: 'application/json',
     data: JSON.stringify(newTrip),
     success: function (res) {
+      $('#success-alert').fadeTo(2000, 500).slideUp(500, function () {
+        $('#success-alert').slideUp(500)
+      })
     }
   })
   $.ajax({
@@ -495,6 +467,17 @@ $(document).on('click', '#saveTrip', function () {
     contentType: 'application/json',
     data: JSON.stringify(newTrip),
     success: function (res) {
+      console.log(res)
+    }
+  })
+  $.ajax({
+    url: '/trip/log',
+    method: 'POST',
+    contentType: 'application/json',
+    data: JSON.stringify(newLog),
+    success: function (res) {
+      console.log(res)
+      newLog = []
     }
   })
 })
