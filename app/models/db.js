@@ -296,7 +296,7 @@ function getDestinations (queryString, res) {
       .query(`IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='log' and xtype='U')
           CREATE TABLE log (
           id varchar(255) PRIMARY KEY, 
-          user_id varchar(50),
+          hash varchar(255),
           code tinyint,
           date DATETIME,
           importance bit,
