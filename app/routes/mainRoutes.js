@@ -15,6 +15,7 @@ let termsModel = require('../models/termsAndConditionsModel')
 let tripManagerModel = require('../models/tripManagerModel')
 let tripModel = require('../models/tripModel')
 let mailManager = require('../models/email_manager')
+let invitesModel = require('../models/invitesModel')
 
 mainRouter.get('/', function (req, res) {
   res.sendFile('/index.html', { root: req.app.get('views') })
@@ -95,7 +96,7 @@ mainRouter.get('*', function (req, res) {
 
 mainRouter.post('/invite', function (req, res) {
   mailManager.sendInvite(req.body.emailAddress, req.body.tripName, req.body.invitee)
-  tripModel.addInvite(res, req.body)
+  invitesModel.addInvite(res, req.body)
   res.sendStatus(200)
 })
 
