@@ -31,8 +31,7 @@ class Trip {
 let map, service
 let markersOnMap = []
 let newTrip = new Trip((new Date()).getTime(), '', [], JSON.parse(window.sessionStorage.getItem('Hash')))
-let startLocation = randomProperty(countries)
-// let startLocation = { center: { lat: 10, lng: 330 }, zoom: 2.8 }
+let startLocation = { center: { lat: 10, lng: 330 }, zoom: 2.8 }
 
 // ------------
 // Data Methods
@@ -405,7 +404,7 @@ function renderOnReload () {
       map.fitBounds(bounds)
     }
   } else {
-    startLocation = randomLocation
+    startLocation = randomProperty(countries)
   }
 }
 
