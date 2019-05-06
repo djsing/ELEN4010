@@ -26,12 +26,12 @@ class Trip {
 }
 
 class LogEvent {
-  constructor (id, who, what, when, trip_id, importance) {
+  constructor (id, who, what, when, tripId, importance) {
     this.id = id
     this.who = who
     this.what = what
     this.when = when
-    this.trip_id = trip_id
+    this.tripId = tripId
     this.importance = importance
   }
 }
@@ -40,61 +40,10 @@ class LogEvent {
 // Declare global variables
 // --------------------------
 let map, service
+let newLog = []
 let markersOnMap = []
 let newTrip = new Trip((new Date()).getTime(), '', [], JSON.parse(window.sessionStorage.getItem('Hash')))
 let startLocation = { center: { lat: 10, lng: 330 }, zoom: 2.8 }
-
-function addLogEntry (eventCode) {
-/* Event codes:
-  0: "created the trip"
-  1: "renamed the trip"
-  2: "added a destination"
-  3: "removed a destination"
-  4: "rearranged the destinations"
-  5: "removed all destinations"
-  6: "invited [NEWUSER] to the trip"
-  7: "joined the trip"
-  8: UNUSED
-  9: UNUSED
-*/
-  let firstLogEntry
-  if (newLog.length > 1) {
-    firstLogEntry = true
-  } else {
-    firstLogEntry = false
-  }
-  let id = (new Date()).getTime()
-  let who = JSON.parse(window.sessionStorage.getItem('Hash')) // Should we do a proper check?
-  let what = eventCode
-  let when = new Date()
-  let trip_id = ''
-  let importance = firstLogEntry
-  let logEvent = new LogEvent(id, who, what, when, trip_id, importance)
-  newLog.push(logEvent)
-  // Debugging:
-  console.log('Event with ID ',
-    logEvent.id, ': At ',
-    logEvent.when, ', ',
-    logEvent.who, ' performed event with code ',
-    logEvent.what, '.')
-  if (logEvent.importance) {
-    console.log('It was a major event')
-  }
-}
-// ------------
-// Data Methods
-// -------------
-function saveTripToSessionStorage () {
-  newTrip.destinationList.sort((a, b) => (a.ordering > b.ordering) ? 1 : -1)
-  window.sessionStorage.setItem('trip', JSON.stringify(newTrip))
-
-}
-
-function getTripFromSessionStorage () {
-  newTrip = JSON.parse(window.sessionStorage.getItem('trip'))
-  newTrip.destinationList.sort((a, b) => (a.ordering > b.ordering) ? 1 : -1)
-  document.getElementById('tripNameFormInput').value = newTrip.title
-}
 
 // ----------------
 // Logic Functions
@@ -114,6 +63,44 @@ function randomProperty (obj) {
 
 function randomLocation () {
   return randomProperty(countries)
+}
+
+function addLogEntry (eventCode) {
+  /* Event codes:
+    0: "created the trip"
+    1: "renamed the trip"
+    2: "added a destination"
+    3: "removed a destination"
+    4: "rearranged the destinations"
+    5: "removed all destinations"
+    6: "invited [NEWUSER] to the trip"
+    7: "joined the trip"
+    8: UNUSED
+    9: UNUSED
+  */
+  let firstLogEntry
+  if (newLog.length > 1) {
+    firstLogEntry = true
+  } else {
+    firstLogEntry = false
+  }
+  let id = (new Date()).getTime()
+  let who = JSON.parse(window.sessionStorage.getItem('Hash')) // Should we do a proper check?
+  let what = eventCode
+  let when = new Date()
+  let tripId = ''
+  let importance = firstLogEntry
+  let logEvent = new LogEvent(id, who, what, when, tripId, importance)
+  newLog.push(logEvent)
+  // Debugging:
+  console.log('Event with ID ',
+    logEvent.id, ': At ',
+    logEvent.when, ', ',
+    logEvent.who, ' performed event with code ',
+    logEvent.what, '.')
+  if (logEvent.importance) {
+    console.log('It was a major event')
+  }
 }
 
 let addDestination = function (latLng, placeId, place) {
@@ -428,6 +415,7 @@ $(document).on('click', '#saveTrip', function () {
   })
 })
 
+// Pop-up saved confirmation alert
 $(document).ready(function () {
   $('#success-alert').hide()
   $('#saveTrip').click(function showAlert () {
@@ -502,3 +490,17 @@ $(document).on('click', '#saveTrip', function () {
     }
   })
 })
+
+// ------------
+// Data Methods
+// -------------
+function saveTripToSessionStorage () {
+  newTrip.destinationList.sort((a, b) => (a.ordering > b.ordering) ? 1 : -1)
+  window.sessionStorage.setItem('trip', JSON.stringify(newTrip))
+}
+
+function getTripFromSessionStorage () {
+  newTrip = JSON.parse(window.sessionStorage.getItem('trip'))
+  newTrip.destinationList.sort((a, b) => (a.ordering > b.ordering) ? 1 : -1)
+  document.getElementById('tripNameFormInput').value = newTrip.title
+}

@@ -174,7 +174,7 @@ function findUser (userInfo, signin, res) {
 function populateDestionationsTable (res, queryString) {
   pools
     .then(pool => {
-      console.log('populate QS: ', queryString)
+      // console.log('populate QueryString: ', queryString)
       return pool.request()
         .query(queryString)
     })
@@ -206,7 +206,7 @@ function populateDestionationsTable (res, queryString) {
 function populateTripsAndGroupsTable (res, queryString, tripInfo) {
   pools
     .then(pool => {
-      // console.log('populate query string: ', queryString)
+      // console.log('populate query tring: ', queryString)
       return pool.request()
         .query(queryString)
     })
@@ -313,16 +313,31 @@ function getDestinations (queryString, res) {
 function populateLogTable (res, logQueryString) {
   pools
     .then(pool => {
-      console.log('populate QS: ', logQueryString)
+      console.log('populate log queryString: ', logQueryString)
       return pool.request()
         .query(logQueryString)
     })
     .then(result => {
-      console.log('population result ', result)
+      console.log(' populate log result ', result)
       res.send('Log table added to entries')
     })
     .catch(err => {
       console.log('populate log table error:', err)
+    })
+}
+
+function getLogs (queryString, res) {
+  pools
+    .then(pool => {
+      return pool.request()
+        .query(queryString)
+    })
+    .then(result => {
+      console.log('get log result ', result.recordset)
+      res.send(result.recordset)
+    })
+    .catch(err => {
+      console.log('Get log error:', err)
     })
 }
 
@@ -334,9 +349,9 @@ module.exports = {
   findUser: findUser,
   populateDestionationsTable: populateDestionationsTable,
   populateTripsAndGroupsTable: populateTripsAndGroupsTable,
+  populateLogTable: populateLogTable,
   getTrips: getTrips,
   getTripTitles: getTripTitles,
-  getDestinations: getDestinations
-  populateDestionationsTable: populateDestionationsTable,
-  populateLogTable: populateLogTable
+  getDestinations: getDestinations,
+  getLogs: getLogs
 }
