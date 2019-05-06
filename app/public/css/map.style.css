@@ -21,13 +21,6 @@ fixed-height {
   max-height: 660px;
 }
 
-/* #mainContainer {
-  min-width: 100%;
-  min-height: 100%;
-  max-width: none;
-} */
-
-/* Makes the sample page fill the window. */
 html, body {
   height: 100%;
   margin: 0;
@@ -118,15 +111,42 @@ table {
   table-layout: fixed;
   /* word-wrap: break-word; */
 }
-
+.table th, .table td {
+  padding: 0.5rem;
+}
 #tripTitle  {
   padding: 25px
 }
 
 .form-control {
   display: inline;
+  padding: 0.5rem 1.5rem;
 }
 
+element.style {
+  font-size: 1rem;
+  padding: 0.5rem 0rem;
+  background-color: #fff0;
+}
+.destinationInputClass {
+  display: inline;
+  padding: 0.5rem 1.5rem;
+  width: 100%;
+  height: calc(1.5em + 1.5rem + 0);
+  padding: 0.75rem 2rem;
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #55595c;
+  background-color: #f7f7f9;
+  background-clip: padding-box;
+  border: 0 solid #ced4da;
+  border-radius: 0;
+  -webkit-transition: border-color 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
+  transition: border-color 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
+}
 #saveTrip {
   position: absolute!important;
   right: 38px;
@@ -147,9 +167,25 @@ table {
   border-color: #919aa1!important;
 }
 
+.destinationLabelClass {
+  cursor:pointer;
+}
+
 #success-alert {
   width: 180px;
   position: absolute!important;
   right: 40px;
   bottom: 70px!important;
+}
+
+#deleteDestinations .svg-inline--fa {
+  font-size: 20px;
+}
+
+#tripNameForm {
+  width: 100%;
+}
+
+input:focus::-webkit-input-placeholder {
+  opacity: 0;
 }
