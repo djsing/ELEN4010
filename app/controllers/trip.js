@@ -13,6 +13,7 @@ class Destination {
 class Trip {
   constructor () {
     this.title = ''
+    this.user = JSON.parse(window.sessionStorage.getItem('Hash'))
     this.destinationList = []
     this.id = (new Date()).getTime()
   }
@@ -220,8 +221,18 @@ $(document).on('click', '#deleteDestinations', function () {
 })
 
 $(document).on('click', '#saveTrip', function () {
+  saveToLocal()
   $.ajax({
     url: '/trip/data',
+    method: 'POST',
+    contentType: 'application/json',
+    data: JSON.stringify(newTrip),
+    success: function (res) {
+      console.log(res)
+    }
+  })
+  $.ajax({
+    url: '/trip-manager/data',
     method: 'POST',
     contentType: 'application/json',
     data: JSON.stringify(newTrip),
