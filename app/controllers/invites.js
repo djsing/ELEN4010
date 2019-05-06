@@ -23,10 +23,13 @@ $(document).on('click', '#inviteEmailAddressButton', function () {
     $('#invalidEmailMessage').show('slow')
   } else {
     // Send the email address to the back-end server
-    console.log('The id for this trip is: ' + newTrip.id.toString())
+    let inviteeUsername = $('#usernameTag').text()
+
     let inviteInfo = {
       'tripID': newTrip.id.toString(),
-      'emailAddress': emailAddress.toString()
+      'tripName': newTrip.title.toString(),
+      'emailAddress': emailAddress.toString(),
+      'invitee': inviteeUsername
     }
     $.ajax({
       url: '/invite',

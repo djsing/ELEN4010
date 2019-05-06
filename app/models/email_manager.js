@@ -12,18 +12,19 @@ let transporter = mailer.createTransport({
   }
 })
 
-let sendInvite = function (text) {
-  let tripname = 'Family Getaway'
+let sendInvite = function (emailAddress, tripName, invitee) {
+  let trip = 'tripName'
+  let username = invitee
   let htmlPage = eval('`' + fs.readFileSync(path.join(__dirname, '/email.html'), 'utf8') + '`')
 
-  let emailAddress = String(text)
+  let email = emailAddress
+
 
   let helperOptions = {
     from: '"Away We Go" <awaywegoinvites@gmail.com',
-    to: emailAddress,
+    to: email,
     subject: 'Invite to collaborate on a trip',
     html: htmlPage
-    // html: { path: 'app/views/email templates/email.html' }
   }
 
   transporter.sendMail(helperOptions, (err, inf) => {
@@ -33,7 +34,5 @@ let sendInvite = function (text) {
     console.log('The email got sent!')
   })
 }
-
-// sendInvite('1364103@students.wits.ac.za')
 
 module.exports = { sendInvite }
