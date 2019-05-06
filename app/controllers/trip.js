@@ -6,13 +6,13 @@ const $ = window.$
 // -----------
 class Destination {
   constructor (id, lat, lng, placeID, place, name, ordering) {
-    this.id = id
+    this.id = Number(id)
     this.lat = lat()
     this.lng = lng()
     this.placeID = placeID
     this.place = place
     this.name = name
-    this.ordering = ordering
+    this.ordering = Number(ordering)
   }
   getLatLng () {
     return {
@@ -40,16 +40,40 @@ let newTrip = new Trip((new Date()).getTime(), '', [], JSON.parse(window.session
 let startLocation = randomProperty(countries)
 // let startLocation = { center: { lat: 10, lng: 330 }, zoom: 2.8 }
 
-// ----------------
-// Logic Functions
-// -----------------
-function saveToSessionStorage () {
+// ------------
+// Data Methods
+// -------------
+function saveTripToSessionStorage () {
   window.sessionStorage.setItem('trip', JSON.stringify(newTrip))
 }
 
-function getFromSessionStorage () {
+function getTripFromSessionStorage () {
   newTrip = JSON.parse(window.sessionStorage.getItem('trip'))
   document.getElementById('tripNameFormInput').value = newTrip.title
+}
+
+function clearTripFromSessionStorage () {
+  window.sessionStorage.removeItem('trip')
+}
+
+// ----------------
+// Logic Functions
+// -----------------
+function randomBetween (min, max) {
+  if (min < 0) {
+    return min + Math.random() * (Math.abs(min) + max)
+  } else {
+    return min + Math.random() * max
+  }
+}
+
+function randomProperty (obj) {
+  let keys = Object.keys(obj)
+  return obj[ keys[ keys.length * Math.random() << 0 ] ]
+}
+
+function randomLocation () {
+  return randomProperty(countries)
 }
 
 let addDestination = function (latLng, placeID, place) {
@@ -58,7 +82,7 @@ let addDestination = function (latLng, placeID, place) {
   let ordering = newTrip.destinationList.length + 1
   let newDestination = new Destination(id, latLng.lat, latLng.lng, placeID, place, name, ordering)
   newTrip.destinationList.push(newDestination)
-  saveToSessionStorage()
+  saveTripToSessionStorage()
   $('#deleteDestinations').show()
 }
 
@@ -196,7 +220,6 @@ let renderMarkers = function () {
       lat: Number(newTrip.destinationList[j].lat),
       lng: Number(newTrip.destinationList[j].lng)
     }
-    console.log(latLng)
     let marker = new google.maps.Marker({
       position: latLng,
       map: map,
@@ -281,7 +304,7 @@ $(document).ready(function () {
         let numbering = i + 1
         $(this).text(numbering)
         for (let j = 0; j < newTrip.destinationList.length; j++) {
-          if (newTrip.destinationList[j].id === Number($(this)[0].parentNode.id)) {
+          if (Number(newTrip.destinationList[j].id) === Number($(this)[0].parentNode.id)) {
             newTrip.destinationList[j].ordering = numbering
           }
         }
@@ -290,7 +313,7 @@ $(document).ready(function () {
       newTrip.destinationList.sort((a, b) => (a.ordering > b.ordering) ? 1 : -1)
       clearMarkers()
       renderMarkers()
-      saveToSessionStorage()
+      saveTripToSessionStorage()
     }
   })
 })
@@ -304,7 +327,7 @@ $(document).on('click', '#deleteButton', function (e) {
   // Remove the destination from the Trip, using the shared ID between
   // the 'tr' element and the destination object in the list
   while (i--) {
-    if (newTrip.destinationList[i].id === Number(id)) {
+    if (Number(newTrip.destinationList[i].id) === Number(id)) {
       newTrip.destinationList.splice(i, 1)
     }
   }
@@ -317,7 +340,7 @@ $(document).on('click', '#deleteButton', function (e) {
   }
   clearMarkers()
   renderMarkers()
-  saveToSessionStorage()
+  saveTripToSessionStorage()
   if (newTrip.destinationList.length < 1) {
     $('#deleteDestinations').hide()
   }
@@ -336,7 +359,7 @@ $(document).on('click', '#deleteDestinations', function () {
   clearMarkers()
   $('#destinationTable').empty()
   newTrip.destinationList = []
-  saveToSessionStorage()
+  saveTripToSessionStorage()
   $('#deleteDestinations').hide()
 })
 
@@ -354,25 +377,27 @@ $(document).ready(function () {
 $(document).on('change paste', '#tripNameFormInput', function () {
   let name = document.getElementById('tripNameFormInput').value
   newTrip.title = name
-  saveToSessionStorage()
+  saveTripToSessionStorage()
 })
 
 // Save Destination name upon input change
 $(document).on('change paste', '.destinationInputClass', function () {
   let id = $(this).parents('tr')[0].id
   for (let j = 0; j < newTrip.destinationList.length; j++) {
-    if (newTrip.destinationList[j].id === Number(id)) {
+    if (Number(newTrip.destinationList[j].id) === Number(id)) {
+      console.log('Match!')
       newTrip.destinationList[j].name = this.value
     }
   }
-  saveToSessionStorage()
+  console.log(this.value)
+  saveTripToSessionStorage()
 })
 
 // upon page reload, this function is called
 function renderOnReload () {
   $('#deleteDestinations').hide()
   if (window.sessionStorage.getItem('trip') !== null) {
-    getFromSessionStorage()
+    getTripFromSessionStorage()
     for (let i = 0; i < newTrip.destinationList.length; i++) {
       drawDestination(newTrip.destinationList[i])
     }
@@ -397,14 +422,13 @@ function renderOnReload () {
 
 // Save trip to DB with Save Trip button
 $(document).on('click', '#saveTrip', function () {
-  saveToSessionStorage()
+  saveTripToSessionStorage()
   $.ajax({
     url: '/trip/data',
     method: 'POST',
     contentType: 'application/json',
     data: JSON.stringify(newTrip),
     success: function (res) {
-      console.log(res)
     }
   })
   $.ajax({
@@ -413,7 +437,6 @@ $(document).on('click', '#saveTrip', function () {
     contentType: 'application/json',
     data: JSON.stringify(newTrip),
     success: function (res) {
-      console.log(res)
     }
   })
 })
