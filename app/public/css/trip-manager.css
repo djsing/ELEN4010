@@ -12,14 +12,17 @@
   letter-spacing: 8px;
 }
 
+#trip-list {
+  text-align: -webkit-center;
+}
 ul {
   list-style-type: none;
   }
 
 .titleField {
-  min-width: 300px;
-  width: 80%;
-  border-width: 0!important;
+  /* min-width: 255px; */
+  width: 200%;
+    border-width: 0!important;
   font-size: medium;
   cursor: pointer;
 }

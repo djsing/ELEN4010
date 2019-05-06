@@ -74,6 +74,7 @@ let addLogBtnToTitle = function (row) {
   newButton.value = 'Log'
   newButton.className = 'logButton'
   newButton.classList.add('btn', 'btn-sm', 'btn-secondary')
+  newButton.setAttribute('href', '#log-jump')
   newEntry.appendChild(newButton)
   row.appendChild(newEntry)
 }
@@ -115,6 +116,7 @@ let addLogEntry = function (logEntry) {
 
 // On Document load, propogate a list of trips. This is quite slow at present, could we preload it somehow?
 $(document).ready(() => {
+  $('#trip-log').hide()
   $.ajax({
     url: '/trip-manager/get-data',
     method: 'POST',
@@ -169,24 +171,34 @@ $(function () {
 
   // view the trip log
   $('table').on('click', '.logButton', function () {
-    let row = $(this).closest('tr')[0].firstChild.firstChild.attributes['id'].nodeValue
-    let newLog = []
-    let currentTrip = JSON.parse(window.sessionStorage.getItem(''))
-    let index = $.inArray(row, tripListTitle)
-    $.ajax({
-      url: '/trip-manager-interface/log',
-      method: 'POST',
-      contentType: 'application/json',
-      data: JSON.stringify({ tripId: tripsList[index].id }),
-      success: function (res) {
-        let existingTrip = {
-          'id': Number(tripsList[index].id),
-          'title': tripsList[index].title,
-          'destinationList': res,
-          'user': JSON.parse(window.sessionStorage.getItem('Hash'))
-        }
+    let id = $(this).parents('tr')[0].id
+    let index = -1
+    for (let i = 0; i < tripsList.length; i++) {
+      if (Number(tripsList[i].id) === Number(id)) {
+        index = i
       }
-    })
+    }
+    $('#trip-log').show()
+    window.location = '/trip-manager#log-jump'
+    $('#trip-log-title').html(tripsList[index].title)
+    // let row = $(this).closest('tr')[0].firstChild.firstChild.attributes['id'].nodeValue
+    // let newLog = []
+    // let currentTrip = JSON.parse(window.sessionStorage.getItem(''))
+    // let index = $.inArray(row, tripListTitle)
+    // $.ajax({
+    //   url: '/trip-manager-interface/log',
+    //   method: 'POST',
+    //   contentType: 'application/json',
+    //   data: JSON.stringify({ tripId: tripsList[index].id }),
+    //   success: function (res) {
+    //     let existingTrip = {
+    //       'id': Number(tripsList[index].id),
+    //       'title': tripsList[index].title,
+    //       'destinationList': res,
+    //       'user': JSON.parse(window.sessionStorage.getItem('Hash'))
+    //     }
+    //   }
+    // })
   })
 
   // Create a new trip

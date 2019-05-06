@@ -64,29 +64,33 @@
 
     <!-- Main Page contents -->
     <div class="container overflow-hidden;" id="mainContainer" >
-      <div class="row">
+      <div class="row" id="trip-list">
 
-        <div class="container col-lg-8" id="tripmanager">
-          <h1 id='main-heading'>My Trips </h1>
-        </span>
-            <button type='button' class='btn btn-sm btn-outline-secondary' id='addButton'>Add a trip</button>
-            <label id="info-text" class="small">(Click trip title to edit)</label>
-          </span>
-          
-          <div id="loader" class="text-align-center"><img class="size-full" draggable="false" src="img/preloader.gif" alt="Loading icon tetris game" width="64" height="64">Loading...</div>
-        
-          <form id='newTrip'>
-            <div id='tripTitle'></div>
-          </form>
+        <div class="container" id="tripmanager">
 
-          <table>
-              <tbody id='tripTitleTable'>
-              </tbody>
-          </table>
+          <div >
+              <h1 id='main-heading'>My Trips </h1>
+              </span>
+                <button type='button' class='btn btn-sm btn-outline-secondary' id='addButton'>Add a trip</button>
+                <label id="info-text" class="small">(Click trip title to edit)</label>
+              </span>
+              
+              <div id="loader" class="text-align-center"><img class="size-full" draggable="false" src="img/preloader.gif" alt="Loading icon tetris game" width="64" height="64">Loading...</div>
+            
+              <form id='newTrip'>
+                <div id='tripTitle'></div>
+              </form>
 
-        <div class="bs-component" hidden>
+              <table>
+                  <tbody id='tripTitleTable'>
+                  </tbody>
+              </table>
+        </div>
+
+        <div class="bs-component" id="trip-log">
             <div><hr></div>
-            <h1 id='heading'>Trip Log</h1>
+            <a id="log-jump"></a>
+            <h1 id='heading-trip'>Trip Log</h1><h3 id='trip-log-title' class="text-muted"></h3>
             <div style="overflow-y: scroll; height: 600px;" class=" fixed-height">
                 <table class="table table-hover">
                   <thead>
