@@ -8,7 +8,7 @@ let drawDestination = function (dest) {
   row.className = 'destinationsTableRow'
 
   let destNum = document.createElement('td')
-  destNum.innerHTML = String(dest.order)
+  destNum.innerHTML = String(dest.dest_order)
   destNum.classList.add('indexClass')
   destNum.setAttribute('style', 'width: 20%')
   row.appendChild(destNum)

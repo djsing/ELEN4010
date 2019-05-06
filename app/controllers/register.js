@@ -25,6 +25,7 @@ function signInInit () {
             window.sessionStorage.setItem('Name', name)
             window.sessionStorage.setItem('ImageURI', JSON.stringify(response.image))
             window.sessionStorage.setItem('Email', JSON.stringify(response.emailAddress))
+            window.sessionStorage.setItem('Hash', JSON.stringify(response.hash))
             // direct to different pages based on whether the user is new or current
             if (response.userType === 'currentUser') {
               window.alert('An account with this email address already exists.\nPlease Sign-in.')
@@ -101,6 +102,7 @@ $(document).ready(() => {
         window.sessionStorage.setItem('Name', name)
         window.sessionStorage.setItem('ImageURI', JSON.stringify(response.image))
         window.sessionStorage.setItem('Email', JSON.stringify(response.emailAddress))
+        window.sessionStorage.setItem('Hash', JSON.stringify(response.hash))
         // direct to different pages based on whether the user is new or current
         if (response.userType === 'currentUser') {
           window.alert('An account with this email address already exists.\nPlease Sign-in.')

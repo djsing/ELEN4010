@@ -15,7 +15,6 @@ function createDestinationQuery (trip, res) {
       '${tripInfo.destinationList[i].order}',
       '${tripInfo.id}');`
   }
-
   db.populateDestionationsTable(res, queryString)
 }
 
