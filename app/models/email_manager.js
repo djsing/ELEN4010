@@ -13,12 +13,11 @@ let transporter = mailer.createTransport({
 })
 
 let sendInvite = function (emailAddress, tripName, invitee) {
-  let trip = 'tripName'
+  let trip = tripName
   let username = invitee
   let htmlPage = eval('`' + fs.readFileSync(path.join(__dirname, '/email.html'), 'utf8') + '`')
 
   let email = emailAddress
-
 
   let helperOptions = {
     from: '"Away We Go" <awaywegoinvites@gmail.com',
