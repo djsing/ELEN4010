@@ -6,6 +6,11 @@ function addInvite (res, invite) {
   db.addToInvitesTable(res, invite.tripID, invite.emailAddress)
 }
 
+function getInvites (res, emailAddress) {
+  db.getInvites(res, emailAddress)
+}
+
 module.exports = {
-  addInvite: addInvite
+  addInvite: addInvite,
+  getInvites: getInvites
 }

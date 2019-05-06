@@ -101,8 +101,9 @@ mainRouter.post('/invite', function (req, res) {
 })
 
 mainRouter.post('/invites/data', function (req, res) {
-  let pendingTrips = [{ 'title': 'Malawi', 'tripID': '000001' }]
-  res.send(pendingTrips)
+  invitesModel.getInvites(res, req.body.emailAddress)
+  // let pendingTrips = [{ 'title': 'Malawi', 'tripID': '000001' }]
+  // res.send(pendingTrips)
 })
 
 module.exports = mainRouter

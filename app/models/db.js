@@ -340,6 +340,23 @@ function getDestinations (queryString, res) {
     })
 }
 
+function getInvites (res, emailAddress) {
+  pools
+    .then(pool => {
+      return pool.request()
+        .query(`SELECT trip_id
+        FROM invites
+        WHERE email_address = '${emailAddress}'`)
+    })
+    .then(result => {
+      console.log(`The trip_ids linked to ${emailAddress} are`, result.recordset)
+      res.send(result.recordset)
+    })
+    .catch(err => {
+      console.log('Get trip_ids error:', err)
+    })
+}
+
 module.exports = {
   sql: mssql,
   pools: pools,
@@ -350,5 +367,7 @@ module.exports = {
   populateTripsAndGroupsTable: populateTripsAndGroupsTable,
   getTrips: getTrips,
   getTripTitles: getTripTitles,
-  getDestinations: getDestinations
+  getDestinations: getDestinations,
+  addToInvitesTable: addToInvitesTable,
+  getInvites: getInvites
 }
