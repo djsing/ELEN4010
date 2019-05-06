@@ -1,1 +1,0 @@
-This folder is for view templates to be rendered by the server

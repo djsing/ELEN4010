@@ -155,11 +155,12 @@ function findUser (userInfo, signin, res) {
       .query(`IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='destinations' and xtype='U')
           CREATE TABLE destinations (
           id varchar(255) PRIMARY KEY, 
-          name varchar(50),
-          place varchar(255),
-          latLng varchar(255),
+          lat float,
+          lng float,
           place_id varchar(255),
-          dest_order int,
+          place varchar(255),
+          name varchar(50),
+          ordering int,
           trip_id varchar(255)
           )`)
   }).then(result => {
@@ -183,6 +184,109 @@ function populateDestionationsTable (res, queryString) {
     })
     .catch(err => {
       console.log('populate destination table error:', err)
+    })
+}
+
+(function createTripTable () {
+  pools.then((pool) => {
+    return pool.request()
+      .query(`IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='trips' and xtype='U')
+          CREATE TABLE trips (
+          id varchar(255) PRIMARY KEY, 
+          title varchar(50)
+          )`)
+  }).then(result => {
+    console.log('trips table created', result)
+  }).catch(err => {
+    console.log('trips table creation error', err)
+  })
+}
+)()
+
+function populateTripsAndGroupsTable (res, queryString, tripInfo) {
+  pools
+    .then(pool => {
+      // console.log('populate query string: ', queryString)
+      return pool.request()
+        .query(queryString)
+    })
+    .then(result => {
+      // console.log('trips and groups population result ', result)
+      res.send(tripInfo)
+    })
+    .catch(err => {
+      console.log('populate trips table error:', err)
+    })
+}
+
+function getTripTitles (trips, res) {
+  pools
+    .then(pool => {
+      let queryString = `SELECT * FROM trips WHERE id IN (`
+      for (let i = 0; i < trips.length; i++) {
+        queryString = queryString + `'${trips[i].trip_id}',`
+      }
+      queryString = queryString.substring(0, queryString.length - 1)
+      queryString = queryString + `);`
+      console.log('get trip titles QS ', queryString)
+
+      return pool.request()
+        .query(queryString)
+    })
+    .then(result => {
+      // console.log('get trip titles result ', result)
+      res.send(result.recordset)
+    })
+    .catch(err => {
+      console.log('Get trip titles error:', err)
+    })
+}
+
+function getTrips (queryString, res) {
+  pools
+    .then(pool => {
+      return pool.request()
+        .query(queryString)
+    })
+    .then(result => {
+      console.log('get trips result ', result)
+      if (result.recordset.length !== 0) {
+        getTripTitles(result.recordset, res)
+      }
+    })
+    .catch(err => {
+      console.log('Get trips error:', err)
+    })
+}
+
+(function createGroupsTable () {
+  pools.then((pool) => {
+    return pool.request()
+      .query(`IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='groups' and xtype='U')
+          CREATE TABLE groups (
+          user_hash varchar(255), 
+          trip_id varchar(255)
+          )`)
+  }).then(result => {
+    console.log('groups table created', result)
+  }).catch(err => {
+    console.log('groups table creation error', err)
+  })
+}
+)()
+
+function getDestinations (queryString, res) {
+  pools
+    .then(pool => {
+      return pool.request()
+        .query(queryString)
+    })
+    .then(result => {
+      console.log('get destinations result ', result.recordset)
+      res.send(result.recordset)
+    })
+    .catch(err => {
+      console.log('Get destinations error:', err)
     })
 }
 
@@ -228,6 +332,11 @@ module.exports = {
   isConnected: isConnected,
   connectionError: connectionError,
   findUser: findUser,
+  populateDestionationsTable: populateDestionationsTable,
+  populateTripsAndGroupsTable: populateTripsAndGroupsTable,
+  getTrips: getTrips,
+  getTripTitles: getTripTitles,
+  getDestinations: getDestinations
   populateDestionationsTable: populateDestionationsTable,
   populateLogTable: populateLogTable
 }
