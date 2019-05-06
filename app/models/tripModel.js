@@ -9,16 +9,17 @@ function createDestinationQuery (tripInfo, res) {
   for (let i = 0; i < trip.destinationList.length; i++) {
     queryString = queryString + SqlString.format('INSERT INTO destinations VALUES (?,?,?,?,?,?,?,?);',
       [trip.destinationList[i].id,
-      trip.destinationList[i].lat,
-      trip.destinationList[i].lng,
-      trip.destinationList[i].placeId,
-      trip.destinationList[i].place,
-      trip.destinationList[i].name,
-      trip.destinationList[i].ordering,
-      trip.id])
+        trip.destinationList[i].lat,
+        trip.destinationList[i].lng,
+        trip.destinationList[i].placeId,
+        trip.destinationList[i].place,
+        trip.destinationList[i].name,
+        trip.destinationList[i].ordering,
+        trip.id])
+  }
   db.populateDestionationsTable(res, queryString)
 }
 
 module.exports = {
-  createDestinationQuery: createDestinationQuery,
+  createDestinationQuery: createDestinationQuery
 }

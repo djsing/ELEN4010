@@ -9,9 +9,9 @@ function createLogQuery (logInfo, res) {
   for (let i = 0; i < log.length; i++) {
     queryString = queryString + SqlString.format('INSERT INTO log VALUES (?,?,?,?,?,?);',
       [log[i].id,
-        log[i].who,
-        log[i].what,
-        log[i].when,
+        log[i].userId,
+        log[i].code,
+        log[i].date,
         log[i].importance,
         log[i].tripId])
   }

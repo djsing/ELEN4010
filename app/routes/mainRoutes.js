@@ -14,6 +14,7 @@ let authenticate = require('../models/authenticate')
 let termsModel = require('../models/termsAndConditionsModel')
 let tripManagerModel = require('../models/tripManagerModel')
 let tripModel = require('../models/tripModel')
+let logModel = require('../models/logModel')
 
 // ------------
 // URL Routing
@@ -66,7 +67,11 @@ mainRouter.get(['/trip-manager', '/trips'], function (req, res) {
 // RESTFUL Routing
 // ----------------
 mainRouter.post('/trip/log', function (log, res) {
-  tripModel.createLogQuery(log, res)
+  logModel.createLogQuery(log, res)
+})
+
+mainRouter.post('/trip-manager-interface/log', function (log, res) {
+  logModel.getLogsQuery(log, res)
 })
 
 mainRouter.post('/trip/data', function (req, res) {

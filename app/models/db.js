@@ -293,13 +293,13 @@ function getDestinations (queryString, res) {
 (function createLogTable () {
   pools.then((pool) => {
     return pool.request()
-      .query(`IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='log' and xtype='D')
+      .query(`IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='log' and xtype='U')
           CREATE TABLE log (
           id varchar(255) PRIMARY KEY, 
-          who varchar(50),
-          what tinyint,
-          when DATETIME,
-          important bit,
+          user_id varchar(50),
+          code tinyint,
+          date DATETIME,
+          importance bit,
           trip_id varchar(255)
           )`)
   }).then(result => {

@@ -26,13 +26,13 @@ class Trip {
 }
 
 class LogEvent {
-  constructor (id, who, what, when, tripId, importance) {
+  constructor (id, userId, code, date, importance, tripId) {
     this.id = id
-    this.who = who
-    this.what = what
-    this.when = when
-    this.tripId = tripId
+    this.userId = userId
+    this.code = code
+    this.date = date
     this.importance = importance
+    this.tripId = tripId
   }
 }
 
@@ -67,39 +67,38 @@ function randomLocation () {
 
 function addLogEntry (eventCode) {
   /* Event codes:
-    0: "created the trip"
-    1: "renamed the trip"
-    2: "added a destination"
-    3: "removed a destination"
-    4: "rearranged the destinations"
-    5: "removed all destinations"
-    6: "invited [NEWUSER] to the trip"
-    7: "joined the trip"
-    8: UNUSED
+    0: "created the trip"   <- Major
+    1: "invited [NEWUSER] to the trip" <- Major
+    2: "joined the trip"    <- Major
+    3: "renamed the trip"
+    4: "added a destination"
+    5: "removed a destination"
+    6: "rearranged the destinations"
+    7: "renamed a destination"
+    8: "removed all destinations"
     9: UNUSED
   */
-  let firstLogEntry
-  if (newLog.length > 1) {
-    firstLogEntry = true
-  } else {
-    firstLogEntry = false
+  let id = String((new Date()).getTime())
+  let userId = JSON.parse(window.sessionStorage.getItem('Hash')) // Should we do a proper check?
+  let code = eventCode
+  let date = new Date()
+  let importance = 0
+  if (eventCode < 3) {
+    importance = 1
   }
-  let id = (new Date()).getTime()
-  let who = JSON.parse(window.sessionStorage.getItem('Hash')) // Should we do a proper check?
-  let what = eventCode
-  let when = new Date()
   let tripId = ''
-  let importance = firstLogEntry
-  let logEvent = new LogEvent(id, who, what, when, tripId, importance)
+  let logEvent = new LogEvent(id, userId, code, date, importance, tripId)
   newLog.push(logEvent)
   // Debugging:
   console.log('Event with ID ',
     logEvent.id, ': At ',
-    logEvent.when, ', ',
-    logEvent.who, ' performed event with code ',
-    logEvent.what, '.')
+    logEvent.date, ', ',
+    logEvent.userId, ' performed event with code ',
+    logEvent.code, '.')
   if (logEvent.importance) {
     console.log('It was a major event')
+  } else {
+    console.log('It was a minor event')
   }
 }
 
@@ -109,6 +108,7 @@ let addDestination = function (latLng, placeId, place) {
   let ordering = newTrip.destinationList.length + 1
   let newDestination = new Destination(id, latLng.lat, latLng.lng, placeId, place, name, ordering)
   newTrip.destinationList.push(newDestination)
+  addLogEntry(4)
   saveTripToSessionStorage()
   $('#deleteDestinations').show()
 }
@@ -322,7 +322,7 @@ function initMap () {
 // JQuery Event Listeners
 // ------------------------
 
-// Make the Destination list draggable
+// destinations can be rearranged
 $(document).ready(function () {
   $('#destinationTable').sortable({
     scroll: true,
@@ -340,6 +340,7 @@ $(document).ready(function () {
       newTrip.destinationList.sort((a, b) => (a.ordering > b.ordering) ? 1 : -1)
       clearMarkers()
       renderMarkers()
+      addLogEntry(6)
       saveTripToSessionStorage()
     }
   })
@@ -366,6 +367,7 @@ $(document).on('click', '#deleteButton', function (e) {
   }
   clearMarkers()
   renderMarkers()
+  addLogEntry(5)
   saveTripToSessionStorage()
   if (newTrip.destinationList.length < 1) {
     $('#deleteDestinations').hide()
@@ -389,11 +391,12 @@ $(document).on('click', '#deleteDestinations', function () {
   clearMarkers()
   $('#destinationTable').empty()
   newTrip.destinationList = []
+  addLogEntry(8)
   saveTripToSessionStorage()
   $('#deleteDestinations').hide()
 })
 
-// Save Trip Button alert popup
+// Save Trip/Log -> post to DB
 $(document).on('click', '#saveTrip', function () {
   $.ajax({
     url: '/trip/data',
@@ -402,6 +405,9 @@ $(document).on('click', '#saveTrip', function () {
     data: JSON.stringify(newTrip),
     success: function (res) {
       console.log(res)
+      $('#success-alert').fadeTo(2000, 500).slideUp(500, function () {
+        $('#success-alert').slideUp(500)
+      })
     }
   })
   $.ajax({
@@ -418,17 +424,18 @@ $(document).on('click', '#saveTrip', function () {
 // Pop-up saved confirmation alert
 $(document).ready(function () {
   $('#success-alert').hide()
-  $('#saveTrip').click(function showAlert () {
-    $('#success-alert').fadeTo(2000, 500).slideUp(500, function () {
-      $('#success-alert').slideUp(500)
-    })
-  })
+  // $('#saveTrip').click(function showAlert () {
+  //   $('#success-alert').fadeTo(2000, 500).slideUp(500, function () {
+  //     $('#success-alert').slideUp(500)
+  //   })
+  // })
 })
 
 // Save Trip name upon input change
 $(document).on('change paste', '#tripNameFormInput', function () {
   let name = document.getElementById('tripNameFormInput').value
   newTrip.title = name
+  addLogEntry(3)
   saveTripToSessionStorage()
 })
 
@@ -440,6 +447,7 @@ $(document).on('change paste', '.destinationInputClass', function () {
       newTrip.destinationList[j].name = this.value
     }
   }
+  addLogEntry(7)
   saveTripToSessionStorage()
 })
 
