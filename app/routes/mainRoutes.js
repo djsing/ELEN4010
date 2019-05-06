@@ -91,11 +91,17 @@ mainRouter.get('/email', function (req, res) {
 mainRouter.get('*', function (req, res) {
   res.status(404).send('404 Error: page not found')
 })
+// ----------------- Invites ------------------------------
 
 mainRouter.post('/invite', function (req, res) {
   mailManager.sendInvite(req.body.emailAddress, req.body.tripName, req.body.invitee)
   tripModel.addInvite(res, req.body)
   res.sendStatus(200)
+})
+
+mainRouter.post('/invites/data', function (req, res) {
+  let pendingTrips = [{ 'title': 'Malawi', 'tripID': '000001' }]
+  res.send(pendingTrips)
 })
 
 module.exports = mainRouter

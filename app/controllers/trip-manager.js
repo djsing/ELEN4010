@@ -153,24 +153,35 @@ $(function () {
       window.alert('This trip title already exists.\n Please enter a new title.')
     }
   })
-  displayInvites()
+
+  // ---------- Trip Invites --------------------------
+
+  let emailAddress = '1364103@students.wits.ac.za'
+  $.ajax({
+    url: '/invites/data',
+    method: 'POST',
+    contentType: 'application/json',
+    data: JSON.stringify({ 'emailAddress': emailAddress }),
+    success: function (res) {
+      displayInvites(res)
+    }
+  })
 })
 
 // -------------------------- Trip Invites  ---------------------------------------
 // let pendingTrips = [{ 'title': 'Malawi', 'tripID': '000001' }]
-let pendingTrips = []
 
-let displayInvites = function () {
+let displayInvites = function (pendingInvites) {
   // Clear the old table
   $('#invitesTable').empty()
 
   // Display the heading if there are pendingInvites
-  if (pendingTrips.length > 0) {
+  if (pendingInvites.length > 0) {
     // Display the heading if there are pendingInvites
 
     $('#pendingTripInvitesHeading').show()
 
-    pendingTrips.forEach((trip) => {
+    pendingInvites.forEach((trip) => {
       appendTripInvite(trip.title)
     })
   } else {
