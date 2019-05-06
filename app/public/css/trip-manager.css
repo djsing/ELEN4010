@@ -1,0 +1,41 @@
+.h1 {
+  margin: 15px;
+}
+
+/* #addButton {
+
+
+} */
+
+.titleField {
+  min-width: 200px;
+  width: 80%;
+  border-width: 0!important;
+  font-size: medium;
+  cursor: pointer;
+}
+
+input.titleField:focus {
+  outline-offset: 0px!important;
+  outline-width: 0px;
+  outline-color: transparent;
+}
+input.titleField:hover {
+  color: #c51601;
+}
+#addButton {
+  margin: 10px;
+}
+
+.breadcrumb {
+  background: rgba(245, 245, 245, 0); 
+  border: 0px solid rgba(245, 245, 245, 1); 
+  border-radius: 25px; 
+  display: block;
+}
+
+.btn-bread{
+    margin-top:10px;
+    font-size: 12px;
+    border-radius: 3px;
+}

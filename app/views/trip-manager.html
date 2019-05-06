@@ -11,7 +11,9 @@
     <script src="sign-in.js"></script>
     <link rel="stylesheet" href="/css/bootstrap.lux.min.css" />
     <link rel="stylesheet" href="/css/general.css" />
+    <link rel="stylesheet" href="/css/trip-manager.css" />
 
+    <script defer src="https://use.fontawesome.com/releases/v5.8.1/js/all.js" integrity="sha384-g5uSoOSBd7KkhAMlnQILrecXvzst9TdC09/VM+pjDTCM+1il8RHz5fKANTFFb+gQ" crossorigin="anonymous"></script>
 
   </head>
 
@@ -56,19 +58,44 @@
       </div>
     </nav>
 
-    <div class="container" id="tripmanager">
-      <h1 id='heading'>My Trips:</h1>
-      <button type='button' id='addButton'>Add</button>
+    <div class="col-lg-12">
+      <div class="container col-lg-6 offset-lg-4" id="tripmanager">
+        <h1 id='heading'>My Trips:</h1>
+        <button type='button' class='btn btn-outline-secondary' id='addButton'>Add a trip</button>
 
-      <form id='newTrip'>
-        <div id='tripTitle'></div>
-      </form>
+        <form id='newTrip'>
+          <div id='tripTitle'></div>
+        </form>
 
-      <table>
-        <tbody id='tripTitleTable'>
-        </tbody>
-      </table>
+        <table>
+          <tbody id='tripTitleTable'>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="bs-component" hidden>
+          <div><hr></div>
+          <h1 id='heading'>Trip Log</h1>
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th scope="col">Date</th>
+                <th scope="col">Time</th>
+                <th scope="col">Who</th>
+                <th scope="col">What</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr id="log-table">
+                <td id="log-date">when</td>
+                <td id="log-time">around</td>
+                <td id="log-user">who</td>
+                <td id="log-event">what</td>
+              </tr>
+            </tbody>
+          </table> 
     </div>
+
 
     <script src="/js/bootstrap.bundle.min.js"></script>
   </body>

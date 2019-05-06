@@ -38,6 +38,8 @@ let addTitleInputField = function () {
   let titleInputField = document.createElement('input')
   titleInputField.type = 'text'
   titleInputField.id = 'tripTitleInputField'
+  // titleInputField.className = ('btn btn-secondary')
+
   $('#tripTitle').append(titleInputField)
 }
 
@@ -55,19 +57,12 @@ let addTitleDiplayField = function (title, row) {
   titleDisplayField.id = title
   titleDisplayField.className = 'titleField'
   titleDisplayField.value = title
-  titleDisplayField.disabled = true
+  // titleDisplayField.type = 'button'
+  // titleDisplayField.setAttribute('style', 'min-width: 200px; width: 80%;  border-width: 0!important;font-size: medium;cursor: pointer;')
+  titleDisplayField.setAttribute('readonly', '1')
+  titleDisplayField.setAttribute('data-toggle', 'tooltip')
+  titleDisplayField.setAttribute('title', 'Click to edit')
   newEntry.appendChild(titleDisplayField)
-  row.appendChild(newEntry)
-}
-
-let addEditBtnToTitle = function (row) {
-  let newEntry = document.createElement('td')
-  let newButton = document.createElement('input')
-  newButton.type = 'button'
-  newButton.value = 'Edit Trip'
-  newButton.className = 'editButton'
-  // newButton.id = trip.id
-  newEntry.appendChild(newButton)
   row.appendChild(newEntry)
 }
 
@@ -75,9 +70,9 @@ let addLogBtnToTitle = function (row) {
   let newEntry = document.createElement('td')
   let newButton = document.createElement('input')
   newButton.type = 'button'
-  newButton.value = 'View Log'
+  newButton.value = 'Log'
   newButton.className = 'logButton'
-  // newButton.id = title
+  newButton.classList.add('btn', 'btn-sm', 'btn-secondary')
   newEntry.appendChild(newButton)
   row.appendChild(newEntry)
 }
@@ -85,9 +80,8 @@ let addLogBtnToTitle = function (row) {
 let addTitleEntry = function (trip) {
   let newRow = document.createElement('tr')
   newRow.id = trip.id
-  addTitleDiplayField(trip.title, newRow)
-  addEditBtnToTitle(newRow)
   addLogBtnToTitle(newRow)
+  addTitleDiplayField(trip.title, newRow)
   $('#tripTitleTable').append(newRow)
 }
 
@@ -107,7 +101,6 @@ $(document).ready(() => {
       tripsList = JSON.parse(window.sessionStorage.getItem('tripList'))
       for (let i = 0; i < res.length; i++) {
         addTitleEntry(tripsList[i])
-        // addTitleEntry(res[i])
       }
     }
   })
@@ -122,7 +115,7 @@ $(function () {
   })
 
   // Edit an existing trip
-  $('table').on('click', '.editButton', function () {
+  $('table').on('click', '.titleField', function () {
     let id = $(this).parents('tr')[0].id
     let index = -1
     for (let i = 0; i < tripsList.length; i++) {
@@ -200,5 +193,9 @@ $(function () {
     } else {
       window.alert('This trip title already exists.\n Please enter a new title.')
     }
+  })
+
+  $('[data-toggle="tooltip"]').tooltip({
+    content: 'Awesome title!'
   })
 })
