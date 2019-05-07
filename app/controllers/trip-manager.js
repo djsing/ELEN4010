@@ -132,7 +132,10 @@ let addLogElements = function (logEntry, row) {
 
   let newElementUser = document.createElement('td')
   newElementUser.innerHTML = logEntry.userId
-  newElementUser.innerHTML = getUserName(logEntry.userId)
+  let name = getUserName(logEntry.userId)
+  name = JSON.parse(window.sessionStorage.getItem('name'))
+  console.log(name)
+  newElementUser.innerHTML = name
 
   let newElementEvent = document.createElement('td')
   newElementEvent.innerHTML = lookUpEventCode(logEntry.code)
@@ -174,20 +177,19 @@ $(document).ready(() => {
   })
 })
 
-function getUserName (id) {
-  let name
+let getUserName = function (id) {
   $.ajax({
     url: '/trip-manager/user',
     method: 'POST',
     contentType: 'application/json',
     data: JSON.stringify({ hash: id }),
     success: function (res) {
-      console.log('Result is', res)
-      name = String(res[0].first_name) + ' ' + String(res[0].last_name)
+      let firstName = String(res[0].first_name)
+      let lastName = String(res[0].last_name)
+      let name = firstName + ' ' + lastName
+      window.sessionStorage.setItem('name', JSON.stringify(name))
     }
   })
-  console.log(name)
-  return String(name)
 }
 
 $(function () {
