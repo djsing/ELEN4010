@@ -229,8 +229,14 @@ $(function () {
     }
   })
 
+  $('#hide-log').click(() => {
+    $('#trip-log').hide()
+  })
+
   // view the trip log
   $('table').on('click', '.logButton', function () {
+    log = []
+    $('#logTable').empty()
     let id = $(this).parents('tr')[0].id
     let index = -1
     for (let i = 0; i < tripsList.length; i++) {
@@ -247,6 +253,7 @@ $(function () {
       contentType: 'application/json',
       data: JSON.stringify({ tripId: id }),
       success: function (log) {
+        log.sort((a, b) => (a.date > b.date) ? 1 : -1)
         window.sessionStorage.setItem('log', JSON.stringify(log))
         log = JSON.parse(window.sessionStorage.getItem('log'))
         for (let i = 0; i < log.length; i++) {

@@ -12,6 +12,23 @@
   letter-spacing: 8px;
 }
 
+.sticky-th {
+  position: sticky;
+  top: -2px;
+  border-top-width: 5px;
+  border-top-color: white;
+  z-index: 10;
+  background: white;
+  z-index: 10;
+  height: 15px;
+}
+
+/* thead {
+line-height: 0px!important;
+padding: 0px;
+height: 5px;
+} */
+
 #trip-list {
   text-align: -webkit-center;
 }
@@ -50,4 +67,24 @@ input.titleField:hover {
     margin-top:10px;
     font-size: 12px;
     border-radius: 3px;
+    color: #1a1a1a;
+}
+#hide-log {
+  float: right;
+  top: -13px;
+  right: -15px;
+  position: relative;
+  color: #9a9a9a;
+}
+
+#hide-log:active {
+  color: #1a1a1a;
+  background-color: transparent;
+  border-color: transparent;
+}
+
+#hide-log:hover {
+  color: #1a1a1a;
+  background-color: transparent;
+  border-color: transparent;
 }
