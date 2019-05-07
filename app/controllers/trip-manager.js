@@ -168,6 +168,14 @@ $(function () {
       window.alert('This trip title already exists.\n Please enter a new title.')
     }
   })
+  // Add event listeners for buttons for rejecting trips
+  $(document).on('click', '.rejectButton', () => {
+    console.log('A reject button was pressed')
+  })
+
+  $(document).on('click', '.acceptButton', () => {
+    console.log('An accept button was pressed')
+  })
 })
 
 // -------------------------- Trip Invites  ---------------------------------------
@@ -204,7 +212,7 @@ let appendTripInvite = function (trip) {
 
   // Add an accept button for the invite
   let acceptBtn = document.createElement('button')
-  acceptBtn.class = 'acceptButton'
+  acceptBtn.className = 'acceptButton'
   acceptBtn.innerHTML = 'accept'
   let acceptBtnCell = document.createElement('td')
   acceptBtnCell.append(acceptBtn)
@@ -212,7 +220,7 @@ let appendTripInvite = function (trip) {
 
   // Add a reject button for the invite
   let rejectBtn = document.createElement('button')
-  rejectBtn.class = 'rejectButton'
+  rejectBtn.className = 'rejectButton'
   rejectBtn.innerHTML = 'reject'
   let rejectBtnCell = document.createElement('td')
   rejectBtnCell.append(rejectBtn)
