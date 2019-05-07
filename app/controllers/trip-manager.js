@@ -178,13 +178,14 @@ $(document).ready(() => {
 
   // ---------- Trip Invites --------------------------
 
-  let emailAddress = '1364103@students.wits.ac.za'
+  let emailAddress = JSON.parse(window.sessionStorage.getItem('Email'))
   $.ajax({
     url: '/invites/data',
     method: 'POST',
     contentType: 'application/json',
     data: JSON.stringify({ 'emailAddress': emailAddress }),
     success: function (res) {
+      console.log('Onload invites: ', res)
       displayInvites(res)
     }
   })
@@ -319,6 +320,11 @@ $(document).on('click', '#acceptButton', function (e) {
   let trip_id = $(this).parents('tr')[0].id
   $(this).parents('tr').remove()
 
+  let obj = {
+    'id': trip_id,
+    'title': $(this).closest('tr').find('td:first').text(),
+    'user': JSON.parse(window.sessionStorage.getItem('Hash'))
+  }
   $.ajax({
     url: '/invites/data/accept',
     method: 'POST',
@@ -333,6 +339,11 @@ $(document).on('click', '#rejectButton', function (e) {
   let trip_id = $(this).parents('tr')[0].id
   $(this).parents('tr').remove()
 
+  let obj = {
+    'id': trip_id,
+    'title': $(this).closest('tr').find('td:first').text(),
+    'user': JSON.parse(window.sessionStorage.getItem('Hash'))
+  }
   $.ajax({
     url: '/invites/data/deny',
     method: 'POST',

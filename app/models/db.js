@@ -268,19 +268,23 @@ function populateTripsAndGroupsTable (res, queryString, tripInfo) {
 function getTripTitles (trips, res) {
   pools
     .then(pool => {
-      let queryString = `SELECT * FROM trips WHERE id IN (`
-      for (let i = 0; i < trips.length; i++) {
-        queryString = queryString + `'${trips[i].trip_id}',`
-      }
-      queryString = queryString.substring(0, queryString.length - 1)
-      queryString = queryString + `);`
+      if (trips.length !== 0) {
+        let queryString = `SELECT * FROM trips WHERE id IN (`
+        for (let i = 0; i < trips.length; i++) {
+          queryString = queryString + `'${trips[i].trip_id}',`
+        }
+        queryString = queryString.substring(0, queryString.length - 1)
+        queryString = queryString + `);`
 
-      return pool.request()
-        .query(queryString)
+        return pool.request()
+          .query(queryString)
+      }
     })
     .then(result => {
       // console.log('get trip titles result ', result)
-      res.send(result.recordset)
+      if (trips.legnth !== 0) { res.send(result.recordset) } else {
+        res.send('NoTripTitlesFound')
+      }
     })
     .catch(err => {
       console.log('Get trip titles error:', err)
@@ -370,37 +374,39 @@ function getDestinations (queryString, res) {
 //     })
 // }
 
-function getInvites (res, emailAddress) {
-  var invitesArray = []
+function getInvites (res, queryString) {
   pools
     .then(pool => {
       return pool.request()
-        .query(`SELECT trip_id
-        FROM invites
-        WHERE email_address = '${emailAddress}'`)
+        .query(queryString)
     })
     .then(result => {
-      let trip = result.recordset
-      pools
-        .then(pool => {
-          let queryString = `SELECT * FROM trips WHERE id IN (`
-          trip.forEach((trip) => {
-            queryString = queryString + `'${trip.trip_id}',`
-          })
-          queryString = queryString.substring(0, queryString.length - 1)
-          queryString = queryString + `);`
-          console.log('get trip titles QS ', queryString)
+      console.log('Invites DB: ', result.recordset)
+      let trips = result.recordset
+      if (trips.length !== 0) {
+        pools
+          .then(pool => {
+            let queryString = `SELECT * FROM trips WHERE id IN (`
+            trips.forEach((trip) => {
+              queryString = queryString + `'${trip.trip_id}',`
+            })
 
-          return pool.request()
-            .query(queryString)
-        })
-        .then(result => {
-        // console.log('get trip titles result ', result)
-          res.send(result.recordset)
-        })
-        .catch(err => {
-          console.log('Get trip titles error:', err)
-        })
+            queryString = queryString.substring(0, queryString.length - 1)
+
+            queryString = queryString + `);`
+            console.log('get trip titles QS ', queryString)
+
+            return pool.request()
+              .query(queryString)
+          })
+          .then(result => {
+            console.log('get trip titles result ', result)
+            res.send(result.recordset)
+          })
+          .catch(err => {
+            console.log('Get trip titles for invites error:', err)
+          })
+      }
     })
     .catch(err => {
       console.log('Get trip_ids error:', err)
@@ -470,6 +476,31 @@ function getUserName (queryString, res) {
     })
 }
 
+function handleInvites (queryStringDelete, queryStringAdd, accept, res) {
+  pools
+    .then(pool => {
+      return pool.request.query(queryStringDelete)
+    })
+    .then(result => {
+      if (accept) {
+        pools
+          .then(pool => {
+            return pool.request.query(queryStringAdd)
+          })
+      }
+    })
+    .then(result => {
+      if (accept) {
+        res.send('InviteAccepted')
+      } else {
+        res.send('InviteRejected')
+      }
+    })
+    .catch(err => {
+      console.log('Delete invite error: ', err)
+    })
+}
+
 module.exports = {
   sql: mssql,
   pools: pools,
@@ -485,5 +516,6 @@ module.exports = {
   getInvites: getInvites,
   getDestinations: getDestinations,
   getLogs: getLogs,
-  getUserName: getUserName
+  getUserName: getUserName,
+  handleInvites: handleInvites
 }

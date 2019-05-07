@@ -105,14 +105,6 @@ mainRouter.post('/auth', (req, res) => {
   authenticate.userAccountDatabaseConnection(req, res)
 })
 
-mainRouter.post('/invites/data/accept', (req, res) => {
-  invitesModel.handleInvites(req, res, true)
-})
-
-mainRouter.post('/invites/data/deny', (req, res) => {
-  invitesModel.handleInvites(req, res, false)
-})
-
 mainRouter.get('/email', function (req, res) {
   res.sendFile('email.html', { root: req.app.get('views') })
 })
@@ -135,6 +127,14 @@ mainRouter.post('/invites/data', function (req, res) {
   invitesModel.getInvites(res, req.body.emailAddress)
   // let pendingTrips = [{ 'title': 'Malawi', 'tripID': '000001' }]
   // res.send(pendingTrips)
+})
+
+mainRouter.post('/invites/data/accept', (req, res) => {
+  invitesModel.handleInvites(req, res, true)
+})
+
+mainRouter.post('/invites/data/deny', (req, res) => {
+  invitesModel.handleInvites(req, res, false)
 })
 
 module.exports = mainRouter
