@@ -160,6 +160,13 @@ let addLogLineEntry = function (logEntry) {
 
 // On Document load, propogate a list of trips. This is quite slow at present, could we preload it somehow?
 $(document).ready(() => {
+  loadTrips()
+  loadInvites()
+})
+
+let loadTrips = function () {
+  $('#tripTitleTable').empty()
+
   $('#trip-log').hide()
   $.ajax({
     url: '/trip-manager/get-data',
@@ -175,21 +182,7 @@ $(document).ready(() => {
       $('#loader').remove()
     }
   })
-
-  // ---------- Trip Invites --------------------------
-
-  let emailAddress = JSON.parse(window.sessionStorage.getItem('Email'))
-  $.ajax({
-    url: '/invites/data',
-    method: 'POST',
-    contentType: 'application/json',
-    data: JSON.stringify({ 'emailAddress': emailAddress }),
-    success: function (res) {
-      console.log('Onload invites: ', res)
-      displayInvites(res)
-    }
-  })
-})
+}
 
 let getUserName = function (id) {
   $.ajax({
@@ -331,6 +324,8 @@ $(document).on('click', '#acceptButton', function (e) {
     contentType: 'application/json',
     data: JSON.stringify(obj),
     success: function (res) {
+      // loadTrips()
+      window.location = '/trip-manager'
     }
   })
 })
@@ -350,6 +345,7 @@ $(document).on('click', '#rejectButton', function (e) {
     contentType: 'application/json',
     data: JSON.stringify(obj),
     success: function (res) {
+      window.location = '/trip-manager'
     }
   })
 })
@@ -406,4 +402,18 @@ let appendTripInvite = function (trip) {
   // Add row to table
   newRow.id = trip.id
   invitesTable.append(newRow)
+}
+
+function loadInvites () {
+  let emailAddress = JSON.parse(window.sessionStorage.getItem('Email'))
+  $.ajax({
+    url: '/invites/data',
+    method: 'POST',
+    contentType: 'application/json',
+    data: JSON.stringify({ 'emailAddress': emailAddress }),
+    success: function (res) {
+      console.log('Onload invites: ', res)
+      displayInvites(res)
+    }
+  })
 }
