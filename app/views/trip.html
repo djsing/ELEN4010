@@ -26,6 +26,9 @@
   </head>
 
   <body onload='renderOnReload();signInInit()'>
+
+              <div id='modalArea'></div>
+
                 <nav class="navbar navbar-expand-md navbar-light bg-light">
                   <a class="navbar-brand" href="#" style="background-color: transparent !important;">
                       <img src="/img/logo.svg" width="30" height="30" class="d-inline-block align-top" alt="">
@@ -76,7 +79,7 @@
                         placeholder="Enter a location">
                   </div>
                 </div>
-          
+                
                 <div class="container overflow-hidden;" id="mainContainer" >
                   <div class="row">
                       <div class="col-sm-9" id="map"></div>
@@ -88,6 +91,13 @@
                               </div> 
                               <div class="input-group-append">
                               </div>
+                              <div class="invite-group">
+                                  <button type="button" class="btn btn-sm btn-light" id="inviteEditorButton">
+                                    Invite somebody to join this trip
+                                    <i class="fas fa-paper-plane"></i>
+                                  </button>
+                              </div>
+                              
                             </div>
                         <div style="overflow-y: scroll; height: 600px;" class=" fixed-height">
                           <table class="table" id="destinationTable">

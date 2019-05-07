@@ -14,6 +14,8 @@ let authenticate = require('../models/authenticate')
 let termsModel = require('../models/termsAndConditionsModel')
 let tripManagerModel = require('../models/tripManagerModel')
 let tripModel = require('../models/tripModel')
+let mailManager = require('../models/email_manager')
+let invitesModel = require('../models/invitesModel')
 let logModel = require('../models/logModel')
 let userModel = require('../models/userModel')
 
@@ -99,12 +101,37 @@ mainRouter.post('/auth', (req, res) => {
   authenticate.userAccountDatabaseConnection(req, res)
 })
 
+mainRouter.get('/email', function (req, res) {
+  res.sendFile('email.html', { root: req.app.get('views') })
+})
+
 // -----------------------------
 // Error/Page Not Found Routing
 // ------------------------------
 mainRouter.get('*', function (req, res) {
   res.sendFile('/404.html', { root: req.app.get('views') })
   // res.status(404).send('404 Error: page not found')
+})
+// ----------------- Invites ------------------------------
+
+mainRouter.post('/invite', function (req, res) {
+  mailManager.sendInvite(req.body.emailAddress, req.body.tripName, req.body.invitee)
+  invitesModel.addInvite(res, req.body)
+  res.sendStatus(200)
+})
+
+mainRouter.post('/invites/data', function (req, res) {
+  invitesModel.getInvites(res, req.body.emailAddress)
+  // let pendingTrips = [{ 'title': 'Malawi', 'tripID': '000001' }]
+  // res.send(pendingTrips)
+})
+
+mainRouter.post('/invites/data/accept', (req, res) => {
+  invitesModel.handleInvites(req, res, true)
+})
+
+mainRouter.post('/invites/data/deny', (req, res) => {
+  invitesModel.handleInvites(req, res, false)
 })
 
 module.exports = mainRouter

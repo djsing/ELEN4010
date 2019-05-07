@@ -183,6 +183,57 @@ function populateDestionationsTable (res, queryString) {
     })
 }
 
+(function createInvitesTable () {
+  pools.then((pool) => {
+    return pool.request()
+      .query(`IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='invites' and xtype='U')
+          CREATE TABLE invites (
+          trip_id varchar(255), 
+          email_address varchar(255)
+          )`)
+  }).then(result => {
+    console.log('invites table created', result)
+  }).catch(err => {
+    console.log('invites table creation error', err)
+  })
+}
+)()
+
+function addToInvitesTable (res, tripID, emailAddress) {
+  pools
+    .then(pool => {
+      let id = tripID
+      let email = emailAddress
+      return pool.request()
+        .query(`SELECT *
+          FROM invites
+          WHERE email_address = '${email}'
+          AND trip_id = '${id}'`)
+    })
+    .then(result => {
+      console.log('Invites select result ', result)
+      if (result.recordset.length === 0) {
+        // If this entry does's already exist in the table,
+        // add it to the table
+        let id = tripID
+        let email = emailAddress
+        pools
+          .then(pool => {
+            return pool.request()
+              .query(`INSERT INTO invites VALUES(
+                '${id}',
+                '${email}');`)
+          }).then(result => {
+            console.log('Tries to add id: ' + id + ' and email: ' + email)
+            console.log('Invites add result ', result)
+          })
+      }
+    })
+    .catch(err => {
+      console.log('add invite table error:', err)
+    })
+}
+
 (function createTripTable () {
   pools.then((pool) => {
     return pool.request()
@@ -217,19 +268,23 @@ function populateTripsAndGroupsTable (res, queryString, tripInfo) {
 function getTripTitles (trips, res) {
   pools
     .then(pool => {
-      let queryString = `SELECT * FROM trips WHERE id IN (`
-      for (let i = 0; i < trips.length; i++) {
-        queryString = queryString + `'${trips[i].trip_id}',`
-      }
-      queryString = queryString.substring(0, queryString.length - 1)
-      queryString = queryString + `);`
+      if (trips.length !== 0) {
+        let queryString = `SELECT * FROM trips WHERE id IN (`
+        for (let i = 0; i < trips.length; i++) {
+          queryString = queryString + `'${trips[i].trip_id}',`
+        }
+        queryString = queryString.substring(0, queryString.length - 1)
+        queryString = queryString + `);`
 
-      return pool.request()
-        .query(queryString)
+        return pool.request()
+          .query(queryString)
+      }
     })
     .then(result => {
       // console.log('get trip titles result ', result)
-      res.send(result.recordset)
+      if (trips.legnth !== 0) { res.send(result.recordset) } else {
+        res.send('NoTripTitlesFound')
+      }
     })
     .catch(err => {
       console.log('Get trip titles error:', err)
@@ -281,6 +336,82 @@ function getDestinations (queryString, res) {
     })
     .catch(err => {
       console.log('Get destinations error:', err)
+    })
+}
+
+// function getInvites (res, emailAddress) {
+//   var invitesArray = []
+//   pools
+//     .then(pool => {
+//       return pool.request()
+//         .query(`SELECT trip_id
+//         FROM invites
+//         WHERE email_address = '${emailAddress}'`)
+//     })
+//     .then(result => {
+//       result.recordset.forEach((trip) => {
+//         let id = trip.trip_id
+//         console.log(`Looking for name of ${id}`)
+//         pools.then(pool => {
+//           return pool.request()
+//             .query(`SELECT *
+//             FROM trips
+//             WHERE id = '${id}'`)
+//         })
+//           .then(innerResult => {
+//             console.log('Results from my function', innerResult.recordset[0])
+//             invitesArray.push(innerResult.recordset[0])
+//             console.log('The names of the trips are', invitesArray)
+//             res.send(invitesArray)
+//           })
+//           .catch(err => {
+//             console.log('Get trip titles error:', err)
+//           })
+//       })
+//     })
+//     .catch(err => {
+//       console.log('Get trip_ids error:', err)
+//     })
+// }
+
+function getInvites (res, queryString) {
+  pools
+    .then(pool => {
+      return pool.request()
+        .query(queryString)
+    })
+    .then(result => {
+      console.log('Invites DB: ', result.recordset)
+      let trips = result.recordset
+      if (trips.length !== 0) {
+        pools
+          .then(pool => {
+            let queryString = `SELECT * FROM trips WHERE id IN (`
+            trips.forEach((trip) => {
+              queryString = queryString + `'${trip.trip_id}',`
+            })
+
+            queryString = queryString.substring(0, queryString.length - 1)
+
+            queryString = queryString + `);`
+            console.log('get trip titles QS ', queryString)
+
+            return pool.request()
+              .query(queryString)
+          })
+          .then(result => {
+            console.log('get trip titles result ', result)
+            res.send(result.recordset)
+          })
+          .catch(err => {
+            console.log('Get trip titles for invites error:', err)
+          })
+      } else {
+        res.send(trips)
+      }
+    })
+    .catch(err => {
+      console.log('Get trip_ids error:', err)
     })
 }
 
@@ -347,6 +478,31 @@ function getUserName (queryString, res) {
     })
 }
 
+function handleInvites (queryStringDelete, queryStringAdd, accept, res) {
+  pools
+    .then(pool => {
+      return pool.request().query(queryStringDelete)
+    })
+    .then(result => {
+      if (accept) {
+        pools
+          .then(pool => {
+            return pool.request().query(queryStringAdd)
+          })
+      }
+    })
+    .then(result => {
+      if (accept) {
+        res.send('InviteAccepted')
+      } else {
+        res.send('InviteRejected')
+      }
+    })
+    .catch(err => {
+      console.log('Delete invite error: ', err)
+    })
+}
+
 module.exports = {
   sql: mssql,
   pools: pools,
@@ -358,7 +514,10 @@ module.exports = {
   populateLogTable: populateLogTable,
   getTrips: getTrips,
   getTripTitles: getTripTitles,
+  addToInvitesTable: addToInvitesTable,
+  getInvites: getInvites,
   getDestinations: getDestinations,
   getLogs: getLogs,
-  getUserName: getUserName
+  getUserName: getUserName,
+  handleInvites: handleInvites
 }

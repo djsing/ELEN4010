@@ -19,6 +19,22 @@ a.anchor {
   letter-spacing: 8px;
 }
 
+#second-heading {
+  margin-top: 33px;
+  margin-right: 0;
+  margin-bottom: 0;
+  margin-left: 20px;
+  font-weight: 400;
+  color: #656565;
+}
+
+#invitemanager {
+  margin-top: 50px;
+}
+#invitations-section {
+  margin: 30px 0;
+}
+
 .sticky-th {
   position: sticky;
   top: -2px;
@@ -76,8 +92,14 @@ input.titleField:hover {
     border-radius: 3px;
     color: #1a1a1a;
 }
+
+#heading-trip {
+  padding-right: 50px;
+}
+
+
 #hide-log {
-  float: right;
+  float: left;
   top: -13px;
   right: -15px;
   position: relative;

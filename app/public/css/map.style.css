@@ -147,6 +147,38 @@ element.style {
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
 }
+
+.invite-group {
+  width: 100%;
+}
+#inviteEditorButton {
+  width: 100%;
+  color: #909aa1;
+}
+
+#inviteEditorButton:hover {
+  color: #c51603;
+  background-color: transparent;
+  border-color: transparent;
+}
+
+#deleteButton:hover{
+  color: #c51603;
+  background-color: transparent;
+  border-color: transparent;
+}
+
+.destinationLabelClass{
+  font-size: 0.75rem;
+  color: #aaa;
+}
+
+.destinationLabelClass:hover{
+  color: #c51603;
+  background-color: transparent;
+  border-color: transparent;
+}
+
 #saveTrip {
   position: absolute!important;
   right: 38px;
@@ -170,6 +202,74 @@ element.style {
 .destinationLabelClass {
   cursor:pointer;
 }
+
+.modal{
+  background-color: #fff;
+  border: 1px solid #424242;
+  position: fixed;
+  margin: auto;
+  top: 30%;
+  right: 0;
+  bottom: 30%;
+  padding: 50px;
+  left: 0;
+  width: 60%;
+  height: 40%;
+  margin: 0 auto;
+  z-index: 1;
+  display: none; 
+  text-align: center;
+}
+
+.modal.fade .modal-dialog {
+  -webkit-transform: scale(0.1);
+  -moz-transform: scale(0.1);
+  -ms-transform: scale(0.1);
+  transform: scale(0.1);
+  top: 300px;
+  opacity: 0;
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  transition: all 0.3s;
+}
+
+.modal.fade.in .modal-dialog {
+  -webkit-transform: scale(1);
+  -moz-transform: scale(1);
+  -ms-transform: scale(1);
+  transform: scale(1);
+  -webkit-transform: translate3d(0, -300px, 0);
+  transform: translate3d(0, -300px, 0);
+  opacity: 1;
+}
+
+p.modal-element {
+  padding: 20px;
+}
+
+input.modal-element {
+  padding: 10px;
+  margin-top: 2%;
+  margin-bottom: 2%;
+}
+
+input[type="text"].modal-element {
+  width: 400px
+}
+
+#invalidEmailMessage{
+  display: none; 
+  color: #9b3336;
+}
+
+#inviteSendHeader{
+  font-size: 40px;
+}
+
+#emailAddress { 
+  font-size: 30px;
+}
+
 
 #success-alert {
   width: 180px;
