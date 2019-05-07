@@ -107,7 +107,8 @@ mainRouter.post('/auth', (req, res) => {
 // Error/Page Not Found Routing
 // ------------------------------
 mainRouter.get('*', function (req, res) {
-  res.status(404).send('404 Error: page not found')
+  res.sendFile('/404.html', { root: req.app.get('views') })
+  // res.status(404).send('404 Error: page not found')
 })
 
 module.exports = mainRouter

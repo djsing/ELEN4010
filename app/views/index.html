@@ -1,198 +1,212 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <title>AwayWeGo</title>
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta charset="utf-8">
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>AwayWeGo</title>
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
 
-  <script src="/js/jquery-3.4.0.min.js"></script>
-  <script src="landingPage.js"></script>
-  <script>
-    $(window).scroll(function(){
-        $(".arrow").css("opacity", 1 - $(window).scrollTop() / 250)
-      })
-  </script>
-  
-  <link rel="stylesheet" href="/css/grayscale.min.css" />
-  <link rel="stylesheet" href="/css/bootstrap.lux.min.css" />
-  <link rel="stylesheet" href="/css/general.css"  />
-  <link rel="stylesheet" href="css/greyscale.override.css"  />
+    <script src="/js/jquery-3.4.0.min.js"></script>
+    <script src="landingPage.js"></script>
+    <script>
+      $(window).scroll(function(){
+          $(".arrow").css("opacity", 1 - $(window).scrollTop() / 250)
+        })
+    </script>
+    
+    <link rel="stylesheet" href="/css/grayscale.min.css" />
+    <link rel="stylesheet" href="/css/bootstrap.lux.min.css" />
+    <link rel="stylesheet" href="/css/general.css"  />
+    <link rel="stylesheet" href="css/greyscale.override.css"  />
 
-  <script defer src="https://use.fontawesome.com/releases/v5.8.1/js/all.js" integrity="sha384-g5uSoOSBd7KkhAMlnQILrecXvzst9TdC09/VM+pjDTCM+1il8RHz5fKANTFFb+gQ" crossorigin="anonymous"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.8.1/js/all.js" integrity="sha384-g5uSoOSBd7KkhAMlnQILrecXvzst9TdC09/VM+pjDTCM+1il8RHz5fKANTFFb+gQ" crossorigin="anonymous"></script>
 
-</head>
+  </head>
 
-<body id="page-top" class="bg-dark">
+    <body id="page-top" class="bg-dark">
 
-  <!-- Navigation -->
-  <nav class="navbar navbar-expand-md navbar-dark bg-primary" id="mainNav">
-    <div class="container">
-      <a class="navbar-brand" href="#">
-        <img src="/img/logo.svg" width="30" height="30" class="d-inline-block align-top" alt="">
-        Away We Go</a>
-        <ul class="navbar-nav ml-auto">
-          <li class="nav-item">
-            <a id="aboutButton" class="nav-link js-scroll-trigger">About</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="#contactSection">Contact</a>
-          </li>
-        </ul>
-    </div>
-  </nav>
+      <!-- Navigation -->
+      <nav class="navbar navbar-expand-md navbar-dark bg-primary" id="mainNav">
+        <div class="container">
+          <a class="navbar-brand" href="#">
+            <img src="/img/logo.svg" width="30" height="30" class="d-inline-block align-top" alt="">
+            Away We Go</a>
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a id="aboutButton" class="nav-link js-scroll-trigger">About</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link js-scroll-trigger" href="#contactSection">Contact</a>
+              </li>
+            </ul>
+        </div>
+      </nav>
 
-  <!-- Header -->
-  <header class="masthead">
-    <div class="container d-flex h-100 align-items-center">
-      <div class="mx-auto text-center">
-        <h1 class="mx-auto my-0 text-uppercase">Away We Go</h1>
-        <h2 class="text-white-50 mx-auto mt-2 mb-5">Your Personal Trip Planner</h2>
-        <a id="landingPageSignInButton" style="color: whitesmoke" class="btn btn-primary js-scroll-trigger">Sign In</a>
-        <a id="landingPageRegisterButton" style="color: whitesmoke" class="btn btn-primary js-scroll-trigger">Register</a>
-
+      <!-- Header -->
+      <header class="masthead">
         <div class="container d-flex h-100 align-items-center">
-            <div class="arrow bounce"><i class="fa fa-angle-down fa-2x" aria-hidden="true"></i></div>
-        </div>
+          <div class="mx-auto text-center">
+            <h1 class="mx-auto my-0 text-uppercase">Away We Go</h1>
+            <h2 class="text-white-50 mx-auto mt-2 mb-5">Your Personal Trip Planner</h2>
+            <a id="landingPageSignInButton" style="color: whitesmoke" class="btn btn-primary js-scroll-trigger">Sign In</a>
+            <a id="landingPageRegisterButton" style="color: whitesmoke" class="btn btn-primary js-scroll-trigger">Register</a>
+
+            <div class="container d-flex h-100 align-items-center">
+                <div class="arrow bounce"><i class="fa fa-angle-down fa-2x" aria-hidden="true"></i></div>
+            </div>
+          </div>
       </div>
-  </div>
-  </header>
+      </header>
 
-  <!-- Projects Section -->
-  <section id="projects" class="projects-section bg-dark">
+      <!-- Projects Section -->
+      <section id="projects" class="projects-section bg-dark">
 
-    <div class="container">
+        <div class="container">
 
-      <!-- Project One Row -->
-      <div class="row justify-content-center no-gutters mb-5 mb-lg-0">
-        <div class="col-lg-6">
-          <img class="img-fluid" src="/img/destination.jpg" alt="">
+          <!-- Project One Row -->
+          <div class="row justify-content-center no-gutters mb-5 mb-lg-0">
+            <div class="col-lg-6">
+              <img class="img-fluid" src="/img/destination.jpg" alt="">
+            </div>
+            <div class="col-lg-6">
+              <div class="bg-black text-center h-100 project">
+                <div class="d-flex h-100">
+                  <div class="project-text w-100 my-auto text-center text-lg-left">
+                    <h4 class="text-white">Choose Your Destination</h4>
+                    <p class="mb-0 text-white-50">Explore the world. Find your passion. Be Free.</p>
+                    <hr class="d-none d-lg-block mb-0 ml-0">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Project Two Row -->
+          <div class="row justify-content-center no-gutters">
+            <div class="col-lg-6">
+              <img class="img-fluid" src="/img/hotel.jpg" alt="">
+            </div>
+            <div class="col-lg-6 order-lg-first">
+              <div class="bg-black text-center h-100 project">
+                <div class="d-flex h-100">
+                  <div class="project-text w-100 my-auto text-center text-lg-right">
+                    <h4 class="text-white">Find Accomodation</h4>
+                    <p class="mb-0 text-white-50">Hotels, Motels, B&B's, Villas, Inns. </p>
+                    <p class="mb-0 text-white-50"> You name it, we find it. </p>
+                    <hr class="d-none d-lg-block mb-0 mr-0">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
         </div>
-        <div class="col-lg-6">
-          <div class="bg-black text-center h-100 project">
-            <div class="d-flex h-100">
-              <div class="project-text w-100 my-auto text-center text-lg-left">
-                <h4 class="text-white">Choose Your Destination</h4>
-                <p class="mb-0 text-white-50">Explore the world. Find your passion. Be Free.</p>
-                <hr class="d-none d-lg-block mb-0 ml-0">
+      </section>
+
+      <!-- Signup Section -->
+      <section id="subscribeSection" class="signup-section">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-10 col-lg-8 mx-auto text-center">
+
+              <i class="far fa-paper-plane fa-2x mb-2 text-white"></i>
+              <h2 class="text-white mb-5">Subscribe to receive updates!</h2>
+
+              <form class="form-inline d-flex">
+                <input type="email" class="form-control flex-fill mr-0 mr-sm-2 mb-3 mb-sm-0" id="inputEmail" placeholder="Enter email address...">
+                <button type="button" class="btn btn-primary mx-auto">Subscribe</button>
+              </form>
+
+            </div>
+          </div>
+        </div>
+      </section>
+
+      Contact Section
+      <section class="contact-section bg-black">
+        <div class="container">
+
+          <div class="row"  id="contactSection">
+
+            <div class="col-md-4 mb-3 mb-md-0">
+              <div class="card py-4 h-100">
+                <div class="card-body text-center">
+                  <i class="fas fa-map-marked-alt text-primary mb-2"></i>
+                  <h4 class="text-uppercase m-0">Address</h4>
+                  <hr class="my-4">
+                  <div class="small text-black-50">1 Jan Smuts Avenue, Braamfontein, Johannesburg</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-4 mb-3 mb-md-0">
+              <div class="card py-4 h-100">
+                <div class="card-body text-center">
+                  <i class="fas fa-envelope text-primary mb-2"></i>
+                  <h4 class="text-uppercase m-0">Email</h4>
+                  <hr class="my-4">
+                  <div class="small text-black-50">
+                    <a href="#">info@AwayWeGo.co.za</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-4 mb-3 mb-md-0">
+              <div class="card py-4 h-100">
+                <div class="card-body text-center">
+                  <i class="fas fa-mobile-alt text-primary mb-2"></i>
+                  <h4 class="text-uppercase m-0">Phone</h4>
+                  <hr class="my-4">
+                  <div class="small text-black-50">+27 (11) 234-5678</div>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      </section>
 
-      <!-- Project Two Row -->
-      <div class="row justify-content-center no-gutters">
-        <div class="col-lg-6">
-          <img class="img-fluid" src="/img/hotel.jpg" alt="">
+      <!-- Footer -->
+      <footer class="bg-black small text-center text-white-10">
+          <div class="container">
+          <a id="goUpButton" style="color: whitesmoke" class="btn btn-primary js-scroll-trigger">Back to top</a>
         </div>
-        <div class="col-lg-6 order-lg-first">
-          <div class="bg-black text-center h-100 project">
-            <div class="d-flex h-100">
-              <div class="project-text w-100 my-auto text-center text-lg-right">
-                <h4 class="text-white">Find Accomodation</h4>
-                <p class="mb-0 text-white-50">Hotels, Motels, B&B's, Villas, Inns. </p>
-                <p class="mb-0 text-white-50"> You name it, we find it. </p>
-                <hr class="d-none d-lg-block mb-0 mr-0">
-              </div>
-            </div>
-          </div>
+        <div class="container" style="margin-top: 10px;">
+          Copyright &copy; AwayWeGo 2019
         </div>
-      </div>
+      </footer>
 
-    </div>
-  </section>
+      <script>
+          $(document).ready(function() {
+            var btn = $('#goUpButton');
+            $(window).scroll(function() {
+              if ($(window).scrollTop() > 300) {
+                btn.addClass('show');
+              } else {
+                btn.removeClass('show');
+              }
+            });
+            btn.on('click', function(e) {
+              e.preventDefault();
+              $('html, body').animate({scrollTop:0}, '300');
+            });
+          
+          });
+          </script>
+    </body>
 
-  <!-- Signup Section -->
-  <section id="subscribeSection" class="signup-section">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-10 col-lg-8 mx-auto text-center">
-
-          <i class="far fa-paper-plane fa-2x mb-2 text-white"></i>
-          <h2 class="text-white mb-5">Subscribe to receive updates!</h2>
-
-          <form class="form-inline d-flex">
-            <input type="email" class="form-control flex-fill mr-0 mr-sm-2 mb-3 mb-sm-0" id="inputEmail" placeholder="Enter email address...">
-            <button type="button" class="btn btn-primary mx-auto">Subscribe</button>
-          </form>
-
-        </div>
-      </div>
-    </div>
-  </section>
-
-  Contact Section
-  <section class="contact-section bg-black">
-    <div class="container">
-
-      <div class="row"  id="contactSection">
-
-        <div class="col-md-4 mb-3 mb-md-0">
-          <div class="card py-4 h-100">
-            <div class="card-body text-center">
-              <i class="fas fa-map-marked-alt text-primary mb-2"></i>
-              <h4 class="text-uppercase m-0">Address</h4>
-              <hr class="my-4">
-              <div class="small text-black-50">1 Jan Smuts Avenue, Braamfontein, Johannesburg</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-md-4 mb-3 mb-md-0">
-          <div class="card py-4 h-100">
-            <div class="card-body text-center">
-              <i class="fas fa-envelope text-primary mb-2"></i>
-              <h4 class="text-uppercase m-0">Email</h4>
-              <hr class="my-4">
-              <div class="small text-black-50">
-                <a href="#">info@AwayWeGo.co.za</a>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-md-4 mb-3 mb-md-0">
-          <div class="card py-4 h-100">
-            <div class="card-body text-center">
-              <i class="fas fa-mobile-alt text-primary mb-2"></i>
-              <h4 class="text-uppercase m-0">Phone</h4>
-              <hr class="my-4">
-              <div class="small text-black-50">+27 (11) 234-5678</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Footer -->
-  <footer class="bg-black small text-center text-white-10">
-      <div class="container">
-      <a id="goUpButton" style="color: whitesmoke" class="btn btn-primary js-scroll-trigger">Back to top</a>
-    </div>
-    <div class="container" style="margin-top: 10px;">
-      Copyright &copy; AwayWeGo 2019
-    </div>
-  </footer>
-
-  <script>
-      $(document).ready(function() {
-        var btn = $('#goUpButton');
-        $(window).scroll(function() {
-          if ($(window).scrollTop() > 300) {
-            btn.addClass('show');
-          } else {
-            btn.removeClass('show');
-          }
-        });
-        btn.on('click', function(e) {
-          e.preventDefault();
-          $('html, body').animate({scrollTop:0}, '300');
-        });
-      
-      });
-      </script>
-</body>
-
-</html>
+  </html>
