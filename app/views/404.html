@@ -15,10 +15,29 @@
     
     <script src='common.js'></script>
     <link rel="stylesheet" href="/css/bootstrap.lux.min.css" />
-    </head>
 
-    <body>
-        <img class="img-fluid" src="/img/404.jpg" alt="404: Image not found!">
-    </body>
+    <style>
+      * {
+          margin: 0;
+          padding: 0;
+      }
+      .imgbox {
+          display: grid;
+          height: 100%;
+      }
+      .center-fit {
+          max-width: 100%;
+          max-height: 100vh;
+          margin: auto;
+      }
+  </style>
+
+</head>
+
+  <body>
+    <div class="imgbox">
+        <img class="center-fit" src="/img/404.jpg" alt="404: Image not found!">
+    </div>
+  </body>
 
 </html>
