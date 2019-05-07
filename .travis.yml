@@ -11,3 +11,4 @@ script:
   - npm run coveralls
 after_success:
   - coveralls-lcov coverage/lcov.info
+  
