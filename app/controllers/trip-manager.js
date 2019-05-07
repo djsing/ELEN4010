@@ -181,8 +181,8 @@ let displayInvites = function (pendingInvites) {
 
     $('#pendingTripInvitesHeading').show()
 
-    pendingInvites.forEach((trip) => {
-      appendTripInvite(trip.title)
+    pendingInvites.forEach((title) => {
+      appendTripInvite(title)
     })
   } else {
     // Hide the heading if there are pendingInvites

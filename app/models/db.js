@@ -341,6 +341,7 @@ function getDestinations (queryString, res) {
 }
 
 function getInvites (res, emailAddress) {
+  let invites = []
   pools
     .then(pool => {
       return pool.request()
@@ -349,8 +350,25 @@ function getInvites (res, emailAddress) {
         WHERE email_address = '${emailAddress}'`)
     })
     .then(result => {
+      result.recordset.forEach((trip) => {
+        let id = trip.trip_id
+        console.log(`Looking for name of ${id}`)
+        pools.then(pool => {
+          return pool.request()
+            .query(`SELECT title
+            FROM trips
+            WHERE id = '${id}'`)
+        })
+          .then(result => {
+            invites.push(result.recordset)
+          })
+          .catch(err => {
+            console.log('Get trip titles error:', err)
+          })
+      })
       console.log(`The trip_ids linked to ${emailAddress} are`, result.recordset)
-      res.send(result.recordset)
+      console.log('The names of the trips are', invites)
+      res.send(invites)
     })
     .catch(err => {
       console.log('Get trip_ids error:', err)
