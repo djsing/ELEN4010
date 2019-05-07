@@ -310,11 +310,12 @@ $(function () {
   })
   // Add event listeners for buttons for rejecting tripsss
 
-  $(document).on('click', '.acceptButton', () => {
-    console.log('An accept button was pressed')
-  })
-
   $('[data-toggle="tooltip"]').tooltip()
+})
+
+$(document).on('click', '#acceptButton', function (e) {
+  let id = $(this).parents('tr')[0].id
+  $(this).parents('tr').remove()
 })
 
 $(document).on('click', '#rejectButton', function (e) {
@@ -355,7 +356,7 @@ let appendTripInvite = function (trip) {
 
   // Add an accept button for the invite
   let acceptBtn = document.createElement('button')
-  acceptBtn.className = 'acceptButton'
+  acceptBtn.id = 'acceptButton'
   acceptBtn.classList.add('btn', 'btn-sm', 'btn-secondary')
   acceptBtn.innerHTML = '<i class="fas fa-check"></i>'
   let acceptBtnCell = document.createElement('td')
