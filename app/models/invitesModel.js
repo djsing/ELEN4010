@@ -10,7 +10,16 @@ function getInvites (res, emailAddress) {
   db.getInvites(res, emailAddress)
 }
 
+function handleInvites (req, res, accept) {
+  if (accept) {
+    console.log('Accept')
+  } else {
+    console.log('Reject')
+  }
+}
+
 module.exports = {
   addInvite: addInvite,
-  getInvites: getInvites
+  getInvites: getInvites,
+  handleInvites: handleInvites
 }

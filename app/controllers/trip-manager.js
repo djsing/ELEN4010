@@ -313,16 +313,36 @@ $(function () {
   $('[data-toggle="tooltip"]').tooltip()
 })
 
+// -------------------------- Trip Invites  ---------------------------------------
+
 $(document).on('click', '#acceptButton', function (e) {
-  let id = $(this).parents('tr')[0].id
+  let trip_id = $(this).parents('tr')[0].id
   $(this).parents('tr').remove()
+
+  $.ajax({
+    url: '/invites/data/accept',
+    method: 'POST',
+    contentType: 'application/json',
+    data: JSON.stringify({ 'trip_id': trip_id }),
+    success: function (res) {
+    }
+  })
 })
 
 $(document).on('click', '#rejectButton', function (e) {
-  let id = $(this).parents('tr')[0].id
+  let trip_id = $(this).parents('tr')[0].id
   $(this).parents('tr').remove()
+
+  $.ajax({
+    url: '/invites/data/deny',
+    method: 'POST',
+    contentType: 'application/json',
+    data: JSON.stringify({ 'trip_id': trip_id }),
+    success: function (res) {
+    }
+  })
 })
-// -------------------------- Trip Invites  ---------------------------------------
+
 let pendingTrips = []
 
 let displayInvites = function (pendingInvites) {
