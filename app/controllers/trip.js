@@ -448,11 +448,12 @@ function renderOnReload () {
 $(document).on('click', '#inviteEditorButton', function () {
   createInvitePopup()
   // Show the model popup
-  $('.modal').show('slow')
+  $('.modal').show()
 })
 
 $(document).on('click', '.close', function () {
   let modalBox = $('div.modal')
+  modalBox.className = 'modal fade in modal-dialog'
   modalBox.hide()
 })
 
@@ -519,7 +520,7 @@ let createInvitePopup = function () {
   $('#modalArea').append(modalDiv)
 
   // Add the exit button
-  let exitButtonArea = $('<span class="close">&times;</span>')
+  let exitButtonArea = $('<span class="close ">&times;</span>')
   modalDiv.append(exitButtonArea)
 
   // Add header
@@ -535,7 +536,7 @@ let createInvitePopup = function () {
   modalDiv.append(emailField)
 
   // Add invite button
-  let inviteButton = $('<input class="modal-element" type="button" value="Invite" id="inviteEmailAddressButton">')
+  let inviteButton = $('<input class="modal-element btn btn-md btn-primary" type="button" value="Invite" id="inviteEmailAddressButton">')
   modalDiv.append(inviteButton)
 
   // Add invalid email message
