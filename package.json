@@ -59,6 +59,7 @@
     ]
   },
   "jest": {
+    "setupFiles": ["./utility/setup-jest.js"],
     "coverageDirectory": "coverage",
     "collectCoverageFrom": [
       "app/**/*.js",
