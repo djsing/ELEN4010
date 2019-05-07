@@ -22,16 +22,13 @@ function populateTripAndGroupTableQuery (trip, res) {
 
 function getTripsQuery (req, res) {
   let user = JSON.parse(req.body.userHash)
-  // console.log('user string: ', user)
   let queryString = `SELECT * FROM groups WHERE user_hash = '${user}';`
-  // console.log('get trip titles QS: ', queryString)
   db.getTrips(queryString, res)
 }
 
 function getDestinationsQuery (req, res) {
   let tripId = req.body.tripId
   let queryString = `SELECT * FROM destinations WHERE trip_id = '${tripId}';`
-  console.log(queryString)
   db.getDestinations(queryString, res)
 }
 

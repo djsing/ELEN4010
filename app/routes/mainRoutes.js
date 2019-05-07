@@ -16,7 +16,12 @@ let tripManagerModel = require('../models/tripManagerModel')
 let tripModel = require('../models/tripModel')
 let mailManager = require('../models/email_manager')
 let invitesModel = require('../models/invitesModel')
+let logModel = require('../models/logModel')
+let userModel = require('../models/userModel')
 
+// ------------
+// URL Routing
+// ------------
 mainRouter.get('/', function (req, res) {
   res.sendFile('/index.html', { root: req.app.get('views') })
 })
@@ -49,7 +54,7 @@ mainRouter.get(['/sign-in', '/login', '/signin'], function (req, res) {
   res.sendFile('/sign-in.html', { root: req.app.get('views') })
 })
 
-mainRouter.get(['/trip', '/map'], function (req, res) {
+mainRouter.get(['/trip'], function (req, res) {
   res.sendFile('/trip.html', { root: req.app.get('views') })
 })
 
@@ -59,6 +64,21 @@ mainRouter.get('/hotels', function (req, res) {
 
 mainRouter.get(['/trip-manager', '/trips'], function (req, res) {
   res.sendFile('/trip-manager.html', { root: req.app.get('views') })
+})
+
+// ----------------
+// RESTFUL Routing
+// ----------------
+mainRouter.post('/trip/log', function (log, res) {
+  logModel.createLogQuery(log, res)
+})
+
+mainRouter.post('/trip-manager/log', function (tripId, res) {
+  logModel.getLogsQuery(tripId, res)
+})
+
+mainRouter.post('/trip-manager/user', function (userId, res) {
+  userModel.lookUpUser(userId, res)
 })
 
 mainRouter.post('/trip/data', function (req, res) {
@@ -89,6 +109,9 @@ mainRouter.get('/email', function (req, res) {
   res.sendFile('email.html', { root: req.app.get('views') })
 })
 
+// -----------------------------
+// Error/Page Not Found Routing
+// ------------------------------
 mainRouter.get('*', function (req, res) {
   res.status(404).send('404 Error: page not found')
 })
