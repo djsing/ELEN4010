@@ -479,13 +479,13 @@ function getUserName (queryString, res) {
 function handleInvites (queryStringDelete, queryStringAdd, accept, res) {
   pools
     .then(pool => {
-      return pool.request.query(queryStringDelete)
+      return pool.request().query(queryStringDelete)
     })
     .then(result => {
       if (accept) {
         pools
           .then(pool => {
-            return pool.request.query(queryStringAdd)
+            return pool.request().query(queryStringAdd)
           })
       }
     })

@@ -329,7 +329,7 @@ $(document).on('click', '#acceptButton', function (e) {
     url: '/invites/data/accept',
     method: 'POST',
     contentType: 'application/json',
-    data: JSON.stringify({ 'trip_id': trip_id }),
+    data: JSON.stringify(obj),
     success: function (res) {
     }
   })
@@ -348,7 +348,7 @@ $(document).on('click', '#rejectButton', function (e) {
     url: '/invites/data/deny',
     method: 'POST',
     contentType: 'application/json',
-    data: JSON.stringify({ 'trip_id': trip_id }),
+    data: JSON.stringify(obj),
     success: function (res) {
     }
   })
