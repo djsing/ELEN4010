@@ -28,6 +28,7 @@ class LogEvent {
 // Globals
 // --------------
 let tripsList = []
+let log = []
 
 // ----------------
 // Logic Functions
@@ -68,8 +69,6 @@ let addTitleDisplayField = function (title, row) {
   titleDisplayField.id = title
   titleDisplayField.className = 'titleField'
   titleDisplayField.value = title
-  // titleDisplayField.type = 'button'
-  // titleDisplayField.setAttribute('style', 'min-width: 200px; width: 80%;  border-width: 0!important;font-size: medium;cursor: pointer;')
   titleDisplayField.setAttribute('readonly', '1')
   titleDisplayField.setAttribute('data-toggle', 'tooltip')
   titleDisplayField.setAttribute('title', 'Click to edit')
@@ -117,6 +116,7 @@ let addLogLine = function (logEntry, row) {
   let newEntryUser = document.createElement('td')
   let newEntryEvent = document.createElement('td')
   newEntryDate.value = logEntry.date
+  newEntryTime.value = logEntry.date
 
   newEntry.appendChild(titleDisplayField)
   row.appendChild(newEntry)
@@ -183,6 +183,7 @@ $(function () {
             'destinationList': res,
             'user': JSON.parse(window.sessionStorage.getItem('Hash'))
           }
+          // Put the DB entries into Session Storage, then go to trip page
           window.sessionStorage.setItem('trip', JSON.stringify(existingTrip))
           window.location = '/trip'
         }
@@ -193,33 +194,26 @@ $(function () {
   // view the trip log
   $('table').on('click', '.logButton', function () {
     let id = $(this).parents('tr')[0].id
+    console.log('Row ID is', id)
     let index = -1
     for (let i = 0; i < tripsList.length; i++) {
       if (Number(tripsList[i].id) === Number(id)) {
         index = i
       }
     }
+    console.log('Index is', index)
     $('#trip-log').show()
     window.location = '/trip-manager#log-jump'
     $('#trip-log-title').html(tripsList[index].title)
-    // let row = $(this).closest('tr')[0].firstChild.firstChild.attributes['id'].nodeValue
-    // let newLog = []
-    // let currentTrip = JSON.parse(window.sessionStorage.getItem(''))
-    // let index = $.inArray(row, tripListTitle)
-    // $.ajax({
-    //   url: '/trip-manager-interface/log',
-    //   method: 'POST',
-    //   contentType: 'application/json',
-    //   data: JSON.stringify({ tripId: tripsList[index].id }),
-    //   success: function (res) {
-    //     let existingTrip = {
-    //       'id': Number(tripsList[index].id),
-    //       'title': tripsList[index].title,
-    //       'destinationList': res,
-    //       'user': JSON.parse(window.sessionStorage.getItem('Hash'))
-    //     }
-    //   }
-    // })
+    $.ajax({
+      url: '/trip-manager/log',
+      method: 'POST',
+      contentType: 'application/json',
+      data: JSON.stringify({ tripId: id }),
+      success: function (log) {
+        console.log(log)
+      }
+    })
   })
 
   // Create a new trip

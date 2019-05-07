@@ -21,7 +21,9 @@ function createLogQuery (logInfo, res) {
 
 function getLogsQuery (req, res) {
   let tripId = req.body.tripId
-  let queryString = SqlString.format('SELECT * FROM logs WHERE trip_id = ?;', [tripId])
+  console.log('Trip Body is: ', tripId)
+  // let queryString = SqlString.format('SELECT * FROM log WHERE trip_id = ?;', [tripId])
+  let queryString = `SELECT * FROM log WHERE trip_id = '${tripId}';`
   console.log(queryString)
   db.getLogs(queryString, res)
 }

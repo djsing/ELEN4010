@@ -49,7 +49,7 @@ let pools = new mssql.ConnectionPool(config)
           hash varchar(255) PRIMARY KEY NOT NULL
           )`)
   }).then(result => {
-    console.log('user table created', result)
+    // console.log('user table created', result)
   }).catch(err => {
     console.log('user table creation error', err)
   })
@@ -58,7 +58,6 @@ let pools = new mssql.ConnectionPool(config)
 
 function createUser (userInfo, res) {
   let info = userInfo
-  // console.log('create', info)
   pools
     // Run query
     .then((pool) => {
@@ -93,7 +92,6 @@ function findUser (userInfo, signin, res) {
     })
     // both ID/Email match sought after in case of possible duplication of either ID/Email
     .then(result => {
-      // console.log('query result', result)
       // if no match is found, it must be a new user
       if (result.recordset.length === 0) {
         info.userType = 'newUser'
@@ -111,7 +109,6 @@ function findUser (userInfo, signin, res) {
         }
       } else {
         info.userType = 'currentUser'
-        // console.log('changed to current')
         // account that does exist and is trying to register
         if (!signin) {
           // console.log('trying to register')
@@ -164,7 +161,7 @@ function findUser (userInfo, signin, res) {
           trip_id varchar(255)
           )`)
   }).then(result => {
-    console.log('destinations table created', result)
+    // console.log('destinations table created', result)
   }).catch(err => {
     console.log('destinations table creation error', err)
   })
@@ -174,12 +171,11 @@ function findUser (userInfo, signin, res) {
 function populateDestionationsTable (res, queryString) {
   pools
     .then(pool => {
-      // console.log('populate QueryString: ', queryString)
       return pool.request()
         .query(queryString)
     })
     .then(result => {
-      console.log('population result ', result)
+      // console.log('destination table population result ', result)
       res.send('DestinationTablePopulated')
     })
     .catch(err => {
@@ -196,7 +192,7 @@ function populateDestionationsTable (res, queryString) {
           title varchar(50)
           )`)
   }).then(result => {
-    console.log('trips table created', result)
+    // console.log('trips table created', result)
   }).catch(err => {
     console.log('trips table creation error', err)
   })
@@ -206,7 +202,6 @@ function populateDestionationsTable (res, queryString) {
 function populateTripsAndGroupsTable (res, queryString, tripInfo) {
   pools
     .then(pool => {
-      // console.log('populate query tring: ', queryString)
       return pool.request()
         .query(queryString)
     })
@@ -228,7 +223,6 @@ function getTripTitles (trips, res) {
       }
       queryString = queryString.substring(0, queryString.length - 1)
       queryString = queryString + `);`
-      console.log('get trip titles QS ', queryString)
 
       return pool.request()
         .query(queryString)
@@ -249,7 +243,7 @@ function getTrips (queryString, res) {
         .query(queryString)
     })
     .then(result => {
-      console.log('get trips result ', result)
+      // console.log('get trips result ', result)
       if (result.recordset.length !== 0) {
         getTripTitles(result.recordset, res)
       }
@@ -268,7 +262,7 @@ function getTrips (queryString, res) {
           trip_id varchar(255)
           )`)
   }).then(result => {
-    console.log('groups table created', result)
+    // console.log('groups table created', result)
   }).catch(err => {
     console.log('groups table creation error', err)
   })
@@ -282,7 +276,7 @@ function getDestinations (queryString, res) {
         .query(queryString)
     })
     .then(result => {
-      console.log('get destinations result ', result.recordset)
+      // console.log('get destinations result ', result.recordset)
       res.send(result.recordset)
     })
     .catch(err => {
@@ -303,7 +297,7 @@ function getDestinations (queryString, res) {
           trip_id varchar(255)
           )`)
   }).then(result => {
-    console.log('log table created', result)
+    // console.log('log table created', result)
   }).catch(err => {
     console.log('log table creation error', err)
   })
@@ -329,6 +323,7 @@ function populateLogTable (res, logQueryString) {
 function getLogs (queryString, res) {
   pools
     .then(pool => {
+      console.log('get logs queryString ', res)
       return pool.request()
         .query(queryString)
     })

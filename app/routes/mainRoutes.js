@@ -70,8 +70,8 @@ mainRouter.post('/trip/log', function (log, res) {
   logModel.createLogQuery(log, res)
 })
 
-mainRouter.post('/trip-manager-interface/log', function (log, res) {
-  logModel.getLogsQuery(log, res)
+mainRouter.post('/trip-manager/log', function (tripId, res) {
+  logModel.getLogsQuery(tripId, res)
 })
 
 mainRouter.post('/trip/data', function (req, res) {
