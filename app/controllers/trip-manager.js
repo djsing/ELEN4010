@@ -185,7 +185,7 @@ let displayInvites = function (pendingInvites) {
     $('#pendingTripInvitesHeading').show()
 
     pendingInvites.forEach((invite) => {
-      appendTripInvite(invite.title)
+      appendTripInvite(invite)
     })
   } else {
     // Hide the heading if there are pendingInvites
@@ -193,13 +193,13 @@ let displayInvites = function (pendingInvites) {
   }
 }
 
-let appendTripInvite = function (tripName) {
+let appendTripInvite = function (trip) {
   let invitesTable = $('#invitesTable')
   let newRow = document.createElement('tr')
 
   // Add an entry for the name of the trip
   let nameEntry = document.createElement('td')
-  nameEntry.innerHTML = tripName
+  nameEntry.innerHTML = trip.title
   newRow.append(nameEntry)
 
   // Add an accept button for the invite
@@ -219,5 +219,6 @@ let appendTripInvite = function (tripName) {
   newRow.append(rejectBtnCell)
 
   // Add row to table
+  newRow.id = trip.id
   invitesTable.append(newRow)
 }
