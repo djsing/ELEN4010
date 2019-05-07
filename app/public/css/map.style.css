@@ -21,13 +21,6 @@ fixed-height {
   max-height: 660px;
 }
 
-/* #mainContainer {
-  min-width: 100%;
-  min-height: 100%;
-  max-width: none;
-} */
-
-/* Makes the sample page fill the window. */
 html, body {
   height: 100%;
   margin: 0;
@@ -59,6 +52,7 @@ html, body {
   outline: none;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
   background-color: #fff;
+  width: 95%;
   /* font-family: Roboto; */
 }
 
@@ -86,7 +80,7 @@ html, body {
   margin-left: 12px;
   padding: 0 12px 0 12px;
   text-overflow: ellipsis;
-  width: 200px;
+  width: 98%;
 }
 
 #pac-input:focus {
@@ -107,27 +101,191 @@ h1, .h1 {
 
 td:hover{
   cursor:move;
-  }
-
-  table {
-    table-layout: fixed;
-    /* word-wrap: break-word; */
 }
 
-#tripTitle {
+tr:hover{
+  background-color: #e8e8e861;
+}
+
+table {
+  table-layout: fixed;
+  /* word-wrap: break-word; */
+}
+.table th, .table td {
+  padding: 0.5rem;
+}
+#tripTitle  {
   padding: 25px
+}
+
+.form-control {
+  display: inline;
+  padding: 0.5rem 1.5rem;
+}
+
+element.style {
+  font-size: 1rem;
+  padding: 0.5rem 0rem;
+  background-color: #fff0;
+}
+.destinationInputClass {
+  display: inline;
+  padding: 0.5rem 1.5rem;
+  width: 100%;
+  height: calc(1.5em + 1.5rem + 0);
+  padding: 0.75rem 2rem;
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #55595c;
+  background-color: #f7f7f9;
+  background-clip: padding-box;
+  border: 0 solid #ced4da;
+  border-radius: 0;
+  -webkit-transition: border-color 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
+  transition: border-color 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
+}
+
+.invite-group {
+  width: 100%;
+}
+#inviteEditorButton {
+  width: 100%;
+  color: #909aa1;
+}
+
+#inviteEditorButton:hover {
+  color: #c51603;
+  background-color: transparent;
+  border-color: transparent;
+}
+
+#deleteButton:hover{
+  color: #c51603;
+  background-color: transparent;
+  border-color: transparent;
+}
+
+.destinationLabelClass{
+  font-size: 0.75rem;
+  color: #aaa;
+}
+
+.destinationLabelClass:hover{
+  color: #c51603;
+  background-color: transparent;
+  border-color: transparent;
 }
 
 #saveTrip {
   position: absolute!important;
-  right: 40px;
+  right: 38px;
   bottom: 20px!important;
+  border-style: solid;
+  border-width: 1px!important;
+  border-color: #919aa1!important;
 }
 
 #deleteDestinations {
   position: absolute!important;
   width: 50px;
-  height: 44px;
+  height: 50px;
   right: 180px;
-  bottom: 22px!important;
+  bottom: 20px!important;
+  border-style: solid;
+  border-width: 1px!important;
+  border-color: #919aa1!important;
+}
+
+.destinationLabelClass {
+  cursor:pointer;
+}
+
+.modal{
+  background-color: #fff;
+  border: 1px solid #424242;
+  position: fixed;
+  margin: auto;
+  top: 30%;
+  right: 0;
+  bottom: 30%;
+  padding: 50px;
+  left: 0;
+  width: 60%;
+  height: 40%;
+  margin: 0 auto;
+  z-index: 1;
+  display: none; 
+  text-align: center;
+}
+
+.modal.fade .modal-dialog {
+  -webkit-transform: scale(0.1);
+  -moz-transform: scale(0.1);
+  -ms-transform: scale(0.1);
+  transform: scale(0.1);
+  top: 300px;
+  opacity: 0;
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  transition: all 0.3s;
+}
+
+.modal.fade.in .modal-dialog {
+  -webkit-transform: scale(1);
+  -moz-transform: scale(1);
+  -ms-transform: scale(1);
+  transform: scale(1);
+  -webkit-transform: translate3d(0, -300px, 0);
+  transform: translate3d(0, -300px, 0);
+  opacity: 1;
+}
+
+p.modal-element {
+  padding: 20px;
+}
+
+input.modal-element {
+  padding: 10px;
+  margin-top: 2%;
+  margin-bottom: 2%;
+}
+
+input[type="text"].modal-element {
+  width: 400px
+}
+
+#invalidEmailMessage{
+  display: none; 
+  color: #9b3336;
+}
+
+#inviteSendHeader{
+  font-size: 40px;
+}
+
+#emailAddress { 
+  font-size: 30px;
+}
+
+
+#success-alert {
+  width: 180px;
+  position: absolute!important;
+  right: 40px;
+  bottom: 70px!important;
+}
+
+#deleteDestinations .svg-inline--fa {
+  font-size: 20px;
+}
+
+#tripNameForm {
+  width: 100%;
+}
+
+input:focus::-webkit-input-placeholder {
+  opacity: 0;
 }

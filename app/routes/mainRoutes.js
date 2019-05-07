@@ -14,7 +14,14 @@ let authenticate = require('../models/authenticate')
 let termsModel = require('../models/termsAndConditionsModel')
 let tripManagerModel = require('../models/tripManagerModel')
 let tripModel = require('../models/tripModel')
+let mailManager = require('../models/email_manager')
+let invitesModel = require('../models/invitesModel')
+let logModel = require('../models/logModel')
+let userModel = require('../models/userModel')
 
+// ------------
+// URL Routing
+// ------------
 mainRouter.get('/', function (req, res) {
   res.sendFile('/index.html', { root: req.app.get('views') })
 })
@@ -25,10 +32,6 @@ mainRouter.get('/terms_and_conditions', function (req, res) {
 
 mainRouter.get('/terms_and_conditions/data', function (req, res) {
   res.send(termsModel.getTermsAndCondtions())
-})
-
-mainRouter.get('/test', function (req, res) {
-  res.sendFile('test.html', { root: req.app.get('views') })
 })
 
 mainRouter.get('/profile', function (req, res) {
@@ -59,35 +62,35 @@ mainRouter.get(['/trip-manager', '/trips'], function (req, res) {
   res.sendFile('/trip-manager.html', { root: req.app.get('views') })
 })
 
+// ----------------
+// RESTFUL Routing
+// ----------------
+mainRouter.post('/trip/log', function (log, res) {
+  logModel.createLogQuery(log, res)
+})
+
+mainRouter.post('/trip-manager/log', function (tripId, res) {
+  logModel.getLogsQuery(tripId, res)
+})
+
+mainRouter.post('/trip-manager/user', function (userId, res) {
+  userModel.lookUpUser(userId, res)
+})
+
 mainRouter.post('/trip/data', function (req, res) {
-  res.sendStatus(200)
-  tripModel.storeItinerary(req.body.destinationList, res)
+  tripModel.createDestinationQuery(req, res)
 })
 
-mainRouter.get('/trip/data', function (req, res) {
-  res.send(tripModel.getIntinerary())
+mainRouter.post('/trip-manager/data', function (req, res) {
+  tripManagerModel.populateTripAndGroupTableQuery(req, res)
 })
 
-mainRouter.delete('/trip/data', function (req, res) {
-  tripModel.deleteDestination(req.body.destInput, req.body.destName)
-  res.sendStatus(200)
+mainRouter.post('/trip-manager/get-data', function (req, res) {
+  tripManagerModel.getTripsQuery(req, res)
 })
 
-mainRouter.get(['/trip-manager/data', '/trips/data'], function (req, res) {
-  res.send(tripManagerModel.getTripTitles())
-})
-
-mainRouter.post(['/trip-manager/data', '/trips/data'], function (req, res) {
-  tripManagerModel.saveTripTitle(req.body.tripTitle)
-  res.send(tripManagerModel.getTripTitles())
-})
-
-mainRouter.delete(['/trip-manager/data', '/trips/data'], function (req, res) {
-  tripManagerModel.removeTrip(req.body.tripTitle)
-})
-
-mainRouter.put(['/trip-manager/data', '/trips/data'], function (req, res) {
-  tripManagerModel.updateTrip(req.body.oldTripTitle, req.body.newTripTitle)
+mainRouter.post('/trip-manager-interface/data', function (req, res) {
+  tripManagerModel.getDestinationsQuery(req, res)
 })
 
 mainRouter.post('/google-auth', (req, res) => {
@@ -98,8 +101,37 @@ mainRouter.post('/auth', (req, res) => {
   authenticate.userAccountDatabaseConnection(req, res)
 })
 
+mainRouter.get('/email', function (req, res) {
+  res.sendFile('email.html', { root: req.app.get('views') })
+})
+
+// -----------------------------
+// Error/Page Not Found Routing
+// ------------------------------
 mainRouter.get('*', function (req, res) {
-  res.status(404).send('404 Error: page not found')
+  res.sendFile('/404.html', { root: req.app.get('views') })
+  // res.status(404).send('404 Error: page not found')
+})
+// ----------------- Invites ------------------------------
+
+mainRouter.post('/invite', function (req, res) {
+  mailManager.sendInvite(req.body.emailAddress, req.body.tripName, req.body.invitee)
+  invitesModel.addInvite(res, req.body)
+  res.sendStatus(200)
+})
+
+mainRouter.post('/invites/data', function (req, res) {
+  invitesModel.getInvites(res, req.body.emailAddress)
+  // let pendingTrips = [{ 'title': 'Malawi', 'tripID': '000001' }]
+  // res.send(pendingTrips)
+})
+
+mainRouter.post('/invites/data/accept', (req, res) => {
+  invitesModel.handleInvites(req, res, true)
+})
+
+mainRouter.post('/invites/data/deny', (req, res) => {
+  invitesModel.handleInvites(req, res, false)
 })
 
 module.exports = mainRouter

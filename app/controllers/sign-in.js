@@ -25,6 +25,7 @@ function signInInit () {
             window.sessionStorage.setItem('Name', name)
             window.sessionStorage.setItem('ImageURI', JSON.stringify(response.image))
             window.sessionStorage.setItem('Email', JSON.stringify(response.emailAddress))
+            window.sessionStorage.setItem('Hash', JSON.stringify(response.hash))
             // direct to different pages based on whether the user is new or current
             if (response.userType === 'currentUser') {
               window.location = '/trip'
@@ -52,16 +53,6 @@ function signInInit () {
     if (window.location.pathname === '/sign-in') {
       auth2.then(onInit, onError)
     }
-  })
-
-  $(document).ready(() => {
-    $('#signOutButton').click(() => {
-      let authInstance = gapi.auth2.getAuthInstance()
-      authInstance.signOut().then(function () {
-        console.log('User signed out.')
-        window.location = '/'
-      })
-    })
   })
 }
 
@@ -95,6 +86,7 @@ $(document).ready(() => {
         window.sessionStorage.setItem('Name', name)
         window.sessionStorage.setItem('ImageURI', JSON.stringify(response.image))
         window.sessionStorage.setItem('Email', JSON.stringify(response.emailAddress))
+        window.sessionStorage.setItem('Hash', JSON.stringify(response.hash))
         // direct to different pages based on whether the user is new or current
         if (response.userType === 'currentUser') {
           window.location = '/trip'

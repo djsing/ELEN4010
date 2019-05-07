@@ -5,6 +5,11 @@
 .nav-item:hover{
     cursor:pointer;
 }
+
+.navbar-brand{
+  cursor: default;
+}
+
 ul.nav li.nav { 
   list-style:none;
   margin:10px;

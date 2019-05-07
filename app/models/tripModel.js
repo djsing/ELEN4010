@@ -1,45 +1,25 @@
 'use strict'
 
 let db = require('./db')
+let SqlString = require('sqlstring')
 
-let destInputsInt = []
-let destNamesInt = []
-
-let storeItinerary = function (itinerary, res) {
-  db.saveTrip(itinerary, res)
-  // // Initialize destination array
-  // destInputsInt = []
-  // // Store new destinations into destinations array
-  // destInputs.forEach((dest) => {
-  //   destInputsInt.push(dest)
-  // })
-
-  // // Initialize destination array
-  // destNamesInt = []
-  // // Store new place names into place name array
-  // destNames.forEach((placeName) => {
-  //   destNamesInt.push(placeName)
-  // })
-}
-
-let getIntinerary = function () {
-  return {
-    'destInputs': destInputsInt,
-    'destNames': destNamesInt
+function createDestinationQuery (tripInfo, res) {
+  let trip = tripInfo.body
+  let queryString = SqlString.format('DELETE FROM destinations WHERE trip_id = ?;', [trip.id])
+  for (let i = 0; i < trip.destinationList.length; i++) {
+    queryString = queryString + SqlString.format('INSERT INTO destinations VALUES (?,?,?,?,?,?,?,?);',
+      [trip.destinationList[i].id,
+        trip.destinationList[i].lat,
+        trip.destinationList[i].lng,
+        trip.destinationList[i].placeId,
+        trip.destinationList[i].place,
+        trip.destinationList[i].name,
+        trip.destinationList[i].ordering,
+        trip.id])
   }
-}
-
-let deleteDestination = function (destInput, destName) {
-  destInputsInt = destInputsInt.filter((value, index, array) => {
-    return value !== destInput
-  })
-  destNamesInt = destNamesInt.filter((value, index, array) => {
-    return value !== destName
-  })
+  db.populateDestionationsTable(res, queryString)
 }
 
 module.exports = {
-  storeItinerary,
-  getIntinerary,
-  deleteDestination
+  createDestinationQuery: createDestinationQuery
 }

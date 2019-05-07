@@ -1,0 +1,119 @@
+#info-text {
+  padding: 38px 10px;
+  color: #d0d0d0;
+}
+
+a.anchor {
+  display: block;
+  position: relative;
+  top: -150px;
+  visibility: hidden;
+}
+
+#main-heading {
+  margin-top: 33px;
+  margin-right: 0;
+  margin-bottom: 0;
+  margin-left: 20px;
+  font-weight: 600;
+  letter-spacing: 8px;
+}
+
+#second-heading {
+  margin-top: 33px;
+  margin-right: 0;
+  margin-bottom: 0;
+  margin-left: 20px;
+  font-weight: 400;
+  color: #656565;
+}
+
+#invitemanager {
+  margin-top: 50px;
+}
+#invitations-section {
+  margin: 30px 0;
+}
+
+.sticky-th {
+  position: sticky;
+  top: -2px;
+  border-top-width: 5px;
+  border-top-color: white;
+  z-index: 10;
+  background: white;
+  z-index: 10;
+  height: 15px;
+}
+
+/* thead {
+line-height: 0px!important;
+padding: 0px;
+height: 5px;
+} */
+
+#trip-list {
+  text-align: -webkit-center;
+}
+ul {
+  list-style-type: none;
+  }
+
+.titleField {
+  /* min-width: 255px; */
+  width: 200%;
+    border-width: 0!important;
+  font-size: medium;
+  cursor: pointer;
+}
+
+input.titleField:focus {
+  outline-offset: 0px!important;
+  outline-width: 0px;
+  outline-color: transparent;
+}
+input.titleField:hover {
+  color: #c51601;
+}
+#addButton {
+  margin: 10px;
+}
+
+.breadcrumb {
+  background: rgba(245, 245, 245, 0); 
+  border: 0px solid rgba(245, 245, 245, 1); 
+  border-radius: 25px; 
+  display: block;
+}
+
+.btn-bread{
+    margin-top:10px;
+    font-size: 12px;
+    border-radius: 3px;
+    color: #1a1a1a;
+}
+
+#heading-trip {
+  padding-right: 50px;
+}
+
+
+#hide-log {
+  float: left;
+  top: -13px;
+  right: -15px;
+  position: relative;
+  color: #9a9a9a;
+}
+
+#hide-log:active {
+  color: #1a1a1a;
+  background-color: transparent;
+  border-color: transparent;
+}
+
+#hide-log:hover {
+  color: #1a1a1a;
+  background-color: transparent;
+  border-color: transparent;
+}
