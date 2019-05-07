@@ -107,6 +107,7 @@ $(document).ready(() => {
         if (response.userType === 'currentUser') {
           window.alert('An account with this email address already exists.\nPlease Sign-in.')
         } else if (response.userType === 'newUser') {
+          clearTripFromSessionStorage()
           window.location = '/trip'
         } else {
           console.error('bad google response', response)
