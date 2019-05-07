@@ -1,9 +1,7 @@
-let check = JSON.parse(window.sessionStorage.getItem('Hash'))
+let check = window.sessionStorage.getItem('Hash')
 // console.log(check)
 if ((check === null) || (check === undefined)) {
   window.location = '/sign-in'
-} else {
-  updateProfile()
 }
 
 function updateProfile () {
@@ -27,6 +25,7 @@ function signOut () {
 
 // Get User name for menu
 $(document).ready(function () {
+  updateProfile()
   $('#signOutButton').click(() => {
     let authInstance = gapi.auth2.getAuthInstance()
     authInstance.signOut().then(function () {
