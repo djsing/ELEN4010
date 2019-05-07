@@ -308,10 +308,7 @@ $(function () {
       window.alert('This trip title already exists.\n Please enter a new title.')
     }
   })
-  // Add event listeners for buttons for rejecting trips
-  $(document).on('click', '.rejectButton', () => {
-    console.log('A reject button was pressed')
-  })
+  // Add event listeners for buttons for rejecting tripsss
 
   $(document).on('click', '.acceptButton', () => {
     console.log('An accept button was pressed')
@@ -320,6 +317,10 @@ $(function () {
   $('[data-toggle="tooltip"]').tooltip()
 })
 
+$(document).on('click', '#rejectButton', function (e) {
+  let id = $(this).parents('tr')[0].id
+  $(this).parents('tr').remove()
+})
 // -------------------------- Trip Invites  ---------------------------------------
 let pendingTrips = []
 
@@ -358,17 +359,17 @@ let appendTripInvite = function (trip) {
   acceptBtn.classList.add('btn', 'btn-sm', 'btn-secondary')
   acceptBtn.innerHTML = '<i class="fas fa-check"></i>'
   let acceptBtnCell = document.createElement('td')
-  acceptBtnCell.append(acceptBtn)
-  newRow.append(acceptBtnCell)
+  acceptBtnCell.appendChild(acceptBtn)
+  newRow.appendChild(acceptBtnCell)
 
   // Add a reject button for the invite
   let rejectBtn = document.createElement('button')
-  rejectBtn.className = 'rejectButton'
+  rejectBtn.id = 'rejectButton'
   rejectBtn.innerHTML = '<i class="fas fa-times"></i>'
   rejectBtn.classList.add('btn', 'btn-sm', 'btn-secondary')
   let rejectBtnCell = document.createElement('td')
-  rejectBtnCell.append(rejectBtn)
-  newRow.append(rejectBtnCell)
+  rejectBtnCell.appendChild(rejectBtn)
+  newRow.appendChild(rejectBtnCell)
 
   // Add row to table
   newRow.id = trip.id
