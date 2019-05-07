@@ -34,10 +34,6 @@ mainRouter.get('/terms_and_conditions/data', function (req, res) {
   res.send(termsModel.getTermsAndCondtions())
 })
 
-mainRouter.get('/test', function (req, res) {
-  res.sendFile('test.html', { root: req.app.get('views') })
-})
-
 mainRouter.get('/profile', function (req, res) {
   res.sendFile('profile.html', { root: req.app.get('views') })
 })
@@ -54,7 +50,7 @@ mainRouter.get(['/sign-in', '/login', '/signin'], function (req, res) {
   res.sendFile('/sign-in.html', { root: req.app.get('views') })
 })
 
-mainRouter.get(['/trip'], function (req, res) {
+mainRouter.get(['/trip', '/map'], function (req, res) {
   res.sendFile('/trip.html', { root: req.app.get('views') })
 })
 
@@ -113,7 +109,8 @@ mainRouter.get('/email', function (req, res) {
 // Error/Page Not Found Routing
 // ------------------------------
 mainRouter.get('*', function (req, res) {
-  res.status(404).send('404 Error: page not found')
+  res.sendFile('/404.html', { root: req.app.get('views') })
+  // res.status(404).send('404 Error: page not found')
 })
 // ----------------- Invites ------------------------------
 

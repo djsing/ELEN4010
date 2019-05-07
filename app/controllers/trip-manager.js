@@ -324,7 +324,6 @@ $(document).on('click', '#acceptButton', function (e) {
     contentType: 'application/json',
     data: JSON.stringify(obj),
     success: function (res) {
-      // loadTrips()
       window.location = '/trip-manager'
     }
   })
