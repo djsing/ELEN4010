@@ -54,16 +54,6 @@ function signInInit () {
       auth2.then(onInit, onError)
     }
   })
-
-  $(document).ready(() => {
-    $('#signOutButton').click(() => {
-      let authInstance = gapi.auth2.getAuthInstance()
-      authInstance.signOut().then(function () {
-        console.log('User signed out.')
-        window.location = '/'
-      })
-    })
-  })
 }
 
 $(document).ready(() => {
