@@ -1,20 +1,21 @@
 'use strict'
 
 let db = require('./db')
+let SqlString = require('sqlstring')
 
-function createDestinationQuery (trip, res) {
-  let tripInfo = trip.body
-  let queryString = `DELETE FROM destinations WHERE trip_id = ${tripInfo.id};`
-  for (let i = 0; i < tripInfo.destinationList.length; i++) {
-    queryString = queryString + `INSERT INTO destinations VALUES(
-      '${tripInfo.destinationList[i].id}',
-      '${tripInfo.destinationList[i].lat}',
-      '${tripInfo.destinationList[i].lng}',
-      '${tripInfo.destinationList[i].placeId}',
-      '${tripInfo.destinationList[i].place}',
-      '${tripInfo.destinationList[i].name}',
-      '${tripInfo.destinationList[i].ordering}',
-      '${tripInfo.id}');`
+function createDestinationQuery (tripInfo, res) {
+  let trip = tripInfo.body
+  let queryString = SqlString.format('DELETE FROM destinations WHERE trip_id = ?;', [trip.id])
+  for (let i = 0; i < trip.destinationList.length; i++) {
+    queryString = queryString + SqlString.format('INSERT INTO destinations VALUES (?,?,?,?,?,?,?,?);',
+      [trip.destinationList[i].id,
+        trip.destinationList[i].lat,
+        trip.destinationList[i].lng,
+        trip.destinationList[i].placeId,
+        trip.destinationList[i].place,
+        trip.destinationList[i].name,
+        trip.destinationList[i].ordering,
+        trip.id])
   }
   db.populateDestionationsTable(res, queryString)
 }

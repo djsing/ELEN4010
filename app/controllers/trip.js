@@ -25,27 +25,27 @@ class Trip {
   }
 }
 
+class LogEvent {
+  constructor (id, userId, code, date, importance, tripId) {
+    this.id = id
+    this.userId = userId
+    this.code = code
+    this.date = date
+    this.importance = importance
+    this.tripId = tripId
+  }
+}
+
 // -------------------------
 // Declare global variables
 // --------------------------
 let map, service
+let newLog = []
 let markersOnMap = []
 let newTrip = new Trip((new Date()).getTime(), '', [], JSON.parse(window.sessionStorage.getItem('Hash')))
-let startLocation = { center: { lat: 10, lng: 330 }, zoom: 2.8 }
-
-// ------------
-// Data Methods
-// -------------
-function saveTripToSessionStorage () {
-  newTrip.destinationList.sort((a, b) => (a.ordering > b.ordering) ? 1 : -1)
-  window.sessionStorage.setItem('trip', JSON.stringify(newTrip))
-}
-
-function getTripFromSessionStorage () {
-  newTrip = JSON.parse(window.sessionStorage.getItem('trip'))
-  newTrip.destinationList.sort((a, b) => (a.ordering > b.ordering) ? 1 : -1)
-  document.getElementById('tripNameFormInput').value = newTrip.title
-}
+let startLocation = randomProperty(countries)
+// let startLocation = randomLocation
+// let startLocation = { center: { lat: 10, lng: 330 }, zoom: 2.8 }
 
 // ----------------
 // Logic Functions
@@ -63,8 +63,45 @@ function randomProperty (obj) {
   return obj[ keys[ keys.length * Math.random() << 0 ] ]
 }
 
-function randomLocation () {
-  return randomProperty(countries)
+// function randomLocation () {
+//   return randomProperty(countries)
+// }
+
+function addLogEntry (eventCode) {
+  /* Event codes:
+    0: "created the trip"   <- Major
+    1: "invited [NEWUSER] to the trip" <- Major
+    2: "joined the trip"    <- Major
+    3: "renamed the trip"
+    4: "added a destination"
+    5: "removed a destination"
+    6: "rearranged the destinations"
+    7: "renamed a destination"
+    8: "removed all destinations"
+    9: UNUSED
+  */
+  let id = String((new Date()).getTime())
+  let userHash = JSON.parse(window.sessionStorage.getItem('Hash')) // Should we do a proper check?
+  let code = eventCode
+  let date = new Date().toISOString().slice(0, 19).replace('T', ' ')
+  let importance = 0
+  if (eventCode < 3) {
+    importance = 1
+  }
+  let tripId = newTrip.id
+  let logEvent = new LogEvent(id, userHash, code, date, importance, tripId)
+  newLog.push(logEvent)
+  // Debugging:
+  console.log('Event with ID ',
+    logEvent.id, ': At ',
+    logEvent.date, ', ',
+    logEvent.userHash, ' performed event with code ',
+    logEvent.code, '.')
+  if (logEvent.importance) {
+    console.log('It was a major event')
+  } else {
+    console.log('It was a minor event')
+  }
 }
 
 let addDestination = function (latLng, placeId, place) {
@@ -73,6 +110,7 @@ let addDestination = function (latLng, placeId, place) {
   let ordering = newTrip.destinationList.length + 1
   let newDestination = new Destination(id, latLng.lat, latLng.lng, placeId, place, name, ordering)
   newTrip.destinationList.push(newDestination)
+  addLogEntry(4)
   saveTripToSessionStorage()
   $('#deleteDestinations').show()
 }
@@ -193,7 +231,6 @@ function addMarker (latLng, placeName, label) {
     position: latLng,
     map: map,
     label: label
-    // animation: google.maps.Animation.DROP
   })
   markersOnMap.push(marker)
 }
@@ -286,8 +323,8 @@ function initMap () {
 // JQuery Event Listeners
 // ------------------------
 
-// Make the Destination list draggable
-$(document).ready(function () {
+// destinations can be rearranged
+$(document).ready(() => {
   $('#destinationTable').sortable({
     scroll: true,
     update: function (event, ui) {
@@ -304,6 +341,7 @@ $(document).ready(function () {
       newTrip.destinationList.sort((a, b) => (a.ordering > b.ordering) ? 1 : -1)
       clearMarkers()
       renderMarkers()
+      addLogEntry(6)
       saveTripToSessionStorage()
     }
   })
@@ -330,6 +368,7 @@ $(document).on('click', '#deleteButton', function (e) {
   }
   clearMarkers()
   renderMarkers()
+  addLogEntry(5)
   saveTripToSessionStorage()
   if (newTrip.destinationList.length < 1) {
     $('#deleteDestinations').hide()
@@ -353,24 +392,21 @@ $(document).on('click', '#deleteDestinations', function () {
   clearMarkers()
   $('#destinationTable').empty()
   newTrip.destinationList = []
+  addLogEntry(8)
   saveTripToSessionStorage()
   $('#deleteDestinations').hide()
 })
 
-// Save Trip Button alert popup
-$(document).ready(function () {
+// Pop-up saved confirmation alert
+$(document).ready(() => {
   $('#success-alert').hide()
-  $('#saveTrip').click(function showAlert () {
-    $('#success-alert').fadeTo(2000, 500).slideUp(500, function () {
-      $('#success-alert').slideUp(500)
-    })
-  })
 })
 
 // Save Trip name upon input change
 $(document).on('change paste', '#tripNameFormInput', function () {
   let name = document.getElementById('tripNameFormInput').value
   newTrip.title = name
+  addLogEntry(3)
   saveTripToSessionStorage()
 })
 
@@ -382,6 +418,7 @@ $(document).on('change paste', '.destinationInputClass', function () {
       newTrip.destinationList[j].name = this.value
     }
   }
+  addLogEntry(7)
   saveTripToSessionStorage()
 })
 
@@ -403,8 +440,6 @@ function renderOnReload () {
       }
       map.fitBounds(bounds)
     }
-  } else {
-    startLocation = randomProperty(countries)
   }
 }
 
@@ -412,7 +447,7 @@ function renderOnReload () {
 // AJAX/Data Methods
 // ------------------
 
-// Save trip to DB with Save Trip button
+// Save trip and log to DB with Save Trip button
 $(document).on('click', '#saveTrip', function () {
   saveTripToSessionStorage()
   $.ajax({
@@ -421,6 +456,9 @@ $(document).on('click', '#saveTrip', function () {
     contentType: 'application/json',
     data: JSON.stringify(newTrip),
     success: function (res) {
+      $('#success-alert').fadeTo(2000, 500).slideUp(500, function () {
+        $('#success-alert').slideUp(500)
+      })
     }
   })
   $.ajax({
@@ -429,6 +467,31 @@ $(document).on('click', '#saveTrip', function () {
     contentType: 'application/json',
     data: JSON.stringify(newTrip),
     success: function (res) {
+      // console.log(res)
+    }
+  })
+  $.ajax({
+    url: '/trip/log',
+    method: 'POST',
+    contentType: 'application/json',
+    data: JSON.stringify(newLog),
+    success: function (res) {
+      // console.log(res)
+      newLog = []
     }
   })
 })
+
+// ------------
+// Data Methods
+// -------------
+function saveTripToSessionStorage () {
+  newTrip.destinationList.sort((a, b) => (a.ordering > b.ordering) ? 1 : -1)
+  window.sessionStorage.setItem('trip', JSON.stringify(newTrip))
+}
+
+function getTripFromSessionStorage () {
+  newTrip = JSON.parse(window.sessionStorage.getItem('trip'))
+  newTrip.destinationList.sort((a, b) => (a.ordering > b.ordering) ? 1 : -1)
+  document.getElementById('tripNameFormInput').value = newTrip.title
+}
