@@ -87,6 +87,19 @@ $(document).ready(() => {
       }
     }
   })
+
+  // ---------- Trip Invites --------------------------
+
+  let emailAddress = '1364103@students.wits.ac.za'
+  $.ajax({
+    url: '/invites/data',
+    method: 'POST',
+    contentType: 'application/json',
+    data: JSON.stringify({ 'emailAddress': emailAddress }),
+    success: function (res) {
+      displayInvites(res)
+    }
+  })
 })
 
 $(function () {
@@ -155,26 +168,14 @@ $(function () {
       window.alert('This trip title already exists.\n Please enter a new title.')
     }
   })
-
-  // ---------- Trip Invites --------------------------
-
-  let emailAddress = '1364103@students.wits.ac.za'
-  $.ajax({
-    url: '/invites/data',
-    method: 'POST',
-    contentType: 'application/json',
-    data: JSON.stringify({ 'emailAddress': emailAddress }),
-    success: function (res) {
-      displayInvites(res)
-    }
-  })
 })
 
 // -------------------------- Trip Invites  ---------------------------------------
-// let pendingTrips = [{ 'title': 'Malawi', 'tripID': '000001' }]
+let pendingTrips = []
 
 let displayInvites = function (pendingInvites) {
   // Clear the old table
+  pendingTrips = pendingInvites
   $('#invitesTable').empty()
 
   // Display the heading if there are pendingInvites
@@ -183,8 +184,8 @@ let displayInvites = function (pendingInvites) {
 
     $('#pendingTripInvitesHeading').show()
 
-    pendingInvites.forEach((title) => {
-      appendTripInvite(title)
+    pendingInvites.forEach((invite) => {
+      appendTripInvite(invite.title)
     })
   } else {
     // Hide the heading if there are pendingInvites

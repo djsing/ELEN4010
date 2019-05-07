@@ -341,8 +341,43 @@ function getDestinations (queryString, res) {
     })
 }
 
+// function getInvites (res, emailAddress) {
+//   var invitesArray = []
+//   pools
+//     .then(pool => {
+//       return pool.request()
+//         .query(`SELECT trip_id
+//         FROM invites
+//         WHERE email_address = '${emailAddress}'`)
+//     })
+//     .then(result => {
+//       result.recordset.forEach((trip) => {
+//         let id = trip.trip_id
+//         console.log(`Looking for name of ${id}`)
+//         pools.then(pool => {
+//           return pool.request()
+//             .query(`SELECT *
+//             FROM trips
+//             WHERE id = '${id}'`)
+//         })
+//           .then(innerResult => {
+//             console.log('Results from my function', innerResult.recordset[0])
+//             invitesArray.push(innerResult.recordset[0])
+//             console.log('The names of the trips are', invitesArray)
+//             res.send(invitesArray)
+//           })
+//           .catch(err => {
+//             console.log('Get trip titles error:', err)
+//           })
+//       })
+//     })
+//     .catch(err => {
+//       console.log('Get trip_ids error:', err)
+//     })
+// }
+
 function getInvites (res, emailAddress) {
-  let invites = []
+  var invitesArray = []
   pools
     .then(pool => {
       return pool.request()
@@ -351,25 +386,27 @@ function getInvites (res, emailAddress) {
         WHERE email_address = '${emailAddress}'`)
     })
     .then(result => {
-      result.recordset.forEach((trip) => {
-        let id = trip.trip_id
-        console.log(`Looking for name of ${id}`)
-        pools.then(pool => {
+      let trip = result.recordset
+      pools
+        .then(pool => {
+          let queryString = `SELECT * FROM trips WHERE id IN (`
+          trip.forEach((trip) => {
+            queryString = queryString + `'${trip.trip_id}',`
+          })
+          queryString = queryString.substring(0, queryString.length - 1)
+          queryString = queryString + `);`
+          console.log('get trip titles QS ', queryString)
+
           return pool.request()
-            .query(`SELECT title
-            FROM trips
-            WHERE id = '${id}'`)
+            .query(queryString)
         })
-          .then(result => {
-            invites.push(result.recordset)
-          })
-          .catch(err => {
-            console.log('Get trip titles error:', err)
-          })
-      })
-      console.log(`The trip_ids linked to ${emailAddress} are`, result.recordset)
-      console.log('The names of the trips are', invites)
-      res.send(invites)
+        .then(result => {
+        // console.log('get trip titles result ', result)
+          res.send(result.recordset)
+        })
+        .catch(err => {
+          console.log('Get trip titles error:', err)
+        })
     })
     .catch(err => {
       console.log('Get trip_ids error:', err)
