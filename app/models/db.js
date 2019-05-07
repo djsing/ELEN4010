@@ -406,6 +406,8 @@ function getInvites (res, queryString) {
           .catch(err => {
             console.log('Get trip titles for invites error:', err)
           })
+      } else {
+        res.send(trips)
       }
     })
     .catch(err => {
