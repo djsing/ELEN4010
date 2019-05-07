@@ -155,11 +155,12 @@ function findUser (userInfo, signin, res) {
       .query(`IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='destinations' and xtype='U')
           CREATE TABLE destinations (
           id varchar(255) PRIMARY KEY, 
-          name varchar(50),
-          place varchar(255),
-          latLng varchar(255),
+          lat float,
+          lng float,
           place_id varchar(255),
-          dest_order int,
+          place varchar(255),
+          name varchar(50),
+          ordering int,
           trip_id varchar(255)
           )`)
   }).then(result => {
