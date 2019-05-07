@@ -212,6 +212,8 @@ $(function () {
       data: JSON.stringify({ tripId: id }),
       success: function (log) {
         console.log(log)
+        window.sessionStorage.setItem('log', JSON.stringify(log))
+        log = JSON.parse(window.sessionStorage.getItem('log'))
       }
     })
   })
