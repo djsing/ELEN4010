@@ -15,6 +15,7 @@ let termsModel = require('../models/termsAndConditionsModel')
 let tripManagerModel = require('../models/tripManagerModel')
 let tripModel = require('../models/tripModel')
 let logModel = require('../models/logModel')
+let userModel = require('../models/userModel')
 
 // ------------
 // URL Routing
@@ -72,6 +73,10 @@ mainRouter.post('/trip/log', function (log, res) {
 
 mainRouter.post('/trip-manager/log', function (tripId, res) {
   logModel.getLogsQuery(tripId, res)
+})
+
+mainRouter.post('/trip-manager/user', function (userId, res) {
+  userModel.lookUpUser(userId, res)
 })
 
 mainRouter.post('/trip/data', function (req, res) {

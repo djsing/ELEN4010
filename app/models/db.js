@@ -290,14 +290,13 @@ function getDestinations (queryString, res) {
       .query(`IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='log' and xtype='U')
           CREATE TABLE log (
           id varchar(255) PRIMARY KEY, 
-          hash varchar(255),
+          userId varchar(255),
           code tinyint,
-          date DATETIME,
+          date smalldatetime,
           importance bit,
           trip_id varchar(255)
           )`)
   }).then(result => {
-    // console.log('log table created', result)
   }).catch(err => {
     console.log('log table creation error', err)
   })
@@ -307,12 +306,10 @@ function getDestinations (queryString, res) {
 function populateLogTable (res, logQueryString) {
   pools
     .then(pool => {
-      console.log('populate log queryString: ', logQueryString)
       return pool.request()
         .query(logQueryString)
     })
     .then(result => {
-      console.log(' populate log result ', result)
       res.send('Log table added to entries')
     })
     .catch(err => {
@@ -323,16 +320,30 @@ function populateLogTable (res, logQueryString) {
 function getLogs (queryString, res) {
   pools
     .then(pool => {
-      console.log('get logs queryString ', res)
       return pool.request()
         .query(queryString)
     })
     .then(result => {
-      console.log('get log result ', result.recordset)
       res.send(result.recordset)
     })
     .catch(err => {
       console.log('Get log error:', err)
+    })
+}
+
+function getUserName (queryString, res) {
+  pools
+    .then(pool => {
+      // console.log('get users name queryString ', res)
+      return pool.request()
+        .query(queryString)
+    })
+    .then(result => {
+      // console.log('get users name result ', result.recordset)
+      res.send(result.recordset)
+    })
+    .catch(err => {
+      console.log('Get users name error:', err)
     })
 }
 
@@ -348,5 +359,6 @@ module.exports = {
   getTrips: getTrips,
   getTripTitles: getTripTitles,
   getDestinations: getDestinations,
-  getLogs: getLogs
+  getLogs: getLogs,
+  getUserName: getUserName
 }

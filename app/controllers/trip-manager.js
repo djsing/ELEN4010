@@ -96,37 +96,58 @@ let addTitleEntry = function (trip) {
   $('#tripTitleTable').append(newRow)
 }
 
-// <tr id="log-row">
-// <td id="log-date">when</td>
-// <td id="log-time">around</td>
-// <td id="log-user">who</td>
-// <td id="log-event">what</td>
-
-// this.id = id
-// this.userId = userId
-// this.code = code
-// this.date = date
-// this.importance = importance
-// this.tripId = tripId
-
-// Log rows
-let addLogLine = function (logEntry, row) {
-  let newEntryDate = document.createElement('td')
-  let newEntryTime = document.createElement('td')
-  let newEntryUser = document.createElement('td')
-  let newEntryEvent = document.createElement('td')
-  newEntryDate.value = logEntry.date
-  newEntryTime.value = logEntry.date
-
-  newEntry.appendChild(titleDisplayField)
-  row.appendChild(newEntry)
+function lookUpEventCode (entryCode) {
+  switch (entryCode) {
+    case 0:
+      return 'created the trip'
+    case 1:
+      let str = 'invited a new member to join the trip'
+      return str
+    case 2:
+      return 'joined the trip'
+    case 3:
+      return 'renamed the trip'
+    case 4:
+      return 'added a destination'
+    case 5:
+      return 'removed a destination'
+    case 6:
+      return 'rearranged the destinations'
+    case 7:
+      return 'renamed a destination'
+    case 8:
+      return 'removed all destinations'
+    default:
+      return 'unknown event'
+  }
 }
 
-let addLogEntry = function (logEntry) {
+// Log rows
+let addLogElements = function (logEntry, row) {
+  let newElementDate = document.createElement('td')
+  newElementDate.innerHTML = logEntry.date.slice(0, 10)
+
+  let newElementTime = document.createElement('td')
+  newElementTime.innerHTML = logEntry.date.slice(11, 19)
+
+  let newElementUser = document.createElement('td')
+  newElementUser.innerHTML = logEntry.userId
+  newElementUser.innerHTML = getUserName(logEntry.userId)
+
+  let newElementEvent = document.createElement('td')
+  newElementEvent.innerHTML = lookUpEventCode(logEntry.code)
+
+  row.appendChild(newElementDate)
+  row.appendChild(newElementTime)
+  row.appendChild(newElementUser)
+  row.appendChild(newElementEvent)
+}
+
+let addLogLineEntry = function (logEntry) {
   let newRow = document.createElement('tr')
-  newRow.className('log-row')
   newRow.id = logEntry.id
-  addLogLine(logEntry, newRow)
+  newRow.className = 'log-row'
+  addLogElements(logEntry, newRow)
   $('#logTable').append(newRow)
 }
 
@@ -153,7 +174,22 @@ $(document).ready(() => {
   })
 })
 
-// JQuery stuff
+function getUserName (id) {
+  let name
+  $.ajax({
+    url: '/trip-manager/user',
+    method: 'POST',
+    contentType: 'application/json',
+    data: JSON.stringify({ hash: id }),
+    success: function (res) {
+      console.log('Result is', res)
+      name = String(res[0].first_name) + ' ' + String(res[0].last_name)
+    }
+  })
+  console.log(name)
+  return String(name)
+}
+
 $(function () {
   // Add trip button event
   $('#addButton').click(() => {
@@ -194,14 +230,12 @@ $(function () {
   // view the trip log
   $('table').on('click', '.logButton', function () {
     let id = $(this).parents('tr')[0].id
-    console.log('Row ID is', id)
     let index = -1
     for (let i = 0; i < tripsList.length; i++) {
       if (Number(tripsList[i].id) === Number(id)) {
         index = i
       }
     }
-    console.log('Index is', index)
     $('#trip-log').show()
     window.location = '/trip-manager#log-jump'
     $('#trip-log-title').html(tripsList[index].title)
@@ -211,9 +245,11 @@ $(function () {
       contentType: 'application/json',
       data: JSON.stringify({ tripId: id }),
       success: function (log) {
-        console.log(log)
         window.sessionStorage.setItem('log', JSON.stringify(log))
         log = JSON.parse(window.sessionStorage.getItem('log'))
+        for (let i = 0; i < log.length; i++) {
+          addLogLineEntry(log[i])
+        }
       }
     })
   })

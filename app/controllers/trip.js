@@ -467,7 +467,7 @@ $(document).on('click', '#saveTrip', function () {
     contentType: 'application/json',
     data: JSON.stringify(newTrip),
     success: function (res) {
-      console.log(res)
+      // console.log(res)
     }
   })
   $.ajax({
@@ -476,7 +476,7 @@ $(document).on('click', '#saveTrip', function () {
     contentType: 'application/json',
     data: JSON.stringify(newLog),
     success: function (res) {
-      console.log(res)
+      // console.log(res)
       newLog = []
     }
   })
