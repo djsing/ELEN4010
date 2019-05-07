@@ -1,1 +1,0 @@
-All static resouces go here, including javascripts, images and css
