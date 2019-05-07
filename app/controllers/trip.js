@@ -200,7 +200,7 @@ let drawDestination = function (dest) {
 
   let destLabel = document.createElement('label')
   destLabel.classList.add('destinationLabelClass')
-  destLabel.setAttribute('style', 'font-size: 0.75rem;color: #aaa;')
+  // destLabel.setAttribute('style', 'font-size: 0.75rem;color: #aaa;')
 
   destLabel.innerHTML = dest.place
   destPlaceCell.appendChild(destInput)

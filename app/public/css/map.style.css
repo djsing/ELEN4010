@@ -147,6 +147,38 @@ element.style {
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
 }
+
+.invite-group {
+  width: 100%;
+}
+#inviteEditorButton {
+  width: 100%;
+  color: #909aa1;
+}
+
+#inviteEditorButton:hover {
+  color: #c51603;
+  background-color: transparent;
+  border-color: transparent;
+}
+
+#deleteButton:hover{
+  color: #c51603;
+  background-color: transparent;
+  border-color: transparent;
+}
+
+.destinationLabelClass{
+  font-size: 0.75rem;
+  color: #aaa;
+}
+
+.destinationLabelClass:hover{
+  color: #c51603;
+  background-color: transparent;
+  border-color: transparent;
+}
+
 #saveTrip {
   position: absolute!important;
   right: 38px;

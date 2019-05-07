@@ -44,7 +44,7 @@
     "mssql": "5.0.5",
     "nodemailer": "^6.1.1",
     "pug": "^2.0.3",
-    "serve-favicon": "^2.5.0"
+    "serve-favicon": "^2.5.0",
     "sqlstring": "^2.3.1"
   },
   "devDependencies": {

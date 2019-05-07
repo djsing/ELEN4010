@@ -482,7 +482,7 @@ module.exports = {
   getTrips: getTrips,
   getTripTitles: getTripTitles,
   addToInvitesTable: addToInvitesTable,
-  getInvites: getInvites
+  getInvites: getInvites,
   getDestinations: getDestinations,
   getLogs: getLogs,
   getUserName: getUserName

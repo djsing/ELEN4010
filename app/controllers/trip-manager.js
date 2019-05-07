@@ -355,7 +355,8 @@ let appendTripInvite = function (trip) {
   // Add an accept button for the invite
   let acceptBtn = document.createElement('button')
   acceptBtn.className = 'acceptButton'
-  acceptBtn.innerHTML = 'accept'
+  acceptBtn.classList.add('btn', 'btn-sm', 'btn-secondary')
+  acceptBtn.innerHTML = '<i class="fas fa-check"></i>'
   let acceptBtnCell = document.createElement('td')
   acceptBtnCell.append(acceptBtn)
   newRow.append(acceptBtnCell)
@@ -363,7 +364,8 @@ let appendTripInvite = function (trip) {
   // Add a reject button for the invite
   let rejectBtn = document.createElement('button')
   rejectBtn.className = 'rejectButton'
-  rejectBtn.innerHTML = 'reject'
+  rejectBtn.innerHTML = '<i class="fas fa-times"></i>'
+  rejectBtn.classList.add('btn', 'btn-sm', 'btn-secondary')
   let rejectBtnCell = document.createElement('td')
   rejectBtnCell.append(rejectBtn)
   newRow.append(rejectBtnCell)
