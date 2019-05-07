@@ -32,10 +32,6 @@ mainRouter.get('/terms_and_conditions/data', function (req, res) {
   res.send(termsModel.getTermsAndCondtions())
 })
 
-mainRouter.get('/test', function (req, res) {
-  res.sendFile('test.html', { root: req.app.get('views') })
-})
-
 mainRouter.get('/profile', function (req, res) {
   res.sendFile('profile.html', { root: req.app.get('views') })
 })
@@ -52,7 +48,7 @@ mainRouter.get(['/sign-in', '/login', '/signin'], function (req, res) {
   res.sendFile('/sign-in.html', { root: req.app.get('views') })
 })
 
-mainRouter.get(['/trip'], function (req, res) {
+mainRouter.get(['/trip', '/map'], function (req, res) {
   res.sendFile('/trip.html', { root: req.app.get('views') })
 })
 
