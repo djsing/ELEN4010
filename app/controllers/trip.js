@@ -262,23 +262,26 @@ let renderMarkers = function () {
 // Main Map Callback
 // ------------------------
 function initMap () {
-  let styledSilverMapType = new google.maps.StyledMapType((silverMapType), { name: 'Silver Map' })
-  let styledDarkMapType = new google.maps.StyledMapType((darkMapType), { name: 'Dark Map' })
+  let styledSilverMapType = new google.maps.StyledMapType((silverMapType), { name: 'Light' })
+  let styledDarkMapType = new google.maps.StyledMapType((darkMapType), { name: 'Dark' })
 
   map = new google.maps.Map(document.getElementById('map'), {
     center: startLocation.center,
     zoom: startLocation.zoom,
-    mapTypeControl: false,
+    mapTypeControl: true,
+    mapTypeControlOptions: {
+      style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
+      position: google.maps.ControlPosition.BOTTOM_CENTER,
+      mapTypeIds: ['roadmap', 'satellite', 'styled_map'] // 'hybrid', 'terrain',
+    },
     panControl: false,
     zoomControl: false,
     streetViewControl: false,
     fullscreenControl: false,
-    draggableCursor: 'default',
-    mapTypeId: 'styled_map'
-    // mapTypeControlOptions: {
-    //   mapTypeIds: ['roadmap', 'satellite', 'hybrid', 'terrain', 'styled_map']
-    // }
+    draggableCursor: 'default'
+    // mapTypeId: 'styled_map'
   })
+
   map.setTilt(45)
   map.mapTypes.set('styled_map', styledSilverMapType)
   map.setMapTypeId('styled_map')

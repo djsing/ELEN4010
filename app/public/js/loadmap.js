@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     let jsFile = document.createElement('script')
     jsFile.type = 'text/javascript'
-    jsFile.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyCgnuMPrM3Yha6Y9K6f_XkdifRrE2t33Z4&libraries=places&callback=initMap&language=' + lang
+    jsFile.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyCgnuMPrM3Yha6Y9K6f_XkdifRrE2t33Z4&libraries=places&callback=initMap&region=ZA&language=' + lang
     document.getElementsByTagName('head')[0].appendChild(jsFile)
   }
 })
