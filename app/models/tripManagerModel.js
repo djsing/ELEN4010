@@ -9,7 +9,7 @@ function populateTripAndGroupTableQuery (trip, res) {
       '${tripInfo.id}',
       '${tripInfo.title}');` +
   `IF NOT EXISTS (SELECT * FROM groups
-    WHERE user_hash = '${tripInfo.user}'
+    WHERE hash = '${tripInfo.user}'
     AND trip_id = '${tripInfo.id}')
     BEGIN
       INSERT INTO groups VALUES(
@@ -22,7 +22,7 @@ function populateTripAndGroupTableQuery (trip, res) {
 
 function getTripsQuery (req, res) {
   let user = JSON.parse(req.body.userHash)
-  let queryString = `SELECT * FROM groups WHERE user_hash = '${user}';`
+  let queryString = `SELECT * FROM groups WHERE hash = '${user}';`
   db.getTrips(queryString, res)
 }
 

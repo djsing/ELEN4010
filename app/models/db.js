@@ -313,7 +313,7 @@ function getTrips (queryString, res) {
     return pool.request()
       .query(`IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='groups' and xtype='U')
           CREATE TABLE groups (
-          user_hash varchar(255), 
+          hash varchar(255), 
           trip_id varchar(255)
           )`)
   }).then(result => {
@@ -503,11 +503,43 @@ function handleInvites (queryStringDelete, queryStringAdd, accept, res) {
     })
 }
 
+function fetchGroupMembers (tripIDReturnUserQuery, res) {
+  pools
+    .then(pool => {
+      return pool.request()
+        .query(tripIDReturnUserQuery)
+    })
+    .then(result => {
+      console.log('fetch members db: ', result.recordset)
+      let members = result.recordset
+      if (members.length !== 0) {
+        pools
+          .then(pool => {
+            let queryString = `SELECT * FROM users WHERE hash IN (`
+            members.forEach((member) => {
+              queryString = queryString + `'${member.hash}',`
+            })
+            queryString = queryString.substring(0, queryString.length - 1)
+            queryString = queryString + `);`
+            console.log('fetch Group Members from groups QS ', queryString)
+
+            return pool.request()
+              .query(queryString)
+          })
+          .then(result => {
+            console.log('get group members result ', result)
+            res.send(result.recordset)
+          })
+      } else {
+        res.send(members)
+      }
+    })
+    .catch(err => {
+      console.log('fetch Group Members error', err)
+    })
+}
+
 module.exports = {
-  sql: mssql,
-  pools: pools,
-  isConnected: isConnected,
-  connectionError: connectionError,
   findUser: findUser,
   populateDestionationsTable: populateDestionationsTable,
   populateTripsAndGroupsTable: populateTripsAndGroupsTable,
@@ -519,5 +551,6 @@ module.exports = {
   getDestinations: getDestinations,
   getLogs: getLogs,
   getUserName: getUserName,
-  handleInvites: handleInvites
+  handleInvites: handleInvites,
+  fetchGroupMembers: fetchGroupMembers
 }

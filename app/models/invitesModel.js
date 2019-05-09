@@ -23,7 +23,7 @@ function handleInvites (req, res, accept) {
       '${triID}',
       '${trip_title}');` +
   `IF NOT EXISTS (SELECT * FROM groups
-    WHERE user_hash = '${user}'
+    WHERE hash = '${user}'
     AND trip_id = '${triID}')
     BEGIN
       INSERT INTO groups VALUES(

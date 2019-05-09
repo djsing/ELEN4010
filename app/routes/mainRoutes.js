@@ -18,6 +18,7 @@ let mailManager = require('../models/email_manager')
 let invitesModel = require('../models/invitesModel')
 let logModel = require('../models/logModel')
 let userModel = require('../models/userModel')
+let groupModel = require('../models/groupsModel')
 
 // ------------
 // URL Routing
@@ -103,6 +104,10 @@ mainRouter.post('/auth', (req, res) => {
 
 mainRouter.get('/email', function (req, res) {
   res.sendFile('email.html', { root: req.app.get('views') })
+})
+
+mainRouter.post('/groups', (req, res) => {
+  groupModel.returnGroupUsers(req, res)
 })
 
 // -----------------------------
