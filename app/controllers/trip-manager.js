@@ -133,7 +133,6 @@ let addLogElements = function (logEntry, row) {
   let newElementUser = document.createElement('td')
   newElementUser.innerHTML = logEntry.userId
   let name = logEntry.first_name + ' ' + logEntry.last_name
-  console.log(name)
   newElementUser.innerHTML = name
 
   let newElementEvent = document.createElement('td')
