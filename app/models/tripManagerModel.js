@@ -5,10 +5,10 @@ let db = require('./db')
 function populateTripAndGroupTableQuery (trip, res) {
   let tripInfo = trip.body
   let queryString = `DELETE FROM trips WHERE id = ${tripInfo.id};` +
-  `INSERT INTO trips VALUES(
+    `INSERT INTO trips VALUES(
       '${tripInfo.id}',
       '${tripInfo.title}');` +
-  `IF NOT EXISTS (SELECT * FROM groups
+    `IF NOT EXISTS (SELECT * FROM groups
     WHERE user_hash = '${tripInfo.user}'
     AND trip_id = '${tripInfo.id}')
     BEGIN
@@ -26,14 +26,26 @@ function getTripsQuery (req, res) {
   db.getTrips(queryString, res)
 }
 
-function getDestinationsQuery (req, res) {
+function getDestinations (req, res) {
   let tripId = req.body.tripId
-  let queryString = `SELECT * FROM destinations WHERE trip_id = '${tripId}';`
-  db.getDestinations(queryString, res)
+  db.pools
+    .then(pool => {
+      let dbrequest = pool.request()
+      dbrequest.input('tripId', tripId)
+      return dbrequest
+        .query(`SELECT * FROM destinations WHERE trip_id = @tripId;`)
+    })
+    .then(result => {
+      // console.log('get destinations result ', result.recordset)
+      res.send(result.recordset)
+    })
+    .catch(err => {
+      console.log('Get destinations error:', err)
+    })
 }
 
 module.exports = {
   populateTripAndGroupTableQuery: populateTripAndGroupTableQuery,
   getTripsQuery: getTripsQuery,
-  getDestinationsQuery: getDestinationsQuery
+  getDestinations: getDestinations
 }

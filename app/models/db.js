@@ -254,21 +254,6 @@ function getTrips (queryString, res) {
     })
 }
 
-function getDestinations (queryString, res) {
-  pools
-    .then(pool => {
-      return pool.request()
-        .query(queryString)
-    })
-    .then(result => {
-      // console.log('get destinations result ', result.recordset)
-      res.send(result.recordset)
-    })
-    .catch(err => {
-      console.log('Get destinations error:', err)
-    })
-}
-
 // function getInvites (res, emailAddress) {
 //   var invitesArray = []
 //   pools
@@ -381,6 +366,5 @@ module.exports = {
   getTripTitles: getTripTitles,
   addToInvitesTable: addToInvitesTable,
   getInvites: getInvites,
-  getDestinations: getDestinations,
   handleInvites: handleInvites
 }

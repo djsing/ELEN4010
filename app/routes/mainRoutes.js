@@ -86,7 +86,7 @@ mainRouter.post('/trip-manager/get-data', function (req, res) {
 })
 
 mainRouter.post('/trip-manager-interface/data', function (req, res) {
-  tripManagerModel.getDestinationsQuery(req, res)
+  tripManagerModel.getDestinations(req, res)
 })
 
 mainRouter.post('/google-auth', (req, res) => {
