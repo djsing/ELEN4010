@@ -3,7 +3,7 @@
 let db = require('./db')
 let SqlString = require('sqlstring')
 
-function createLogQuery (logInfo, res) {
+function createLog (logInfo, res) {
   let log = logInfo.body
   let queryString = ''
   for (let i = 0; i < log.length; i++) {
@@ -16,7 +16,17 @@ function createLogQuery (logInfo, res) {
         log[i].tripId])
   }
 
-  db.populateLogTable(res, queryString)
+  db.pools
+    .then(pool => {
+      return pool.request()
+        .query(queryString)
+    })
+    .then(result => {
+      res.send('Log table added to entries')
+    })
+    .catch(err => {
+      console.log('populate log table error:', err)
+    })
 }
 
 function getLogs (req, res) {
@@ -41,6 +51,6 @@ function getLogs (req, res) {
 }
 
 module.exports = {
-  createLogQuery: createLogQuery,
+  createLog: createLog,
   getLogs: getLogs
 }

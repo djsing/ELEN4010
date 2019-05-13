@@ -66,7 +66,7 @@ mainRouter.get(['/trip-manager', '/trips'], function (req, res) {
 // RESTFUL Routing
 // ----------------
 mainRouter.post('/trip/log', function (log, res) {
-  logModel.createLogQuery(log, res)
+  logModel.createLog(log, res)
 })
 
 mainRouter.post('/trip-manager/log', function (tripId, res) {

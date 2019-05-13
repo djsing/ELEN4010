@@ -345,20 +345,6 @@ function getInvites (res, queryString) {
     })
 }
 
-function populateLogTable (res, logQueryString) {
-  pools
-    .then(pool => {
-      return pool.request()
-        .query(logQueryString)
-    })
-    .then(result => {
-      res.send('Log table added to entries')
-    })
-    .catch(err => {
-      console.log('populate log table error:', err)
-    })
-}
-
 function handleInvites (queryStringDelete, queryStringAdd, accept, res) {
   pools
     .then(pool => {
@@ -391,7 +377,6 @@ module.exports = {
   connectionError: connectionError,
   populateDestionationsTable: populateDestionationsTable,
   populateTripsAndGroupsTable: populateTripsAndGroupsTable,
-  populateLogTable: populateLogTable,
   getTrips: getTrips,
   getTripTitles: getTripTitles,
   addToInvitesTable: addToInvitesTable,
