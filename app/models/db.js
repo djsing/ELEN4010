@@ -1,15 +1,13 @@
 'use strict'
-
+/* DATABASE SET UP */
 const mssql = require('mssql')
-require('dotenv').config() // grab the ENV variables
+require('dotenv').config()
 let config = {
-  // Put login details in env. variables for security
   server: process.env.DB_SERVER,
   database: process.env.DB_NAME,
   user: process.env.DB_ADMIN,
   password: process.env.DB_PASSWORD,
   port: Number(process.env.DB_PORT),
-  // Required for Azure
   options: {
     encrypt: true
   },
@@ -20,7 +18,7 @@ let config = {
   }
 }
 
-// Get a mssql connection instance
+/* Get a mssql connection instance */
 let isConnected = true
 let connectionError = null
 let pools = new mssql.ConnectionPool(config)
@@ -30,12 +28,13 @@ let pools = new mssql.ConnectionPool(config)
     return pool
   })
   .catch(err => {
-    // Handle errors
     isConnected = false
     connectionError = err
     console.log('connection error', err)
   });
-// Upon connection, create user table if it doesn't exist
+
+/* Create Database Tables */
+
 (function createUserTable () {
   pools.then((pool) => {
     return pool.request()
@@ -52,6 +51,95 @@ let pools = new mssql.ConnectionPool(config)
     // console.log('user table created', result)
   }).catch(err => {
     console.log('user table creation error', err)
+  })
+}
+)();
+
+(function createDestinationTable () {
+  pools.then((pool) => {
+    return pool.request()
+      .query(`IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='destinations' and xtype='U')
+          CREATE TABLE destinations (
+          id varchar(255) PRIMARY KEY, 
+          lat float,
+          lng float,
+          place_id varchar(255),
+          place varchar(255),
+          name varchar(50),
+          ordering int,
+          trip_id varchar(255)
+          )`)
+  }).then(result => {
+    // console.log('destinations table created', result)
+  }).catch(err => {
+    console.log('destinations table creation error', err)
+  })
+}
+)();
+
+(function createInvitesTable () {
+  pools.then((pool) => {
+    return pool.request()
+      .query(`IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='invites' and xtype='U')
+          CREATE TABLE invites (
+          trip_id varchar(255), 
+          email_address varchar(255)
+          )`)
+  }).then(result => {
+    console.log('invites table created', result)
+  }).catch(err => {
+    console.log('invites table creation error', err)
+  })
+}
+)();
+
+(function createTripTable () {
+  pools.then((pool) => {
+    return pool.request()
+      .query(`IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='trips' and xtype='U')
+          CREATE TABLE trips (
+          id varchar(255) PRIMARY KEY, 
+          title varchar(50)
+          )`)
+  }).then(result => {
+    // console.log('trips table created', result)
+  }).catch(err => {
+    console.log('trips table creation error', err)
+  })
+}
+)();
+
+(function createGroupsTable () {
+  pools.then((pool) => {
+    return pool.request()
+      .query(`IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='groups' and xtype='U')
+          CREATE TABLE groups (
+          user_hash varchar(255), 
+          trip_id varchar(255)
+          )`)
+  }).then(result => {
+    // console.log('groups table created', result)
+  }).catch(err => {
+    console.log('groups table creation error', err)
+  })
+}
+)();
+
+(function createLogTable () {
+  pools.then((pool) => {
+    return pool.request()
+      .query(`IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='log' and xtype='U')
+          CREATE TABLE log (
+          id varchar(255) PRIMARY KEY, 
+          userId varchar(255),
+          code tinyint,
+          date smalldatetime,
+          importance bit,
+          trip_id varchar(255)
+          )`)
+  }).then(result => {
+  }).catch(err => {
+    console.log('log table creation error', err)
   })
 }
 )()
@@ -145,28 +233,6 @@ function findUser (userInfo, signin, res) {
     })
 }
 
-(function createDestinationTable () {
-  pools.then((pool) => {
-    return pool.request()
-      .query(`IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='destinations' and xtype='U')
-          CREATE TABLE destinations (
-          id varchar(255) PRIMARY KEY, 
-          lat float,
-          lng float,
-          place_id varchar(255),
-          place varchar(255),
-          name varchar(50),
-          ordering int,
-          trip_id varchar(255)
-          )`)
-  }).then(result => {
-    // console.log('destinations table created', result)
-  }).catch(err => {
-    console.log('destinations table creation error', err)
-  })
-}
-)()
-
 function populateDestionationsTable (res, queryString) {
   pools
     .then(pool => {
@@ -181,22 +247,6 @@ function populateDestionationsTable (res, queryString) {
       console.log('populate destination table error:', err)
     })
 }
-
-(function createInvitesTable () {
-  pools.then((pool) => {
-    return pool.request()
-      .query(`IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='invites' and xtype='U')
-          CREATE TABLE invites (
-          trip_id varchar(255), 
-          email_address varchar(255)
-          )`)
-  }).then(result => {
-    console.log('invites table created', result)
-  }).catch(err => {
-    console.log('invites table creation error', err)
-  })
-}
-)()
 
 function addToInvitesTable (res, tripID, emailAddress) {
   pools
@@ -232,22 +282,6 @@ function addToInvitesTable (res, tripID, emailAddress) {
       console.log('add invite table error:', err)
     })
 }
-
-(function createTripTable () {
-  pools.then((pool) => {
-    return pool.request()
-      .query(`IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='trips' and xtype='U')
-          CREATE TABLE trips (
-          id varchar(255) PRIMARY KEY, 
-          title varchar(50)
-          )`)
-  }).then(result => {
-    // console.log('trips table created', result)
-  }).catch(err => {
-    console.log('trips table creation error', err)
-  })
-}
-)()
 
 function populateTripsAndGroupsTable (res, queryString, tripInfo) {
   pools
@@ -306,22 +340,6 @@ function getTrips (queryString, res) {
       console.log('Get trips error:', err)
     })
 }
-
-(function createGroupsTable () {
-  pools.then((pool) => {
-    return pool.request()
-      .query(`IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='groups' and xtype='U')
-          CREATE TABLE groups (
-          user_hash varchar(255), 
-          trip_id varchar(255)
-          )`)
-  }).then(result => {
-    // console.log('groups table created', result)
-  }).catch(err => {
-    console.log('groups table creation error', err)
-  })
-}
-)()
 
 function getDestinations (queryString, res) {
   pools
@@ -413,25 +431,6 @@ function getInvites (res, queryString) {
       console.log('Get trip_ids error:', err)
     })
 }
-
-(function createLogTable () {
-  pools.then((pool) => {
-    return pool.request()
-      .query(`IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='log' and xtype='U')
-          CREATE TABLE log (
-          id varchar(255) PRIMARY KEY, 
-          userId varchar(255),
-          code tinyint,
-          date smalldatetime,
-          importance bit,
-          trip_id varchar(255)
-          )`)
-  }).then(result => {
-  }).catch(err => {
-    console.log('log table creation error', err)
-  })
-}
-)()
 
 function populateLogTable (res, logQueryString) {
   pools
