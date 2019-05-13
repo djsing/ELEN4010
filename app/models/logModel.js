@@ -26,7 +26,11 @@ function getLogs (req, res) {
       let dbrequest = pool.request()
       dbrequest.input('tripId', tripId)
       return dbrequest
-        .query('SELECT * FROM log WHERE trip_id = @tripId;')
+        .query(`SELECT id, userId, code, date, importance, trip_id, first_name, last_name
+        FROM log
+        JOIN users
+        ON log.userid = users.hash
+        WHERE trip_id = @tripId;`)
     })
     .then(result => {
       res.send(result.recordset)

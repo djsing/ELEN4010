@@ -2,24 +2,6 @@
 
 let db = require('./db')
 
-function lookUpUserName (req, res) {
-  let hash = req.body.hash
-  db.pools
-    .then(pool => {
-      let dbrequest = pool.request()
-      dbrequest.input('hash', hash)
-      return dbrequest
-        .query('SELECT first_name, last_name FROM users WHERE hash = @hash;')
-    })
-    .then(result => {
-    // console.log('get users name result ', result.recordset)
-      res.send(result.recordset)
-    })
-    .catch(err => {
-      console.log('Get users name error:', err)
-    })
-}
-
 function findUser (userInfo, signin, res) {
   let info = userInfo
   let email = info.emailAddress
@@ -110,6 +92,5 @@ function createUser (userInfo, res) {
 }
 
 module.exports = {
-  lookUpUserName: lookUpUserName,
   findUser: findUser
 }
