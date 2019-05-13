@@ -19,13 +19,24 @@ function createLogQuery (logInfo, res) {
   db.populateLogTable(res, queryString)
 }
 
-function getLogsQuery (req, res) {
+function getLogs (req, res) {
   let tripId = req.body.tripId
-  let queryString = SqlString.format('SELECT * FROM log WHERE trip_id = ? ;', [tripId])
-  db.getLogs(queryString, res)
+  db.pools
+    .then(pool => {
+      let dbrequest = pool.request()
+      dbrequest.input('tripId', tripId)
+      return dbrequest
+        .query('SELECT * FROM log WHERE trip_id = @tripId;')
+    })
+    .then(result => {
+      res.send(result.recordset)
+    })
+    .catch(err => {
+      console.log('Get log error:', err)
+    })
 }
 
 module.exports = {
   createLogQuery: createLogQuery,
-  getLogsQuery: getLogsQuery
+  getLogs: getLogs
 }

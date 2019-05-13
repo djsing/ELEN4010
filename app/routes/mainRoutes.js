@@ -70,7 +70,7 @@ mainRouter.post('/trip/log', function (log, res) {
 })
 
 mainRouter.post('/trip-manager/log', function (tripId, res) {
-  logModel.getLogsQuery(tripId, res)
+  logModel.getLogs(tripId, res)
 })
 
 mainRouter.post('/trip-manager/user', function (userId, res) {
