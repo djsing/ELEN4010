@@ -8,7 +8,6 @@ function addInvite (res, invite) {
 
 function getInvites (res, emailAddress) {
   let queryString = `SELECT trip_id FROM invites WHERE email_address = '${emailAddress}'`
-  console.log('getInvites QS', queryString)
   db.getInvites(res, queryString)
 }
 
