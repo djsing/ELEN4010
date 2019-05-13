@@ -73,7 +73,7 @@ mainRouter.post('/trip-manager/log', function (tripId, res) {
 })
 
 mainRouter.post('/trip/data', function (req, res) {
-  tripModel.createDestinationQuery(req, res)
+  tripModel.createDestination(req, res)
 })
 
 mainRouter.post('/trip-manager/data', function (req, res) {

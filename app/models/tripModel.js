@@ -3,7 +3,7 @@
 let db = require('./db')
 let SqlString = require('sqlstring')
 
-function createDestinationQuery (tripInfo, res) {
+function createDestination (tripInfo, res) {
   let trip = tripInfo.body
   let queryString = SqlString.format('DELETE FROM destinations WHERE trip_id = ?;', [trip.id])
   for (let i = 0; i < trip.destinationList.length; i++) {
@@ -32,5 +32,5 @@ function createDestinationQuery (tripInfo, res) {
 }
 
 module.exports = {
-  createDestinationQuery: createDestinationQuery
+  createDestination: createDestination
 }
