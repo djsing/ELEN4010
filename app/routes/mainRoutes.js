@@ -17,7 +17,6 @@ let tripModel = require('../models/tripModel')
 let mailManager = require('../models/email_manager')
 let invitesModel = require('../models/invitesModel')
 let logModel = require('../models/logModel')
-let userModel = require('../models/userModel')
 
 // ------------
 // URL Routing
@@ -66,31 +65,27 @@ mainRouter.get(['/trip-manager', '/trips'], function (req, res) {
 // RESTFUL Routing
 // ----------------
 mainRouter.post('/trip/log', function (log, res) {
-  logModel.createLogQuery(log, res)
+  logModel.createLog(log, res)
 })
 
 mainRouter.post('/trip-manager/log', function (tripId, res) {
-  logModel.getLogsQuery(tripId, res)
-})
-
-mainRouter.post('/trip-manager/user', function (userId, res) {
-  userModel.lookUpUser(userId, res)
+  logModel.getLogs(tripId, res)
 })
 
 mainRouter.post('/trip/data', function (req, res) {
-  tripModel.createDestinationQuery(req, res)
+  tripModel.createDestination(req, res)
 })
 
 mainRouter.post('/trip-manager/data', function (req, res) {
-  tripManagerModel.populateTripAndGroupTableQuery(req, res)
+  tripManagerModel.populateTripAndGroupTable(req, res)
 })
 
 mainRouter.post('/trip-manager/get-data', function (req, res) {
-  tripManagerModel.getTripsQuery(req, res)
+  tripManagerModel.getTrips(req, res)
 })
 
 mainRouter.post('/trip-manager-interface/data', function (req, res) {
-  tripManagerModel.getDestinationsQuery(req, res)
+  tripManagerModel.getDestinations(req, res)
 })
 
 mainRouter.post('/google-auth', (req, res) => {

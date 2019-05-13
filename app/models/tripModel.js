@@ -3,7 +3,7 @@
 let db = require('./db')
 let SqlString = require('sqlstring')
 
-function createDestinationQuery (tripInfo, res) {
+function createDestination (tripInfo, res) {
   let trip = tripInfo.body
   let queryString = SqlString.format('DELETE FROM destinations WHERE trip_id = ?;', [trip.id])
   for (let i = 0; i < trip.destinationList.length; i++) {
@@ -17,9 +17,20 @@ function createDestinationQuery (tripInfo, res) {
         trip.destinationList[i].ordering,
         trip.id])
   }
-  db.populateDestionationsTable(res, queryString)
+  db.pools
+    .then(pool => {
+      return pool.request()
+        .query(queryString)
+    })
+    .then(result => {
+      // console.log('destination table population result ', result)
+      res.send('DestinationTablePopulated')
+    })
+    .catch(err => {
+      console.log('populate destination table error:', err)
+    })
 }
 
 module.exports = {
-  createDestinationQuery: createDestinationQuery
+  createDestination: createDestination
 }
