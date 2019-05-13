@@ -70,12 +70,10 @@ let pools = new mssql.ConnectionPool(config)
           trip_id varchar(255)
           )`)
   }).then(result => {
-    // console.log('destinations table created', result)
   }).catch(err => {
     console.log('destinations table creation error', err)
   })
-}
-)();
+})();
 
 (function createInvitesTable () {
   pools.then((pool) => {
@@ -90,8 +88,7 @@ let pools = new mssql.ConnectionPool(config)
   }).catch(err => {
     console.log('invites table creation error', err)
   })
-}
-)();
+})();
 
 (function createTripTable () {
   pools.then((pool) => {
