@@ -132,9 +132,7 @@ let addLogElements = function (logEntry, row) {
 
   let newElementUser = document.createElement('td')
   newElementUser.innerHTML = logEntry.userId
-  let name = getUserName(logEntry.userId)
-  name = JSON.parse(window.sessionStorage.getItem('name'))
-  console.log(name)
+  let name = logEntry.first_name + ' ' + logEntry.last_name
   newElementUser.innerHTML = name
 
   let newElementEvent = document.createElement('td')
@@ -166,7 +164,10 @@ $(document).ready(() => {
 
 let loadTrips = function () {
   $('#tripTitleTable').empty()
-
+  setTimeout(function () {
+    $('#loader').remove()
+    $('#info-text').html('No trips found')
+  }, 10000)
   $('#trip-log').hide()
   $.ajax({
     url: '/trip-manager/get-data',
@@ -180,21 +181,10 @@ let loadTrips = function () {
         addTitleEntry(tripsList[i])
       }
       $('#loader').remove()
-    }
-  })
-}
-
-let getUserName = function (id) {
-  $.ajax({
-    url: '/trip-manager/user',
-    method: 'POST',
-    contentType: 'application/json',
-    data: JSON.stringify({ hash: id }),
-    success: function (res) {
-      let firstName = String(res[0].first_name)
-      let lastName = String(res[0].last_name)
-      let name = firstName + ' ' + lastName
-      window.sessionStorage.setItem('name', JSON.stringify(name))
+    },
+    error: function (res) {
+      $('#loader').remove()
+      $('#info-text').html('DB Error')
     }
   })
 }
@@ -411,7 +401,7 @@ function loadInvites () {
     contentType: 'application/json',
     data: JSON.stringify({ 'emailAddress': emailAddress }),
     success: function (res) {
-      console.log('Onload invites: ', res)
+      // console.log('Onload invites: ', res)
       displayInvites(res)
     }
   })

@@ -2,38 +2,104 @@
 
 let db = require('./db')
 
-function populateTripAndGroupTableQuery (trip, res) {
+function populateTripAndGroupTable (trip, res) {
   let tripInfo = trip.body
-  let queryString = `DELETE FROM trips WHERE id = ${tripInfo.id};` +
-  `INSERT INTO trips VALUES(
-      '${tripInfo.id}',
-      '${tripInfo.title}');` +
-  `IF NOT EXISTS (SELECT * FROM groups
-    WHERE hash = '${tripInfo.user}'
-    AND trip_id = '${tripInfo.id}')
-    BEGIN
-      INSERT INTO groups VALUES(
-      '${tripInfo.user}',
-      '${tripInfo.id}')
-    END;`
+  db.pools
+    .then(pool => {
+      let dbrequest = pool.request()
+      dbrequest.input('id', db.sql.Char, tripInfo.id)
+      dbrequest.input('title', tripInfo.title)
+      dbrequest.input('user', tripInfo.user)
 
-  db.populateTripsAndGroupsTable(res, queryString, tripInfo)
+      return dbrequest
+        .query(`DELETE FROM trips WHERE id = @id;
+        INSERT INTO trips VALUES(
+          @id,
+          @title);
+          IF NOT EXISTS (SELECT * FROM groups
+            WHERE user_hash = @user
+            AND trip_id = @id)
+            BEGIN
+              INSERT INTO groups VALUES(
+              @user,
+              @id)
+            END;`)
+    })
+    .then(result => {
+      console.log('trips and groups population result ', result)
+      res.send(tripInfo)
+    })
+    .catch(err => {
+      console.log('populate trips table error:', err)
+    })
 }
 
-function getTripsQuery (req, res) {
+function getTrips (req, res) {
   let user = JSON.parse(req.body.userHash)
-  let queryString = `SELECT * FROM groups WHERE hash = '${user}';`
-  db.getTrips(queryString, res)
+  db.pools
+    .then(pool => {
+      let dbrequest = pool.request()
+      dbrequest.input('user', user)
+      return dbrequest
+        .query(`SELECT * FROM groups WHERE user_hash = @user;`)
+    })
+    .then(result => {
+      // console.log('get trips result ', result)
+      if (result.recordset.length !== 0) {
+        getTripTitles(result.recordset, res)
+      }
+    })
+    .catch(err => {
+      console.log('Get trips error:', err)
+    })
 }
 
-function getDestinationsQuery (req, res) {
+function getTripTitles (trips, res) {
+  db.pools
+    .then(pool => {
+      if (trips.length !== 0) {
+        let queryString = `SELECT * FROM trips WHERE id IN (`
+        for (let i = 0; i < trips.length; i++) {
+          queryString = queryString + `'${trips[i].trip_id}',`
+        }
+        queryString = queryString.substring(0, queryString.length - 1)
+        queryString = queryString + `);`
+
+        return pool.request()
+          .query(queryString)
+      }
+    })
+    .then(result => {
+      // console.log('get trip titles result ', result)
+      if (trips.legnth !== 0) { res.send(result.recordset) } else {
+        res.send('NoTripTitlesFound')
+      }
+    })
+    .catch(err => {
+      console.log('Get trip titles error:', err)
+    })
+}
+
+function getDestinations (req, res) {
   let tripId = req.body.tripId
-  let queryString = `SELECT * FROM destinations WHERE trip_id = '${tripId}';`
-  db.getDestinations(queryString, res)
+  db.pools
+    .then(pool => {
+      let dbrequest = pool.request()
+      dbrequest.input('tripId', tripId)
+      return dbrequest
+        .query(`SELECT * FROM destinations WHERE trip_id = @tripId;`)
+    })
+    .then(result => {
+      // console.log('get destinations result ', result.recordset)
+      res.send(result.recordset)
+    })
+    .catch(err => {
+      console.log('Get destinations error:', err)
+    })
 }
 
 module.exports = {
-  populateTripAndGroupTableQuery: populateTripAndGroupTableQuery,
-  getTripsQuery: getTripsQuery,
-  getDestinationsQuery: getDestinationsQuery
+  populateTripAndGroupTable: populateTripAndGroupTable,
+  getTrips: getTrips,
+  getDestinations: getDestinations
 }

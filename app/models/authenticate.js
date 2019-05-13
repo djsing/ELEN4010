@@ -1,6 +1,6 @@
 const { OAuth2Client } = require('google-auth-library')
 const keys = require('./keys.json')
-let db = require('./db')
+let userModel = require('./userModel')
 const crypto = require('crypto')
 
 function googleUserAccountDatabaseConnection (req, res) {
@@ -22,7 +22,7 @@ function googleUserAccountDatabaseConnection (req, res) {
       image: imageURL
     }
     userInfo = createHashKey(userInfo, true)
-    db.findUser(userInfo, signin, res)
+    userModel.findUser(userInfo, signin, res)
   })
 }
 
@@ -37,7 +37,7 @@ function userAccountDatabaseConnection (req, res) {
   const signin = req.body.signin
   userInfo.image = null
   userInfo = createHashKey(userInfo, false)
-  db.findUser(userInfo, signin, res)
+  userModel.findUser(userInfo, signin, res)
 }
 
 function createHashKey (userInfo, isGoogleUser) {
