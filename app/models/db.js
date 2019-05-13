@@ -196,21 +196,6 @@ function addToInvitesTable (res, tripID, emailAddress) {
     })
 }
 
-function populateTripsAndGroupsTable (res, queryString, tripInfo) {
-  pools
-    .then(pool => {
-      return pool.request()
-        .query(queryString)
-    })
-    .then(result => {
-      // console.log('trips and groups population result ', result)
-      res.send(tripInfo)
-    })
-    .catch(err => {
-      console.log('populate trips table error:', err)
-    })
-}
-
 // function getInvites (res, emailAddress) {
 //   var invitesArray = []
 //   pools
@@ -318,7 +303,6 @@ module.exports = {
   isConnected: isConnected,
   connectionError: connectionError,
   populateDestionationsTable: populateDestionationsTable,
-  populateTripsAndGroupsTable: populateTripsAndGroupsTable,
   addToInvitesTable: addToInvitesTable,
   getInvites: getInvites,
   handleInvites: handleInvites

@@ -2,32 +2,46 @@
 
 let db = require('./db')
 
-function populateTripAndGroupTableQuery (trip, res) {
+function populateTripAndGroupTable (trip, res) {
   let tripInfo = trip.body
-  let queryString = `DELETE FROM trips WHERE id = ${tripInfo.id};` +
-    `INSERT INTO trips VALUES(
-      '${tripInfo.id}',
-      '${tripInfo.title}');` +
-    `IF NOT EXISTS (SELECT * FROM groups
-    WHERE user_hash = '${tripInfo.user}'
-    AND trip_id = '${tripInfo.id}')
-    BEGIN
-      INSERT INTO groups VALUES(
-      '${tripInfo.user}',
-      '${tripInfo.id}')
-    END;`
+  db.pools
+    .then(pool => {
+      let dbrequest = pool.request()
+      dbrequest.input('id', db.sql.Char, tripInfo.id)
+      dbrequest.input('title', tripInfo.title)
+      dbrequest.input('user', tripInfo.user)
 
-  db.populateTripsAndGroupsTable(res, queryString, tripInfo)
+      return dbrequest
+        .query(`DELETE FROM trips WHERE id = @id;
+        INSERT INTO trips VALUES(
+          @id,
+          @title);
+          IF NOT EXISTS (SELECT * FROM groups
+            WHERE user_hash = @user
+            AND trip_id = @id)
+            BEGIN
+              INSERT INTO groups VALUES(
+              @user,
+              @id)
+            END;`)
+    })
+    .then(result => {
+      console.log('trips and groups population result ', result)
+      res.send(tripInfo)
+    })
+    .catch(err => {
+      console.log('populate trips table error:', err)
+    })
 }
 
 function getTrips (req, res) {
   let user = JSON.parse(req.body.userHash)
-  let queryString = `SELECT * FROM groups WHERE user_hash = '${user}';`
-
   db.pools
     .then(pool => {
-      return pool.request()
-        .query(queryString)
+      let dbrequest = pool.request()
+      dbrequest.input('user', user)
+      return dbrequest
+        .query(`SELECT * FROM groups WHERE user_hash = @user;`)
     })
     .then(result => {
       // console.log('get trips result ', result)
@@ -85,7 +99,7 @@ function getDestinations (req, res) {
 }
 
 module.exports = {
-  populateTripAndGroupTableQuery: populateTripAndGroupTableQuery,
+  populateTripAndGroupTable: populateTripAndGroupTable,
   getTrips: getTrips,
   getDestinations: getDestinations
 }

@@ -17,7 +17,6 @@ let tripModel = require('../models/tripModel')
 let mailManager = require('../models/email_manager')
 let invitesModel = require('../models/invitesModel')
 let logModel = require('../models/logModel')
-let userModel = require('../models/userModel')
 
 // ------------
 // URL Routing
@@ -78,7 +77,7 @@ mainRouter.post('/trip/data', function (req, res) {
 })
 
 mainRouter.post('/trip-manager/data', function (req, res) {
-  tripManagerModel.populateTripAndGroupTableQuery(req, res)
+  tripManagerModel.populateTripAndGroupTable(req, res)
 })
 
 mainRouter.post('/trip-manager/get-data', function (req, res) {
