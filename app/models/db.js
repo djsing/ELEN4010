@@ -85,10 +85,9 @@ function findUser (userInfo, signin, res) {
   pools
     // Run query
     .then((pool) => {
-      return pool.request()
-        .query(`SELECT *
-        FROM users
-        WHERE email_address = '${email}'`)
+      let dbrequest = pool.request()
+      dbrequest.input('email', email)
+      return dbrequest.query(`SELECT * FROM users WHERE email_address = @email`)
     })
     // both ID/Email match sought after in case of possible duplication of either ID/Email
     .then(result => {
