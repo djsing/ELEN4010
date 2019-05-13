@@ -373,22 +373,6 @@ function getLogs (queryString, res) {
     })
 }
 
-function getUserName (queryString, res) {
-  pools
-    .then(pool => {
-      // console.log('get users name queryString ', res)
-      return pool.request()
-        .query(queryString)
-    })
-    .then(result => {
-      // console.log('get users name result ', result.recordset)
-      res.send(result.recordset)
-    })
-    .catch(err => {
-      console.log('Get users name error:', err)
-    })
-}
-
 function handleInvites (queryStringDelete, queryStringAdd, accept, res) {
   pools
     .then(pool => {
@@ -428,6 +412,5 @@ module.exports = {
   getInvites: getInvites,
   getDestinations: getDestinations,
   getLogs: getLogs,
-  getUserName: getUserName,
   handleInvites: handleInvites
 }

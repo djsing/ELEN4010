@@ -74,7 +74,7 @@ mainRouter.post('/trip-manager/log', function (tripId, res) {
 })
 
 mainRouter.post('/trip-manager/user', function (userId, res) {
-  userModel.lookUpUser(userId, res)
+  userModel.lookUpUserName(userId, res)
 })
 
 mainRouter.post('/trip/data', function (req, res) {
