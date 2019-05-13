@@ -160,14 +160,11 @@ let addLogLineEntry = function (logEntry) {
 $(document).ready(() => {
   loadTrips()
   loadInvites()
+  loadGroups()
 })
 
 let loadTrips = function () {
   $('#tripTitleTable').empty()
-  setTimeout(function () {
-    $('#loader').remove()
-    $('#info-text').html('No trips found')
-  }, 10000)
   $('#trip-log').hide()
   $.ajax({
     url: '/trip-manager/get-data',
@@ -177,10 +174,15 @@ let loadTrips = function () {
     success: function (res) {
       window.sessionStorage.setItem('tripList', JSON.stringify(res))
       tripsList = JSON.parse(window.sessionStorage.getItem('tripList'))
-      for (let i = 0; i < res.length; i++) {
-        addTitleEntry(tripsList[i])
+      if (tripsList.length === 0) {
+        $('#loader').remove()
+        $('#info-text').html('No trips found')
+      } else {
+        for (let i = 0; i < tripsList.length; i++) {
+          addTitleEntry(tripsList[i])
+        }
+        $('#loader').remove()
       }
-      $('#loader').remove()
     },
     error: function (res) {
       $('#loader').remove()
@@ -406,3 +408,37 @@ function loadInvites () {
     }
   })
 }
+
+function loadGroups () {
+  let trips = JSON.parse(window.sessionStorage.getItem('tripList'))
+  $.ajax({
+    url: '/groups',
+    method: 'POST',
+    contentType: 'application/json',
+    data: JSON.stringify(trips),
+    success: function (res) {
+      console.log('Onload groups: ', res)
+      // displayGroups(res)
+    }
+  })
+}
+
+// let displayGroups = function (pendingInvites) {
+//   // Clear the old table
+//   pendingTrips = pendingInvites
+//   $('#invitesTable').empty()
+
+//   // Display the heading if there are pendingInvites
+//   if (pendingInvites.length > 0) {
+//     // Display the heading if there are pendingInvites
+
+//     $('#pendingTripInvitesHeading').show()
+
+//     pendingInvites.forEach((invite) => {
+//       appendTripInvite(invite)
+//     })
+//   } else {
+//     // Hide the heading if there are pendingInvites
+//     $('#pendingTripInvitesHeading').hide()
+//   }
+// }
