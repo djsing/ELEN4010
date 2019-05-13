@@ -31,6 +31,8 @@ function addInvite (res, invite) {
             // console.log('Tries to add id: ' + id + ' and email: ' + email)
             // console.log('Invites add result ', result)
             res.send('inviteAdded')
+          }).catch(err => {
+            console.log('add invite error', err)
           })
       }
     })
