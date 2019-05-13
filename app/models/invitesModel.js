@@ -5,30 +5,32 @@ let db = require('./db')
 function addInvite (res, invite) {
   db.pools
     .then(pool => {
-      let id = invite.tripID
-      let email = invite.emailAddress
-      return pool.request()
+      let dbrequest = pool.request()
+      dbrequest.input('id', invite.tripID)
+      dbrequest.input('email', invite.emailAddress)
+      return dbrequest
         .query(`SELECT *
         FROM invites
-        WHERE email_address = '${email}'
-        AND trip_id = '${id}'`)
+        WHERE email_address = @email
+        AND trip_id = @id`)
     })
     .then(result => {
-      console.log('Invites select result ', result)
+      // console.log('Invites select result ', result)
       if (result.recordset.length === 0) {
-      // If this entry does's already exist in the table,
-      // add it to the table
-        let id = invite.tripID
-        let email = invite.emailAddress
+        // If this entry does's already exist in the table, add it to the table
         db.pools
           .then(pool => {
-            return pool.request()
+            let dbrequest = pool.request()
+            dbrequest.input('id', invite.tripID)
+            dbrequest.input('email', invite.emailAddress)
+            return dbrequest
               .query(`INSERT INTO invites VALUES(
-              '${id}',
-              '${email}');`)
+              @id,
+              @email);`)
           }).then(result => {
-            console.log('Tries to add id: ' + id + ' and email: ' + email)
-            console.log('Invites add result ', result)
+            // console.log('Tries to add id: ' + id + ' and email: ' + email)
+            // console.log('Invites add result ', result)
+            res.send('inviteAdded')
           })
       }
     })
@@ -38,13 +40,12 @@ function addInvite (res, invite) {
 }
 
 function getInvites (res, emailAddress) {
-  let queryString = `SELECT trip_id FROM invites WHERE email_address = '${emailAddress}'`
-  // console.log('getInvites QS', queryString)
-
   db.pools
     .then(pool => {
-      return pool.request()
-        .query(queryString)
+      let dbrequest = pool.request()
+      dbrequest.input('email', emailAddress)
+      return dbrequest
+        .query(`SELECT trip_id FROM invites WHERE email_address = @email`)
     })
     .then(result => {
       console.log('Invites DB: ', result.recordset)
@@ -85,31 +86,38 @@ function handleInvites (req, res, accept) {
   let triID = req.body.id
   let tripTitle = req.body.title
   let user = req.body.user
-  let queryStringDelete = `DELETE FROM invites WHERE trip_id = ${triID};`
 
-  let queryStringAdd = `DELETE FROM trips WHERE id = ${triID};` +
-  `INSERT INTO trips VALUES(
-      '${triID}',
-      '${tripTitle}');` +
-  `IF NOT EXISTS (SELECT * FROM groups
-    WHERE user_hash = '${user}'
-    AND trip_id = '${triID}')
-    BEGIN
-      INSERT INTO groups VALUES(
-      '${user}',
-      '${triID}')
-    END;`
-
-  // console.log(queryStringDelete)
   db.pools
     .then(pool => {
-      return pool.request().query(queryStringDelete)
+      let dbrequest = pool.request()
+      dbrequest.input('tripID', triID)
+      return dbrequest
+        .query(`DELETE FROM invites WHERE trip_id = @tripID;`)
     })
     .then(result => {
       if (accept) {
         db.pools
           .then(pool => {
-            return pool.request().query(queryStringAdd)
+            let dbrequest = pool.request()
+            dbrequest.input('tripID', triID)
+            dbrequest.input('tripTitle', tripTitle)
+            dbrequest.input('user', user)
+            return dbrequest
+              .query(`DELETE FROM trips WHERE id = @tripID;` +
+                `INSERT INTO trips VALUES(
+                  @tripID,
+                  @tripTitle);` +
+                `IF NOT EXISTS (SELECT * FROM groups
+              WHERE user_hash = @user
+              AND trip_id = @tripID)
+              BEGIN
+                INSERT INTO groups VALUES(
+                @user,
+                @tripID)
+              END;`)
+          })
+          .catch(err => {
+            console.log('handle invites error', err)
           })
       }
     })

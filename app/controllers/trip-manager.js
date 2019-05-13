@@ -394,7 +394,7 @@ function loadInvites () {
     contentType: 'application/json',
     data: JSON.stringify({ 'emailAddress': emailAddress }),
     success: function (res) {
-      console.log('Onload invites: ', res)
+      // console.log('Onload invites: ', res)
       displayInvites(res)
     }
   })
