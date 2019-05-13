@@ -161,7 +161,6 @@ function findUser (userInfo, signin, res) {
           trip_id varchar(255)
           )`)
   }).then(result => {
-    // console.log('destinations table created', result)
   }).catch(err => {
     console.log('destinations table creation error', err)
   })
@@ -175,7 +174,6 @@ function populateDestionationsTable (res, queryString) {
         .query(queryString)
     })
     .then(result => {
-      // console.log('destination table population result ', result)
       res.send('DestinationTablePopulated')
     })
     .catch(err => {
@@ -192,7 +190,6 @@ function populateDestionationsTable (res, queryString) {
           email_address varchar(255)
           )`)
   }).then(result => {
-    console.log('invites table created', result)
   }).catch(err => {
     console.log('invites table creation error', err)
   })
@@ -211,7 +208,6 @@ function addToInvitesTable (res, tripID, emailAddress) {
           AND trip_id = '${id}'`)
     })
     .then(result => {
-      console.log('Invites select result ', result)
       if (result.recordset.length === 0) {
         // If this entry does's already exist in the table,
         // add it to the table
@@ -224,8 +220,8 @@ function addToInvitesTable (res, tripID, emailAddress) {
                 '${id}',
                 '${email}');`)
           }).then(result => {
-            console.log('Tries to add id: ' + id + ' and email: ' + email)
-            console.log('Invites add result ', result)
+            // console.log('Tries to add id: ' + id + ' and email: ' + email)
+            // console.log('Invites add result ', result)
           })
       }
     })
