@@ -3,7 +3,38 @@
 let db = require('./db')
 
 function addInvite (res, invite) {
-  db.addToInvitesTable(res, invite.tripID, invite.emailAddress)
+  db.pools
+    .then(pool => {
+      let id = invite.tripID
+      let email = invite.emailAddress
+      return pool.request()
+        .query(`SELECT *
+        FROM invites
+        WHERE email_address = '${email}'
+        AND trip_id = '${id}'`)
+    })
+    .then(result => {
+      console.log('Invites select result ', result)
+      if (result.recordset.length === 0) {
+      // If this entry does's already exist in the table,
+      // add it to the table
+        let id = invite.tripID
+        let email = invite.emailAddress
+        db.pools
+          .then(pool => {
+            return pool.request()
+              .query(`INSERT INTO invites VALUES(
+              '${id}',
+              '${email}');`)
+          }).then(result => {
+            console.log('Tries to add id: ' + id + ' and email: ' + email)
+            console.log('Invites add result ', result)
+          })
+      }
+    })
+    .catch(err => {
+      console.log('add invite table error:', err)
+    })
 }
 
 function getInvites (res, emailAddress) {

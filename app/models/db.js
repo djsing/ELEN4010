@@ -144,82 +144,9 @@ let pools = new mssql.ConnectionPool(config)
 }
 )()
 
-/* */
-
-function addToInvitesTable (res, tripID, emailAddress) {
-  pools
-    .then(pool => {
-      let id = tripID
-      let email = emailAddress
-      return pool.request()
-        .query(`SELECT *
-          FROM invites
-          WHERE email_address = '${email}'
-          AND trip_id = '${id}'`)
-    })
-    .then(result => {
-      console.log('Invites select result ', result)
-      if (result.recordset.length === 0) {
-        // If this entry does's already exist in the table,
-        // add it to the table
-        let id = tripID
-        let email = emailAddress
-        pools
-          .then(pool => {
-            return pool.request()
-              .query(`INSERT INTO invites VALUES(
-                '${id}',
-                '${email}');`)
-          }).then(result => {
-            console.log('Tries to add id: ' + id + ' and email: ' + email)
-            console.log('Invites add result ', result)
-          })
-      }
-    })
-    .catch(err => {
-      console.log('add invite table error:', err)
-    })
-}
-
-// function getInvites (res, emailAddress) {
-//   var invitesArray = []
-//   pools
-//     .then(pool => {
-//       return pool.request()
-//         .query(`SELECT trip_id
-//         FROM invites
-//         WHERE email_address = '${emailAddress}'`)
-//     })
-//     .then(result => {
-//       result.recordset.forEach((trip) => {
-//         let id = trip.trip_id
-//         console.log(`Looking for name of ${id}`)
-//         pools.then(pool => {
-//           return pool.request()
-//             .query(`SELECT *
-//             FROM trips
-//             WHERE id = '${id}'`)
-//         })
-//           .then(innerResult => {
-//             console.log('Results from my function', innerResult.recordset[0])
-//             invitesArray.push(innerResult.recordset[0])
-//             console.log('The names of the trips are', invitesArray)
-//             res.send(invitesArray)
-//           })
-//           .catch(err => {
-//             console.log('Get trip titles error:', err)
-//           })
-//       })
-//     })
-//     .catch(err => {
-//       console.log('Get trip_ids error:', err)
-//     })
-// }
-
 module.exports = {
   sql: mssql,
   pools: pools,
   isConnected: isConnected,
-  connectionError: connectionError,
-  addToInvitesTable: addToInvitesTable
+  connectionError: connectionError
 }
