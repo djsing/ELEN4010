@@ -17,7 +17,18 @@ function createDestinationQuery (tripInfo, res) {
         trip.destinationList[i].ordering,
         trip.id])
   }
-  db.populateDestionationsTable(res, queryString)
+  db.pools
+    .then(pool => {
+      return pool.request()
+        .query(queryString)
+    })
+    .then(result => {
+      // console.log('destination table population result ', result)
+      res.send('DestinationTablePopulated')
+    })
+    .catch(err => {
+      console.log('populate destination table error:', err)
+    })
 }
 
 module.exports = {

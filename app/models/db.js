@@ -146,21 +146,6 @@ let pools = new mssql.ConnectionPool(config)
 
 /* */
 
-function populateDestionationsTable (res, queryString) {
-  pools
-    .then(pool => {
-      return pool.request()
-        .query(queryString)
-    })
-    .then(result => {
-      // console.log('destination table population result ', result)
-      res.send('DestinationTablePopulated')
-    })
-    .catch(err => {
-      console.log('populate destination table error:', err)
-    })
-}
-
 function addToInvitesTable (res, tripID, emailAddress) {
   pools
     .then(pool => {
@@ -302,7 +287,6 @@ module.exports = {
   pools: pools,
   isConnected: isConnected,
   connectionError: connectionError,
-  populateDestionationsTable: populateDestionationsTable,
   addToInvitesTable: addToInvitesTable,
   getInvites: getInvites,
   handleInvites: handleInvites
