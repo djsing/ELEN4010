@@ -61,13 +61,13 @@ function createUser (userInfo, res) {
   pools
     // Run query
     .then((pool) => {
-      return pool.request()
-        .query(`INSERT INTO users VALUES(
-          '${info.firstName}',
-          '${info.lastName}',
-          '${info.emailAddress}',
-           ${info.image},
-          '${info.hash}')`)
+      let dbrequest = pool.request()
+      dbrequest.input('firstName', info.firstName)
+      dbrequest.input('lastName', info.lastName)
+      dbrequest.input('emailAddress', info.emailAddress)
+      dbrequest.input('image', info.image)
+      dbrequest.input('hash', info.hash)
+      return dbrequest.query(`INSERT INTO users VALUES(@firstName,@lastName,@emailAddress,@image,@hash)`)
     })
     // Send back the result
     .then(result => {
