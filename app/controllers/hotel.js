@@ -6,20 +6,33 @@ let MARKER_PATH = 'https://developers.google.com/maps/documentation/javascript/i
 let hostnameRegexp = new RegExp('^https?://.+?/')
 
 function initMap () {
+  let styledSilverMapType = new google.maps.StyledMapType((silverMapType), { name: 'Light' })
+  let styledDarkMapType = new google.maps.StyledMapType((darkMapType), { name: 'Dark' })
+
   map = new google.maps.Map(document.getElementById('map'), {
     zoom: countries['za'].zoom,
     center: countries['za'].center,
     mapTypeControl: true,
+    mapTypeControlOptions: {
+      style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
+      position: google.maps.ControlPosition.BOTTOM_CENTER,
+      mapTypeIds: ['roadmap', 'satellite', 'styled_map'] // 'hybrid', 'terrain',
+    },
     panControl: false,
     zoomControl: false,
     streetViewControl: false,
-    fullscreenControl: false
+    fullscreenControl: false,
+    draggableCursor: 'default'
   })
+
+  map.setTilt(45)
+  map.mapTypes.set('styled_map', styledSilverMapType)
+  map.setMapTypeId('styled_map')
 
   let card = document.getElementById('pac-card')
   let input = document.getElementById('pac-input')
 
-  map.controls[google.maps.ControlPosition.TOP_RIGHT].push(card)
+  // map.controls[google.maps.ControlPosition.TOP_RIGHT].push(card)
 
   infoWindow = new google.maps.InfoWindow({
     content: document.getElementById('info-content')
