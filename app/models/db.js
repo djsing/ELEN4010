@@ -257,37 +257,11 @@ function getInvites (res, queryString) {
     })
 }
 
-function handleInvites (queryStringDelete, queryStringAdd, accept, res) {
-  pools
-    .then(pool => {
-      return pool.request().query(queryStringDelete)
-    })
-    .then(result => {
-      if (accept) {
-        pools
-          .then(pool => {
-            return pool.request().query(queryStringAdd)
-          })
-      }
-    })
-    .then(result => {
-      if (accept) {
-        res.send('InviteAccepted')
-      } else {
-        res.send('InviteRejected')
-      }
-    })
-    .catch(err => {
-      console.log('Delete invite error: ', err)
-    })
-}
-
 module.exports = {
   sql: mssql,
   pools: pools,
   isConnected: isConnected,
   connectionError: connectionError,
   addToInvitesTable: addToInvitesTable,
-  getInvites: getInvites,
-  handleInvites: handleInvites
+  getInvites: getInvites
 }
