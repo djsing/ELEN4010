@@ -211,49 +211,6 @@ function populateTripsAndGroupsTable (res, queryString, tripInfo) {
     })
 }
 
-function getTripTitles (trips, res) {
-  pools
-    .then(pool => {
-      if (trips.length !== 0) {
-        let queryString = `SELECT * FROM trips WHERE id IN (`
-        for (let i = 0; i < trips.length; i++) {
-          queryString = queryString + `'${trips[i].trip_id}',`
-        }
-        queryString = queryString.substring(0, queryString.length - 1)
-        queryString = queryString + `);`
-
-        return pool.request()
-          .query(queryString)
-      }
-    })
-    .then(result => {
-      // console.log('get trip titles result ', result)
-      if (trips.legnth !== 0) { res.send(result.recordset) } else {
-        res.send('NoTripTitlesFound')
-      }
-    })
-    .catch(err => {
-      console.log('Get trip titles error:', err)
-    })
-}
-
-function getTrips (queryString, res) {
-  pools
-    .then(pool => {
-      return pool.request()
-        .query(queryString)
-    })
-    .then(result => {
-      // console.log('get trips result ', result)
-      if (result.recordset.length !== 0) {
-        getTripTitles(result.recordset, res)
-      }
-    })
-    .catch(err => {
-      console.log('Get trips error:', err)
-    })
-}
-
 // function getInvites (res, emailAddress) {
 //   var invitesArray = []
 //   pools
@@ -362,8 +319,6 @@ module.exports = {
   connectionError: connectionError,
   populateDestionationsTable: populateDestionationsTable,
   populateTripsAndGroupsTable: populateTripsAndGroupsTable,
-  getTrips: getTrips,
-  getTripTitles: getTripTitles,
   addToInvitesTable: addToInvitesTable,
   getInvites: getInvites,
   handleInvites: handleInvites

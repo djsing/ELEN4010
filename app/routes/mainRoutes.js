@@ -82,7 +82,7 @@ mainRouter.post('/trip-manager/data', function (req, res) {
 })
 
 mainRouter.post('/trip-manager/get-data', function (req, res) {
-  tripManagerModel.getTripsQuery(req, res)
+  tripManagerModel.getTrips(req, res)
 })
 
 mainRouter.post('/trip-manager-interface/data', function (req, res) {

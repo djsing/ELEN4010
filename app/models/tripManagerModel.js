@@ -20,10 +20,50 @@ function populateTripAndGroupTableQuery (trip, res) {
   db.populateTripsAndGroupsTable(res, queryString, tripInfo)
 }
 
-function getTripsQuery (req, res) {
+function getTrips (req, res) {
   let user = JSON.parse(req.body.userHash)
   let queryString = `SELECT * FROM groups WHERE user_hash = '${user}';`
-  db.getTrips(queryString, res)
+
+  db.pools
+    .then(pool => {
+      return pool.request()
+        .query(queryString)
+    })
+    .then(result => {
+      // console.log('get trips result ', result)
+      if (result.recordset.length !== 0) {
+        getTripTitles(result.recordset, res)
+      }
+    })
+    .catch(err => {
+      console.log('Get trips error:', err)
+    })
+}
+
+function getTripTitles (trips, res) {
+  db.pools
+    .then(pool => {
+      if (trips.length !== 0) {
+        let queryString = `SELECT * FROM trips WHERE id IN (`
+        for (let i = 0; i < trips.length; i++) {
+          queryString = queryString + `'${trips[i].trip_id}',`
+        }
+        queryString = queryString.substring(0, queryString.length - 1)
+        queryString = queryString + `);`
+
+        return pool.request()
+          .query(queryString)
+      }
+    })
+    .then(result => {
+      // console.log('get trip titles result ', result)
+      if (trips.legnth !== 0) { res.send(result.recordset) } else {
+        res.send('NoTripTitlesFound')
+      }
+    })
+    .catch(err => {
+      console.log('Get trip titles error:', err)
+    })
 }
 
 function getDestinations (req, res) {
@@ -46,6 +86,6 @@ function getDestinations (req, res) {
 
 module.exports = {
   populateTripAndGroupTableQuery: populateTripAndGroupTableQuery,
-  getTripsQuery: getTripsQuery,
+  getTrips: getTrips,
   getDestinations: getDestinations
 }
