@@ -111,7 +111,7 @@ let pools = new mssql.ConnectionPool(config)
     return pool.request()
       .query(`IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='groups' and xtype='U')
           CREATE TABLE groups (
-          user_hash varchar(255), 
+          hash varchar(255), 
           trip_id varchar(255)
           )`)
   }).then(result => {

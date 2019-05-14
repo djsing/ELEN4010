@@ -28,11 +28,22 @@ a.anchor {
   color: #656565;
 }
 
+
 #invitemanager {
   margin-top: 50px;
 }
+
 #invitations-section {
   margin: 30px 0;
+}
+
+#inviteSendHeader {
+  font-size: 12px;
+}
+
+#InviteEmailAddress {
+  font-size: 16px;
+  display: contents;
 }
 
 .sticky-th {
@@ -60,9 +71,8 @@ ul {
   }
 
 .titleField {
-  /* min-width: 255px; */
-  width: 200%;
-    border-width: 0!important;
+  min-width: 255px;
+  border-width: 0!important;
   font-size: medium;
   cursor: pointer;
 }
@@ -72,6 +82,7 @@ input.titleField:focus {
   outline-width: 0px;
   outline-color: transparent;
 }
+
 input.titleField:hover {
   color: #c51601;
 }
@@ -97,7 +108,6 @@ input.titleField:hover {
   padding-right: 50px;
 }
 
-
 #hide-log {
   float: left;
   top: -13px;
@@ -117,3 +127,44 @@ input.titleField:hover {
   background-color: transparent;
   border-color: transparent;
 }
+
+.panel {
+  /* padding: 0 18px; */
+  display: none;
+  background-color: white;
+  overflow: hidden;
+}
+
+.logButton{
+  text-transform: capitalize;
+}
+
+.editTrip {
+    text-transform: capitalize;
+}
+
+.profilePic {
+  padding: 1px;
+  border-radius: 50%;
+}
+
+.nameMember {
+  margin: 0 6px;
+}
+
+
+.fa-alph {
+  font-family: Arial, sans-serif; /* your font family here! */
+  font-weight: bold;
+  font-size: 11px;
+  font-style: normal;
+  }
+
+.f-circle {
+  font-family: monospace;
+  font-weight: bold;
+  display: inline-block;
+  border-radius: 999px;
+  padding: 4px 8px;
+  margin: 2px 2px;
+  }
