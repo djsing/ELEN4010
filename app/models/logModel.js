@@ -64,5 +64,6 @@ function getLogQuery (tripId) {
 
 module.exports = {
   createLog: createLog,
-  getLogs: getLogs
+  getLogs: getLogs,
+  createLogQueryString: createLogQueryString
 }
