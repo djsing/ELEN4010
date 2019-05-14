@@ -243,7 +243,7 @@ function loadGroup (tripID, panel) {
         nameHTML = '<span class="nameMember">' + name + '</span>'
         color = '#' + ascii_to_hex(name).slice(0, 6)
         if (group[i].image_url != null) {
-          pictureHTML = '<img src="' + group[i].image_url + '" alt="" width="32" height="32" class="profilePic" style="border-radius: 50%;"></img>'
+          pictureHTML = '<img src="' + String(group[i].image_url).replace(/\'/gi, '') + '" alt="" width="32" height="32" class="profilePic" style="border-radius: 50%;"></img>'
         } else {
           pictureHTML = '<span class="f-circle" style="border: 2px solid ' + color + ';"><i class="fa-sm-alph" width="32" height="32" style="color: ' + color + ';">' + name[0] + '</i></span>'
         }
