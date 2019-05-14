@@ -76,6 +76,7 @@ let addTitleDisplayField = function (title, row) {
 
   let tripPanel = document.createElement('div')
   tripPanel.className = 'panel'
+  tripPanel.id = title
 
   let groupInfo = document.createElement('p')
   groupInfo.innerHTML = 'Here are some names'
@@ -216,17 +217,17 @@ $(function () {
     $('#addButton').hide()
   })
 
-  // // Make trip buttons collapsible accordians
-  // $('.accordion').accordion({
-  //   collapsible: true
-  // })
-
+  // Show trip details (group/log/edit)
   $('table').on('click', '.titleField', function () {
-    var panel = this.nextElementSibling
-    if (panel.style.display === 'inline-block') {
+    let panel = this.nextElementSibling
+    if (panel.style.display === 'contents') {
       panel.style.display = 'none'
+      // $('.titleField').html($('<i/>', { class: 'fa fa-eye' })).append(' Show')
+      $(this.nextElementSibling).fadeOut('slow')
     } else {
-      panel.style.display = 'inline-block'
+      panel.style.display = 'contents'
+      // $('.titleField').append($('<i/>', { class: 'fa fa-eye-slash' })).append(' Hide')
+      $(this.nextElementSibling).fadeIn('slow')
     }
   })
 

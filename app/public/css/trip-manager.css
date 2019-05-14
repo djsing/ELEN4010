@@ -60,9 +60,8 @@ ul {
   }
 
 .titleField {
-  /* min-width: 255px; */
-  width: 200%;
-    border-width: 0!important;
+  min-width: 255px;
+  border-width: 0!important;
   font-size: medium;
   cursor: pointer;
 }
@@ -72,6 +71,7 @@ input.titleField:focus {
   outline-width: 0px;
   outline-color: transparent;
 }
+
 input.titleField:hover {
   color: #c51601;
 }
@@ -97,7 +97,6 @@ input.titleField:hover {
   padding-right: 50px;
 }
 
-
 #hide-log {
   float: left;
   top: -13px;
@@ -119,8 +118,16 @@ input.titleField:hover {
 }
 
 .panel {
-  padding: 0 18px;
+  /* padding: 0 18px; */
   display: none;
   background-color: white;
   overflow: hidden;
+}
+
+.logButton{
+  text-transform: capitalize;
+}
+
+.editTrip {
+    text-transform: capitalize;
 }
