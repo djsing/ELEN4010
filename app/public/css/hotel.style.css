@@ -26,7 +26,7 @@ table {
 
 #pac-card {
   z-index: 50;
-  position: absolute;
+  /* position: absolute; */
   right: 0;
   top: 82px;
   width: 98%;

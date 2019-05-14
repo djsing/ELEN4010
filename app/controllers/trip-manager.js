@@ -87,10 +87,16 @@ let addTitleDisplayField = function (title, row) {
   tripPanel.className = 'panel'
   tripPanel.id = title
 
-  let groupInfo = document.createElement('p')
-  groupInfo.id = row + '_group'
-  groupInfo.innerHTML = ''
+  // let groupInfo = document.createElement('p')
+  // groupInfo.id = row.id + '_group'
+  // groupInfo.innerHTML = ''
 
+  // tripPanel.appendChild(groupInfo)
+  row.appendChild(newEntry)
+  row.appendChild(tripPanel)
+}
+
+let addButtonField = function (panel) {
   let buttonSection = document.createElement('div')
   buttonSection.className = 'buttonSection'
 
@@ -108,12 +114,9 @@ let addTitleDisplayField = function (title, row) {
   editButton.classList.add('btn', 'btn-sm', 'btn-secondary')
   editButton.setAttribute('href', '#log-jump')
 
-  tripPanel.appendChild(groupInfo)
   buttonSection.appendChild(editButton)
   buttonSection.appendChild(logButton)
-  tripPanel.appendChild(buttonSection)
-  row.appendChild(newEntry)
-  row.appendChild(tripPanel)
+  panel.appendChild(buttonSection)
 }
 
 let addTitleEntry = function (trip) {
@@ -240,12 +243,13 @@ function loadGroup (tripID, panel) {
         nameHTML = '<span class="nameMember">' + name + '</span>'
         color = '#' + ascii_to_hex(name).slice(0, 6)
         if (group[i].image_url != null) {
-          pictureHTML = '<img src="' + group[i].image_url + '" alt="" width="32" height="32" id="profilePic" style="border-radius: 50%;"></img>'
+          pictureHTML = '<img src="' + group[i].image_url + '" alt="" width="32" height="32" class="profilePic" style="border-radius: 50%;"></img>'
         } else {
           pictureHTML = '<span class="f-circle" style="border: 2px solid ' + color + ';"><i class="fa-sm-alph" width="32" height="32" style="color: ' + color + ';">' + name[0] + '</i></span>'
         }
         insertGroup(panel, pictureHTML, nameHTML)
       }
+      addButtonField(panel)
     }
   })
 }
@@ -263,12 +267,13 @@ $(function () {
   $('table').on('click', '.titleField', function () {
     let panel = this.nextElementSibling
     let id = $(this).parents('tr')[0].id
-    loadGroup(id, panel)
     if (panel.style.display === 'contents') {
+      $(panel).empty()
       panel.style.display = 'none'
       // $('.titleField').html($('<i/>', { class: 'fa fa-eye' })).append(' Show')
       $(panel).fadeOut('slow')
     } else {
+      loadGroup(id, panel)
       panel.style.display = 'contents'
       // $('.titleField').append($('<i/>', { class: 'fa fa-eye-slash' })).append(' Hide')
       $(panel).fadeIn('slow')
