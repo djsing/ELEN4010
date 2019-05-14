@@ -79,7 +79,8 @@ let addTitleDisplayField = function (title, row) {
   tripPanel.id = title
 
   let groupInfo = document.createElement('p')
-  groupInfo.innerHTML = 'Here are some names'
+  groupInfo.id = row + '_group'
+  groupInfo.innerHTML = ''
 
   let buttonSection = document.createElement('div')
   buttonSection.className = 'buttonSection'
@@ -208,6 +209,29 @@ let loadTrips = function () {
   })
 }
 
+function loadGroup (tripID, panel) {
+  $.ajax({
+    url: '/groups',
+    method: 'POST',
+    contentType: 'application/json',
+    data: JSON.stringify({ tripID: tripID }),
+    success: function (group) {
+      console.log('Onload groups: ', group)
+      for (let i = 0; i < group.length; i++) {
+        let picture
+        let name = group[i].first_name + ' ' + group[i].last_name
+        if (group[i].image_url != null) {
+          picture = '<img src="' + group[i].image_url + '" alt="" width="32" height="32"></img>'
+        } else {
+          picture = '<span class="f-circle"><i class="fa-alph" width="32" height="32">' + name[0] + '</i></span>'
+        }
+        // insertGroup(panel, picture, name)
+        console.log(panel, picture, name)
+      }
+    }
+  })
+}
+
 $(function () {
   // Add trip button event
   $('#addButton').click(() => {
@@ -220,14 +244,16 @@ $(function () {
   // Show trip details (group/log/edit)
   $('table').on('click', '.titleField', function () {
     let panel = this.nextElementSibling
+    let id = $(this).parents('tr')[0].id
+    loadGroup(id, panel)
     if (panel.style.display === 'contents') {
       panel.style.display = 'none'
       // $('.titleField').html($('<i/>', { class: 'fa fa-eye' })).append(' Show')
-      $(this.nextElementSibling).fadeOut('slow')
+      $(panel).fadeOut('slow')
     } else {
       panel.style.display = 'contents'
       // $('.titleField').append($('<i/>', { class: 'fa fa-eye-slash' })).append(' Hide')
-      $(this.nextElementSibling).fadeIn('slow')
+      $(panel).fadeIn('slow')
     }
   })
 
@@ -315,7 +341,6 @@ $(function () {
           tripsList = JSON.parse(window.sessionStorage.getItem('tripList'))
         }
       })
-
       $('#saveTripButton').remove()
       $('#tripTitleInputField').remove()
       $('#addButton').show()
@@ -434,19 +459,6 @@ function loadInvites () {
     success: function (res) {
       // console.log('Onload invites: ', res)
       displayInvites(res)
-    }
-  })
-}
-
-function loadGroup (tripID) {
-  $.ajax({
-    url: '/groups',
-    method: 'POST',
-    contentType: 'application/json',
-    data: JSON.stringify({ tripID: tripID }),
-    success: function (res) {
-      console.log('Onload groups: ', res)
-      // insert render logic here
     }
   })
 }

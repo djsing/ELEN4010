@@ -105,15 +105,6 @@ mainRouter.post('/groups', (req, res) => {
   groupModel.returnGroupUsers(req, res)
 })
 
-// -----------------------------
-// Error/Page Not Found Routing
-// ------------------------------
-mainRouter.get('*', function (req, res) {
-  res.sendFile('/404.html', { root: req.app.get('views') })
-  // res.status(404).send('404 Error: page not found')
-})
-// ----------------- Invites ------------------------------
-
 mainRouter.post('/invite', function (req, res) {
   mailManager.sendInvite(req.body.emailAddress, req.body.tripName, req.body.invitee)
   invitesModel.addInvite(res, req.body)
@@ -122,8 +113,6 @@ mainRouter.post('/invite', function (req, res) {
 
 mainRouter.post('/invites/data', function (req, res) {
   invitesModel.getInvites(res, req.body.emailAddress)
-  // let pendingTrips = [{ 'title': 'Malawi', 'tripID': '000001' }]
-  // res.send(pendingTrips)
 })
 
 mainRouter.post('/invites/data/accept', (req, res) => {
@@ -132,6 +121,14 @@ mainRouter.post('/invites/data/accept', (req, res) => {
 
 mainRouter.post('/invites/data/deny', (req, res) => {
   invitesModel.handleInvites(req, res, false)
+})
+
+// -----------------------------
+// Error/Page Not Found Routing
+// ------------------------------
+mainRouter.get('*', function (req, res) {
+  res.sendFile('/404.html', { root: req.app.get('views') })
+  // res.status(404).send('404 Error: page not found')
 })
 
 module.exports = mainRouter

@@ -131,3 +131,19 @@ input.titleField:hover {
 .editTrip {
     text-transform: capitalize;
 }
+
+.fa-alph {
+  font-family: Arial, sans-serif; /* your font family here! */
+  font-weight: bold;
+  color: #860000;
+  font-style: normal;   
+  }
+
+  .f-circle {
+    font-family: Arial; /* your font family here! */
+    font-weight: bold;
+    display: block;
+    border: 1px solid #860000;
+    border-radius: 999px;
+    padding: 6px 12px;
+    }

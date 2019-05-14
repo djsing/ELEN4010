@@ -50,7 +50,7 @@ function getInvites (res, emailAddress) {
         .query(`SELECT trip_id FROM invites WHERE email_address = @email`)
     })
     .then(result => {
-      console.log('Invites DB: ', result.recordset)
+      // console.log('Invites DB: ', result.recordset)
       let trips = result.recordset
       if (trips.length !== 0) {
         db.pools
@@ -63,13 +63,13 @@ function getInvites (res, emailAddress) {
             queryString = queryString.substring(0, queryString.length - 1)
 
             queryString = queryString + `);`
-            console.log('get trip titles QS ', queryString)
+            // console.log('get trip titles QS ', queryString)
 
             return pool.request()
               .query(queryString)
           })
           .then(result => {
-            console.log('get trip titles result ', result)
+            // console.log('get trip titles result ', result)
             res.send(result.recordset)
           })
           .catch(err => {
