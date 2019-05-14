@@ -409,12 +409,11 @@ function loadInvites () {
 }
 
 function loadGroup (tripID) {
-  let trip = tripID
   $.ajax({
     url: '/groups',
     method: 'POST',
     contentType: 'application/json',
-    data: JSON.stringify(trip),
+    data: JSON.stringify({ tripID: tripID }),
     success: function (res) {
       console.log('Onload groups: ', res)
       // insert render logic here
