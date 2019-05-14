@@ -43,6 +43,15 @@ let tripTitleExists = function (tripTitle) {
   return false
 }
 
+function ascii_to_hex (str) {
+  var arr1 = []
+  for (var n = 0, l = str.length; n < l; n++) {
+    var hex = Number(str.charCodeAt(n)).toString(16)
+    arr1.push(hex)
+	 }
+  return arr1.join('')
+}
+
 // ------------------
 // Interface Methods
 // ------------------
@@ -115,6 +124,14 @@ let addTitleEntry = function (trip) {
   $('#tripTitleTable').append(newRow)
 }
 
+let insertGroup = function (panel, pictureHTML, nameHTML) {
+  let groupMemberSection = document.createElement('div')
+  panel.appendChild(groupMemberSection)
+  groupMemberSection.insertAdjacentHTML('beforeEnd', pictureHTML)
+  groupMemberSection.insertAdjacentHTML('beforeEnd', nameHTML)
+}
+
+// Map event codes to english phrases
 function lookUpEventCode (entryCode) {
   switch (entryCode) {
     case 0:
@@ -217,16 +234,17 @@ function loadGroup (tripID, panel) {
     data: JSON.stringify({ tripID: tripID }),
     success: function (group) {
       console.log('Onload groups: ', group)
+      let pictureHTML, nameHTML, name, color
       for (let i = 0; i < group.length; i++) {
-        let picture
-        let name = group[i].first_name + ' ' + group[i].last_name
+        name = group[i].first_name + ' ' + group[i].last_name
+        nameHTML = '<span class="nameMember">' + name + '</span>'
+        color = '#' + ascii_to_hex(name).slice(0, 6)
         if (group[i].image_url != null) {
-          picture = '<img src="' + group[i].image_url + '" alt="" width="32" height="32"></img>'
+          pictureHTML = '<img src="' + group[i].image_url + '" alt="" width="32" height="32" id="profilePic" style="border-radius: 50%;"></img>'
         } else {
-          picture = '<span class="f-circle"><i class="fa-alph" width="32" height="32">' + name[0] + '</i></span>'
+          pictureHTML = '<span class="f-circle" style="border: 2px solid ' + color + ';"><i class="fa-sm-alph" width="32" height="32" style="color: ' + color + ';">' + name[0] + '</i></span>'
         }
-        // insertGroup(panel, picture, name)
-        console.log(panel, picture, name)
+        insertGroup(panel, pictureHTML, nameHTML)
       }
     }
   })

@@ -132,18 +132,27 @@ input.titleField:hover {
     text-transform: capitalize;
 }
 
+.profilePic {
+  border-radius: 50%;
+}
+
+.nameMember {
+  margin: 0 6px;
+}
+
+
 .fa-alph {
   font-family: Arial, sans-serif; /* your font family here! */
   font-weight: bold;
-  color: #860000;
-  font-style: normal;   
+  font-size: 11px;
+  font-style: normal;
   }
 
-  .f-circle {
-    font-family: Arial; /* your font family here! */
-    font-weight: bold;
-    display: block;
-    border: 1px solid #860000;
-    border-radius: 999px;
-    padding: 6px 12px;
-    }
+.f-circle {
+  font-family: monospace;
+  font-weight: bold;
+  display: inline-block;
+  border-radius: 999px;
+  padding: 4px 8px;
+  margin: 2px 2px;
+  }

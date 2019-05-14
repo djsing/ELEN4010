@@ -30,7 +30,7 @@ let sendInvite = function (emailAddress, tripName, invitee) {
     if (err) {
       return console.log(err)
     }
-    console.log('The email got sent!')
+    // console.log('The email got sent!')
   })
 }
 
