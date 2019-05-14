@@ -160,7 +160,6 @@ let addLogLineEntry = function (logEntry) {
 $(document).ready(() => {
   loadTrips()
   loadInvites()
-  loadGroups()
 })
 
 let loadTrips = function () {
@@ -409,16 +408,16 @@ function loadInvites () {
   })
 }
 
-function loadGroups () {
-  let trips = JSON.parse(window.sessionStorage.getItem('tripList'))
+function loadGroup (tripID) {
+  let trip = tripID
   $.ajax({
     url: '/groups',
     method: 'POST',
     contentType: 'application/json',
-    data: JSON.stringify(trips),
+    data: JSON.stringify(trip),
     success: function (res) {
       console.log('Onload groups: ', res)
-      // displayGroups(res)
+      // insert render logic here
     }
   })
 }
