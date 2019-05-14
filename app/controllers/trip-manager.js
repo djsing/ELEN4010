@@ -28,6 +28,7 @@ class LogEvent {
 // Globals
 // --------------
 let tripsList = []
+let pendingTrips = []
 let log = []
 
 // ----------------
@@ -64,34 +65,50 @@ let addSaveTripButton = function () {
 }
 
 let addTitleDisplayField = function (title, row) {
-  let newEntry = document.createElement('td')
-  let titleDisplayField = document.createElement('input')
-  titleDisplayField.id = title
-  titleDisplayField.className = 'titleField'
-  titleDisplayField.value = title
-  titleDisplayField.setAttribute('readonly', '1')
-  titleDisplayField.setAttribute('data-toggle', 'tooltip')
-  titleDisplayField.setAttribute('title', 'Click to edit')
-  newEntry.appendChild(titleDisplayField)
-  row.appendChild(newEntry)
-}
+  let newEntry = document.createElement('Input')
+  newEntry.id = title
+  // newEntry.innerHTML = title
+  newEntry.value = title
+  newEntry.classList.add('titleField')
+  newEntry.setAttribute('title', 'Click to expand')
+  newEntry.setAttribute('readonly', '1')
+  newEntry.setAttribute('data-toggle', 'tooltip')
 
-let addLogBtnToTitle = function (row) {
-  let newEntry = document.createElement('td')
-  let newButton = document.createElement('input')
-  newButton.type = 'button'
-  newButton.value = 'Log'
-  newButton.className = 'logButton'
-  newButton.classList.add('btn', 'btn-sm', 'btn-secondary')
-  newButton.setAttribute('href', '#log-jump')
-  newEntry.appendChild(newButton)
+  let tripPanel = document.createElement('div')
+  tripPanel.className = 'panel'
+
+  let groupInfo = document.createElement('p')
+  groupInfo.innerHTML = 'Here are some names'
+
+  let buttonSection = document.createElement('div')
+  buttonSection.className = 'buttonSection'
+
+  let logButton = document.createElement('input')
+  logButton.type = 'button'
+  logButton.value = 'Trip Log'
+  logButton.className = 'logButton'
+  logButton.classList.add('btn', 'btn-sm', 'btn-secondary')
+  logButton.setAttribute('href', '/trip')
+
+  let editButton = document.createElement('input')
+  editButton.type = 'button'
+  editButton.value = 'Edit Trip'
+  editButton.className = 'editTrip'
+  editButton.classList.add('btn', 'btn-sm', 'btn-secondary')
+  editButton.setAttribute('href', '#log-jump')
+
+  tripPanel.appendChild(groupInfo)
+  buttonSection.appendChild(editButton)
+  buttonSection.appendChild(logButton)
+  tripPanel.appendChild(buttonSection)
   row.appendChild(newEntry)
+  row.appendChild(tripPanel)
 }
 
 let addTitleEntry = function (trip) {
   let newRow = document.createElement('tr')
   newRow.id = trip.id
-  addLogBtnToTitle(newRow)
+
   addTitleDisplayField(trip.title, newRow)
   $('#tripTitleTable').append(newRow)
 }
@@ -199,8 +216,22 @@ $(function () {
     $('#addButton').hide()
   })
 
-  // Edit an existing trip
+  // // Make trip buttons collapsible accordians
+  // $('.accordion').accordion({
+  //   collapsible: true
+  // })
+
   $('table').on('click', '.titleField', function () {
+    var panel = this.nextElementSibling
+    if (panel.style.display === 'inline-block') {
+      panel.style.display = 'none'
+    } else {
+      panel.style.display = 'inline-block'
+    }
+  })
+
+  // Edit an existing trip
+  $('table').on('click', '.editTrip', function () {
     let id = $(this).parents('tr')[0].id
     let index = -1
     for (let i = 0; i < tripsList.length; i++) {
@@ -293,7 +324,7 @@ $(function () {
       window.alert('This trip title already exists.\n Please enter a new title.')
     }
   })
-  // Add event listeners for buttons for rejecting tripsss
+  // Add event listeners for buttons for rejecting trips
 
   $('[data-toggle="tooltip"]').tooltip()
 })
@@ -339,8 +370,6 @@ $(document).on('click', '#rejectButton', function (e) {
     }
   })
 })
-
-let pendingTrips = []
 
 let displayInvites = function (pendingInvites) {
   // Clear the old table
@@ -421,23 +450,3 @@ function loadGroup (tripID) {
     }
   })
 }
-
-// let displayGroups = function (pendingInvites) {
-//   // Clear the old table
-//   pendingTrips = pendingInvites
-//   $('#invitesTable').empty()
-
-//   // Display the heading if there are pendingInvites
-//   if (pendingInvites.length > 0) {
-//     // Display the heading if there are pendingInvites
-
-//     $('#pendingTripInvitesHeading').show()
-
-//     pendingInvites.forEach((invite) => {
-//       appendTripInvite(invite)
-//     })
-//   } else {
-//     // Hide the heading if there are pendingInvites
-//     $('#pendingTripInvitesHeading').hide()
-//   }
-// }

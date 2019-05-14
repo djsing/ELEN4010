@@ -117,3 +117,10 @@ input.titleField:hover {
   background-color: transparent;
   border-color: transparent;
 }
+
+.panel {
+  padding: 0 18px;
+  display: none;
+  background-color: white;
+  overflow: hidden;
+}
