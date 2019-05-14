@@ -14,7 +14,7 @@
 
       <script src="/js/jquery-3.4.0.min.js"></script>
       <script src='common.js'></script>
-      <script src='countries.js'></script>
+      <script src='/js/map.config.js'></script>
       <script src='hotel.js'></script>
       <script src="/js/platform.js"></script>
       <script src="sign-in.js"></script>
@@ -69,33 +69,36 @@
                 Find hotels in:
             </div>
           </div>
-          <!-- <div id="pac-container">
-              <input id="pac-input" placeholder="Enter a city" type="text" />
-          </div> -->
 
-          <div id="locationField">
-              <input id="autocomplete" placeholder="Enter a city" type="text" />
+          <div class="container-fluid">
+            <div class="row" id="row-controls">
+              <div id="controls" class="col-md-6">
+                  <select id="country" class="form-control ">
+                    <option value="all">All</option>
+                    <option value="au">Australia</option>
+                    <option value="br">Brazil</option>
+                    <option value="ca">Canada</option>
+                    <option value="fr">France</option>
+                    <option value="de">Germany</option>
+                    <option value="gr">Greece</option>
+                    <option value="mx">Mexico</option>
+                    <option value="nz">New Zealand</option>
+                    <option value="it">Italy</option>
+                    <option value="za" selected>South Africa</option>
+                    <option value="es">Spain</option>
+                    <option value="pt">Portugal</option>
+                    <option value="us">U.S.A.</option>
+                    <option value="uk">United Kingdom</option>
+                  </select>
+              </div>
+              
+              <div id="locationField" class="col-md-6">
+                  <input id="autocomplete" class="form-control" placeholder="Enter a city" type="text" />
+              </div>
           </div>
-        <div id="controls">
-            <select id="country">
-              <option value="all">All</option>
-              <option value="au">Australia</option>
-              <option value="br">Brazil</option>
-              <option value="ca">Canada</option>
-              <option value="fr">France</option>
-              <option value="de">Germany</option>
-              <option value="mx">Mexico</option>
-              <option value="nz">New Zealand</option>
-              <option value="it">Italy</option>
-              <option value="za" selected>South Africa</option>
-              <option value="es">Spain</option>
-              <option value="pt">Portugal</option>
-              <option value="us">U.S.A.</option>
-              <option value="uk">United Kingdom</option>
-            </select>
         </div>
       </div>
-
+  
     <div class="col" id="map"></div>
 
     <div id="listing">

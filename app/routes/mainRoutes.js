@@ -17,7 +17,7 @@ let tripModel = require('../models/tripModel')
 let mailManager = require('../models/email_manager')
 let invitesModel = require('../models/invitesModel')
 let logModel = require('../models/logModel')
-let userModel = require('../models/userModel')
+let groupModel = require('../models/groupsModel')
 
 // ------------
 // URL Routing
@@ -66,31 +66,27 @@ mainRouter.get(['/trip-manager', '/trips'], function (req, res) {
 // RESTFUL Routing
 // ----------------
 mainRouter.post('/trip/log', function (log, res) {
-  logModel.createLogQuery(log, res)
+  logModel.createLog(log, res)
 })
 
 mainRouter.post('/trip-manager/log', function (tripId, res) {
-  logModel.getLogsQuery(tripId, res)
-})
-
-mainRouter.post('/trip-manager/user', function (userId, res) {
-  userModel.lookUpUser(userId, res)
+  logModel.getLogs(tripId, res)
 })
 
 mainRouter.post('/trip/data', function (req, res) {
-  tripModel.createDestinationQuery(req, res)
+  tripModel.createDestination(req, res)
 })
 
 mainRouter.post('/trip-manager/data', function (req, res) {
-  tripManagerModel.populateTripAndGroupTableQuery(req, res)
+  tripManagerModel.populateTripAndGroupTable(req, res)
 })
 
 mainRouter.post('/trip-manager/get-data', function (req, res) {
-  tripManagerModel.getTripsQuery(req, res)
+  tripManagerModel.getTrips(req, res)
 })
 
 mainRouter.post('/trip-manager-interface/data', function (req, res) {
-  tripManagerModel.getDestinationsQuery(req, res)
+  tripManagerModel.getDestinations(req, res)
 })
 
 mainRouter.post('/google-auth', (req, res) => {
@@ -105,14 +101,9 @@ mainRouter.get('/email', function (req, res) {
   res.sendFile('email.html', { root: req.app.get('views') })
 })
 
-// -----------------------------
-// Error/Page Not Found Routing
-// ------------------------------
-mainRouter.get('*', function (req, res) {
-  res.sendFile('/404.html', { root: req.app.get('views') })
-  // res.status(404).send('404 Error: page not found')
+mainRouter.post('/groups', (req, res) => {
+  groupModel.returnGroupUsers(req, res)
 })
-// ----------------- Invites ------------------------------
 
 mainRouter.post('/invite', function (req, res) {
   mailManager.sendInvite(req.body.emailAddress, req.body.tripName, req.body.invitee)
@@ -122,8 +113,6 @@ mainRouter.post('/invite', function (req, res) {
 
 mainRouter.post('/invites/data', function (req, res) {
   invitesModel.getInvites(res, req.body.emailAddress)
-  // let pendingTrips = [{ 'title': 'Malawi', 'tripID': '000001' }]
-  // res.send(pendingTrips)
 })
 
 mainRouter.post('/invites/data/accept', (req, res) => {
@@ -132,6 +121,14 @@ mainRouter.post('/invites/data/accept', (req, res) => {
 
 mainRouter.post('/invites/data/deny', (req, res) => {
   invitesModel.handleInvites(req, res, false)
+})
+
+// -----------------------------
+// Error/Page Not Found Routing
+// ------------------------------
+mainRouter.get('*', function (req, res) {
+  res.sendFile('/404.html', { root: req.app.get('views') })
+  // res.status(404).send('404 Error: page not found')
 })
 
 module.exports = mainRouter

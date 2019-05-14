@@ -3,7 +3,7 @@
 let db = require('./db')
 let SqlString = require('sqlstring')
 
-function createLogQuery (logInfo, res) {
+function createLog (logInfo, res) {
   let log = logInfo.body
   let queryString = ''
   for (let i = 0; i < log.length; i++) {
@@ -16,16 +16,41 @@ function createLogQuery (logInfo, res) {
         log[i].tripId])
   }
 
-  db.populateLogTable(res, queryString)
+  db.pools
+    .then(pool => {
+      return pool.request()
+        .query(queryString)
+    })
+    .then(result => {
+      res.send('Log table added to entries')
+    })
+    .catch(err => {
+      console.log('populate log table error:', err)
+    })
 }
 
-function getLogsQuery (req, res) {
+function getLogs (req, res) {
   let tripId = req.body.tripId
-  let queryString = SqlString.format('SELECT * FROM log WHERE trip_id = ? ;', [tripId])
-  db.getLogs(queryString, res)
+  db.pools
+    .then(pool => {
+      let dbrequest = pool.request()
+      dbrequest.input('tripId', tripId)
+      return dbrequest
+        .query(`SELECT id, userId, code, date, importance, trip_id, first_name, last_name
+        FROM log
+        JOIN users
+        ON log.userid = users.hash
+        WHERE trip_id = @tripId;`)
+    })
+    .then(result => {
+      res.send(result.recordset)
+    })
+    .catch(err => {
+      console.log('Get log error:', err)
+    })
 }
 
 module.exports = {
-  createLogQuery: createLogQuery,
-  getLogsQuery: getLogsQuery
+  createLog: createLog,
+  getLogs: getLogs
 }

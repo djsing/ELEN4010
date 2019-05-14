@@ -262,23 +262,26 @@ let renderMarkers = function () {
 // Main Map Callback
 // ------------------------
 function initMap () {
-  let styledSilverMapType = new google.maps.StyledMapType((silverMapType), { name: 'Silver Map' })
-  let styledDarkMapType = new google.maps.StyledMapType((darkMapType), { name: 'Dark Map' })
+  let styledSilverMapType = new google.maps.StyledMapType((silverMapType), { name: 'Light' })
+  let styledDarkMapType = new google.maps.StyledMapType((darkMapType), { name: 'Dark' })
 
   map = new google.maps.Map(document.getElementById('map'), {
     center: startLocation.center,
     zoom: startLocation.zoom,
-    mapTypeControl: false,
+    mapTypeControl: true,
+    mapTypeControlOptions: {
+      style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
+      position: google.maps.ControlPosition.BOTTOM_CENTER,
+      mapTypeIds: ['roadmap', 'satellite', 'styled_map'] // 'hybrid', 'terrain',
+    },
     panControl: false,
     zoomControl: false,
     streetViewControl: false,
     fullscreenControl: false,
-    draggableCursor: 'default',
-    mapTypeId: 'styled_map'
-    // mapTypeControlOptions: {
-    //   mapTypeIds: ['roadmap', 'satellite', 'hybrid', 'terrain', 'styled_map']
-    // }
+    draggableCursor: 'default'
+    // mapTypeId: 'styled_map'
   })
+
   map.setTilt(45)
   map.mapTypes.set('styled_map', styledSilverMapType)
   map.setMapTypeId('styled_map')
@@ -453,7 +456,7 @@ $(document).on('click', '#inviteEditorButton', function () {
 
 $(document).on('click', '.close', function () {
   let modalBox = $('div.modal')
-  modalBox.className = 'modal fade in modal-dialog'
+  modalBox.className = 'modal fade in modal-body modal-dialog'
   modalBox.hide()
 })
 
@@ -507,7 +510,7 @@ let displayInviteSentMessage = function (emailAddress) {
   modalBox.append(headerMessage)
 
   // Display email address
-  let emailAddressText = $('<p class="modal-element" id="emailAddress"> ' + emailAddress + ' </p>')
+  let emailAddressText = $('<p class="modal-element" id="InviteEmailAddress"> ' + emailAddress + ' </p>')
   modalBox.append(emailAddressText)
 }
 
@@ -528,11 +531,14 @@ let createInvitePopup = function () {
   modalDiv.append(header)
 
   // Add prompt text
-  let promptText = $('<p class="modal-element">Please type in the email address of a desired group member</p>')
-  modalDiv.append(promptText)
+  // let promptText = $('<p class="modal-element">Please type in the email address of a desired group member</p>')
+  // modalDiv.append(promptText)
+
+  // let promptText = $('<label for="emailAddressField">Email of desired group member</label>')
+  // modalDiv.append(promptText)
 
   // Add email field
-  let emailField = $('<input class="modal-element" type="text" id="emailAddressField">')
+  let emailField = $('<input class="modal-element form-control" autocomplete="email" type="text" id="emailAddressField" placeholder="Email of desired group member">')
   modalDiv.append(emailField)
 
   // Add invite button

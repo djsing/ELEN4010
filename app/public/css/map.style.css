@@ -211,13 +211,13 @@ element.style {
   top: 30%;
   right: 0;
   bottom: 30%;
-  padding: 50px;
+  padding: 14px;
   left: 0;
-  width: 60%;
+  width: 80%;
   height: 40%;
   margin: 0 auto;
   z-index: 1;
-  display: none; 
+  display: none;
   text-align: center;
 }
 
@@ -254,7 +254,7 @@ input.modal-element {
 }
 
 input[type="text"].modal-element {
-  width: 400px
+  width: 100%;
 }
 
 #invalidEmailMessage{
