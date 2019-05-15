@@ -48,11 +48,11 @@ function createHashKey (userInfo, isGoogleUser) {
     hash.update(userInfo.emailAddress + userInfo.password)
   }
   userInfo.hash = hash.digest('hex')
-  // console.log('after hash', userInfo)
   return userInfo
 }
 
 module.exports = {
   googleUserAccountDatabaseConnection: googleUserAccountDatabaseConnection,
-  userAccountDatabaseConnection: userAccountDatabaseConnection
+  userAccountDatabaseConnection: userAccountDatabaseConnection,
+  createHashKey: createHashKey
 }
