@@ -2,16 +2,20 @@
 
 let db = require('./db')
 
-function findUser (userInfo, signin, res) {
-  let info = userInfo
-  let email = info.emailAddress
-  db.pools
-    // Run query
+function findUserQuery (email) {
+  return db.pools
+  // Run query
     .then((pool) => {
       let dbrequest = pool.request()
       dbrequest.input('email', email)
       return dbrequest.query(`SELECT * FROM users WHERE email_address = @email`)
     })
+}
+
+function findUser (userInfo, signin, res) {
+  let info = userInfo
+  let email = info.emailAddress
+  findUserQuery(email)
     // both ID/Email match sought after in case of possible duplication of either ID/Email
     .then(result => {
       // if no match is found, it must be a new user
@@ -19,12 +23,7 @@ function findUser (userInfo, signin, res) {
         info.userType = 'newUser'
         // if user doesn't exist and tries to sign in
         if (signin) {
-          delete info.emailAddress
-          delete info.password
-          delete info.hash
-          delete info.image
-          delete info.firstName
-          delete info.lastName
+          deleteUnnecessaryInfo(info)
           res.send(info)
         } else {
           createUser(info, res)
@@ -34,12 +33,7 @@ function findUser (userInfo, signin, res) {
         // account that does exist and is trying to register
         if (!signin) {
           // console.log('trying to register')
-          delete info.emailAddress
-          delete info.password
-          delete info.hash
-          delete info.image
-          delete info.firstName
-          delete info.lastName
+          deleteUnnecessaryInfo(info)
           res.send(info)
         } else if (result.recordset[0].hash === info.hash) {
           // account that exists and is trying to sign in with the correct password
@@ -54,11 +48,7 @@ function findUser (userInfo, signin, res) {
           // account that exists and is trying to sign in with the wrong password
           // console.log('incorrect sign in')
           info.userType = 'incorrectUser'
-          // some info doesn't need to be sent to front-end
-          delete info.emailAddress
-          delete info.password
-          delete info.hash
-          delete info.image
+          deleteUnnecessaryInfo(info)
           res.send(info)
         }
       }
@@ -68,9 +58,8 @@ function findUser (userInfo, signin, res) {
     })
 }
 
-function createUser (userInfo, res) {
-  let info = userInfo
-  db.pools
+function createUserQuery (info) {
+  return db.pools
     // Run query
     .then((pool) => {
       let dbrequest = pool.request()
@@ -81,6 +70,11 @@ function createUser (userInfo, res) {
       dbrequest.input('hash', info.hash)
       return dbrequest.query(`INSERT INTO users VALUES(@firstName,@lastName,@emailAddress,@image,@hash)`)
     })
+}
+
+function createUser (userInfo, res) {
+  let info = userInfo
+  createUserQuery(info)
     // Send back the result
     .then(result => {
       res.send(info)
@@ -91,6 +85,17 @@ function createUser (userInfo, res) {
     })
 }
 
+function deleteUnnecessaryInfo (info) {
+  delete info.emailAddress
+  delete info.password
+  delete info.hash
+  delete info.image
+  delete info.firstName
+  delete info.lastName
+  delete info.userID
+}
+
 module.exports = {
-  findUser: findUser
+  findUser: findUser,
+  deleteUnnecessaryInfo: deleteUnnecessaryInfo
 }

@@ -28,6 +28,7 @@ class LogEvent {
 // Globals
 // --------------
 let tripsList = []
+let pendingTrips = []
 let log = []
 
 // ----------------
@@ -40,6 +41,15 @@ let tripTitleExists = function (tripTitle) {
     }
   }
   return false
+}
+
+function ascii_to_hex (str) {
+  var arr1 = []
+  for (var n = 0, l = str.length; n < l; n++) {
+    var hex = Number(str.charCodeAt(n)).toString(16)
+    arr1.push(hex)
+	 }
+  return arr1.join('')
 }
 
 // ------------------
@@ -64,38 +74,67 @@ let addSaveTripButton = function () {
 }
 
 let addTitleDisplayField = function (title, row) {
-  let newEntry = document.createElement('td')
-  let titleDisplayField = document.createElement('input')
-  titleDisplayField.id = title
-  titleDisplayField.className = 'titleField'
-  titleDisplayField.value = title
-  titleDisplayField.setAttribute('readonly', '1')
-  titleDisplayField.setAttribute('data-toggle', 'tooltip')
-  titleDisplayField.setAttribute('title', 'Click to edit')
-  newEntry.appendChild(titleDisplayField)
+  let newEntry = document.createElement('Input')
+  newEntry.id = title
+  // newEntry.innerHTML = title
+  newEntry.value = title
+  newEntry.classList.add('titleField')
+  newEntry.setAttribute('title', 'Click to expand')
+  newEntry.setAttribute('readonly', '1')
+  newEntry.setAttribute('data-toggle', 'tooltip')
+
+  let tripPanel = document.createElement('div')
+  tripPanel.className = 'panel'
+  tripPanel.id = title
+
+  // let groupInfo = document.createElement('p')
+  // groupInfo.id = row.id + '_group'
+  // groupInfo.innerHTML = ''
+
+  // tripPanel.appendChild(groupInfo)
   row.appendChild(newEntry)
+  row.appendChild(tripPanel)
 }
 
-let addLogBtnToTitle = function (row) {
-  let newEntry = document.createElement('td')
-  let newButton = document.createElement('input')
-  newButton.type = 'button'
-  newButton.value = 'Log'
-  newButton.className = 'logButton'
-  newButton.classList.add('btn', 'btn-sm', 'btn-secondary')
-  newButton.setAttribute('href', '#log-jump')
-  newEntry.appendChild(newButton)
-  row.appendChild(newEntry)
+let addButtonField = function (panel) {
+  let buttonSection = document.createElement('div')
+  buttonSection.className = 'buttonSection'
+
+  let logButton = document.createElement('input')
+  logButton.type = 'button'
+  logButton.value = 'Trip Log'
+  logButton.className = 'logButton'
+  logButton.classList.add('btn', 'btn-sm', 'btn-secondary')
+  logButton.setAttribute('href', '/trip')
+
+  let editButton = document.createElement('input')
+  editButton.type = 'button'
+  editButton.value = 'Edit Trip'
+  editButton.className = 'editTrip'
+  editButton.classList.add('btn', 'btn-sm', 'btn-secondary')
+  editButton.setAttribute('href', '#log-jump')
+
+  buttonSection.appendChild(editButton)
+  buttonSection.appendChild(logButton)
+  panel.appendChild(buttonSection)
 }
 
 let addTitleEntry = function (trip) {
   let newRow = document.createElement('tr')
   newRow.id = trip.id
-  addLogBtnToTitle(newRow)
+
   addTitleDisplayField(trip.title, newRow)
   $('#tripTitleTable').append(newRow)
 }
 
+let insertGroup = function (panel, pictureHTML, nameHTML) {
+  let groupMemberSection = document.createElement('div')
+  panel.appendChild(groupMemberSection)
+  groupMemberSection.insertAdjacentHTML('beforeEnd', pictureHTML)
+  groupMemberSection.insertAdjacentHTML('beforeEnd', nameHTML)
+}
+
+// Map event codes to english phrases
 function lookUpEventCode (entryCode) {
   switch (entryCode) {
     case 0:
@@ -164,10 +203,6 @@ $(document).ready(() => {
 
 let loadTrips = function () {
   $('#tripTitleTable').empty()
-  setTimeout(function () {
-    $('#loader').remove()
-    $('#info-text').html('No trips found')
-  }, 10000)
   $('#trip-log').hide()
   $.ajax({
     url: '/trip-manager/get-data',
@@ -177,14 +212,44 @@ let loadTrips = function () {
     success: function (res) {
       window.sessionStorage.setItem('tripList', JSON.stringify(res))
       tripsList = JSON.parse(window.sessionStorage.getItem('tripList'))
-      for (let i = 0; i < res.length; i++) {
-        addTitleEntry(tripsList[i])
+      if (tripsList.length === 0) {
+        $('#loader').remove()
+        $('#info-text').html('No trips found')
+      } else {
+        for (let i = 0; i < tripsList.length; i++) {
+          addTitleEntry(tripsList[i])
+        }
+        $('#loader').remove()
       }
-      $('#loader').remove()
     },
     error: function (res) {
       $('#loader').remove()
       $('#info-text').html('DB Error')
+    }
+  })
+}
+
+function loadGroup (tripID, panel) {
+  $.ajax({
+    url: '/groups',
+    method: 'POST',
+    contentType: 'application/json',
+    data: JSON.stringify({ tripID: tripID }),
+    success: function (group) {
+      console.log('Onload groups: ', group)
+      let pictureHTML, nameHTML, name, color
+      for (let i = 0; i < group.length; i++) {
+        name = group[i].first_name + ' ' + group[i].last_name
+        nameHTML = '<span class="nameMember">' + name + '</span>'
+        color = '#' + ascii_to_hex(name).slice(0, 6)
+        if (group[i].image_url != null) {
+          pictureHTML = '<img src="' + String(group[i].image_url).replace(/\'/gi, '') + '" alt="" width="32" height="32" class="profilePic" style="border-radius: 50%;"></img>'
+        } else {
+          pictureHTML = '<span class="f-circle" style="border: 2px solid ' + color + ';"><i class="fa-sm-alph" width="32" height="32" style="color: ' + color + ';">' + name[0] + '</i></span>'
+        }
+        insertGroup(panel, pictureHTML, nameHTML)
+      }
+      addButtonField(panel)
     }
   })
 }
@@ -198,8 +263,25 @@ $(function () {
     $('#addButton').hide()
   })
 
-  // Edit an existing trip
+  // Show trip details (group/log/edit)
   $('table').on('click', '.titleField', function () {
+    let panel = this.nextElementSibling
+    let id = $(this).parents('tr')[0].id
+    if (panel.style.display === 'contents') {
+      $(panel).empty()
+      panel.style.display = 'none'
+      // $('.titleField').html($('<i/>', { class: 'fa fa-eye' })).append(' Show')
+      $(panel).fadeOut('slow')
+    } else {
+      loadGroup(id, panel)
+      panel.style.display = 'contents'
+      // $('.titleField').append($('<i/>', { class: 'fa fa-eye-slash' })).append(' Hide')
+      $(panel).fadeIn('slow')
+    }
+  })
+
+  // Edit an existing trip
+  $('table').on('click', '.editTrip', function () {
     let id = $(this).parents('tr')[0].id
     let index = -1
     for (let i = 0; i < tripsList.length; i++) {
@@ -282,7 +364,6 @@ $(function () {
           tripsList = JSON.parse(window.sessionStorage.getItem('tripList'))
         }
       })
-
       $('#saveTripButton').remove()
       $('#tripTitleInputField').remove()
       $('#addButton').show()
@@ -292,7 +373,7 @@ $(function () {
       window.alert('This trip title already exists.\n Please enter a new title.')
     }
   })
-  // Add event listeners for buttons for rejecting tripsss
+  // Add event listeners for buttons for rejecting trips
 
   $('[data-toggle="tooltip"]').tooltip()
 })
@@ -338,8 +419,6 @@ $(document).on('click', '#rejectButton', function (e) {
     }
   })
 })
-
-let pendingTrips = []
 
 let displayInvites = function (pendingInvites) {
   // Clear the old table
