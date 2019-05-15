@@ -41,5 +41,6 @@ function createDestinationQuery (queryString) {
 }
 
 module.exports = {
-  createDestination: createDestination
+  createDestination: createDestination,
+  createDestinationQueryString: createDestinationQueryString
 }
