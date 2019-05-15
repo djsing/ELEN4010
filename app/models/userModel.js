@@ -2,16 +2,20 @@
 
 let db = require('./db')
 
-function findUser (userInfo, signin, res) {
-  let info = userInfo
-  let email = info.emailAddress
-  db.pools
-    // Run query
+function findUserQuery (email) {
+  return db.pools
+  // Run query
     .then((pool) => {
       let dbrequest = pool.request()
       dbrequest.input('email', email)
       return dbrequest.query(`SELECT * FROM users WHERE email_address = @email`)
     })
+}
+
+function findUser (userInfo, signin, res) {
+  let info = userInfo
+  let email = info.emailAddress
+  findUserQuery(email)
     // both ID/Email match sought after in case of possible duplication of either ID/Email
     .then(result => {
       // if no match is found, it must be a new user
@@ -68,9 +72,8 @@ function findUser (userInfo, signin, res) {
     })
 }
 
-function createUser (userInfo, res) {
-  let info = userInfo
-  db.pools
+function createUserQuery (info) {
+  return db.pools
     // Run query
     .then((pool) => {
       let dbrequest = pool.request()
@@ -81,6 +84,11 @@ function createUser (userInfo, res) {
       dbrequest.input('hash', info.hash)
       return dbrequest.query(`INSERT INTO users VALUES(@firstName,@lastName,@emailAddress,@image,@hash)`)
     })
+}
+
+function createUser (userInfo, res) {
+  let info = userInfo
+  createUserQuery(info)
     // Send back the result
     .then(result => {
       res.send(info)
