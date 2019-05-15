@@ -2,35 +2,16 @@
 
 let db = require('./db')
 
+/* Add Invite */
 function addInvite (res, invite) {
-  db.pools
-    .then(pool => {
-      let dbrequest = pool.request()
-      dbrequest.input('id', invite.tripID)
-      dbrequest.input('email', invite.emailAddress)
-      return dbrequest
-        .query(`SELECT *
-        FROM invites
-        WHERE email_address = @email
-        AND trip_id = @id`)
-    })
+  addInviteQuery(invite)
     .then(result => {
       // console.log('Invites select result ', result)
       if (result.recordset.length === 0) {
-        // If this entry does's already exist in the table, add it to the table
-        db.pools
-          .then(pool => {
-            let dbrequest = pool.request()
-            dbrequest.input('id', invite.tripID)
-            dbrequest.input('email', invite.emailAddress)
-            return dbrequest
-              .query(`INSERT INTO invites VALUES(
-              @id,
-              @email);`)
-          }).then(result => {
-            // console.log('Tries to add id: ' + id + ' and email: ' + email)
-            // console.log('Invites add result ', result)
-            res.send('inviteAdded')
+        // If this entry doesn't already exist in the table, add it to the table
+        addInviteToInviteTable(invite)
+          .then(result => {
+
           }).catch(err => {
             console.log('add invite error', err)
           })
@@ -41,33 +22,41 @@ function addInvite (res, invite) {
     })
 }
 
-function getInvites (res, emailAddress) {
-  db.pools
+function addInviteQuery (invite) {
+  return db.pools
     .then(pool => {
       let dbrequest = pool.request()
-      dbrequest.input('email', emailAddress)
+      dbrequest.input('id', invite.tripID)
+      dbrequest.input('email', invite.emailAddress)
       return dbrequest
-        .query(`SELECT trip_id FROM invites WHERE email_address = @email`)
+        .query(`SELECT *
+      FROM invites
+      WHERE email_address = @email
+      AND trip_id = @id`)
     })
+}
+
+function addInviteToInviteTable (invite) {
+  return db.pools
+    .then(pool => {
+      let dbrequest = pool.request()
+      dbrequest.input('id', invite.tripID)
+      dbrequest.input('email', invite.emailAddress)
+      return dbrequest
+        .query(`INSERT INTO invites VALUES(
+    @id,
+    @email);`)
+    })
+}
+
+/* Retrieve Invites */
+function getInvites (res, emailAddress) {
+  getTripInvitesForSpecificUserQuery(emailAddress)
     .then(result => {
       // console.log('Invites DB: ', result.recordset)
       let trips = result.recordset
       if (trips.length !== 0) {
-        db.pools
-          .then(pool => {
-            let queryString = `SELECT * FROM trips WHERE id IN (`
-            trips.forEach((trip) => {
-              queryString = queryString + `'${trip.trip_id}',`
-            })
-
-            queryString = queryString.substring(0, queryString.length - 1)
-
-            queryString = queryString + `);`
-            // console.log('get trip titles QS ', queryString)
-
-            return pool.request()
-              .query(queryString)
-          })
+        getTripTitlesForInvites(trips)
           .then(result => {
             // console.log('get trip titles result ', result)
             res.send(result.recordset)
@@ -84,40 +73,43 @@ function getInvites (res, emailAddress) {
     })
 }
 
-function handleInvites (req, res, accept) {
-  let triID = req.body.id
-  let tripTitle = req.body.title
-  let user = req.body.user
-
-  db.pools
+function getTripInvitesForSpecificUserQuery (emailAddress) {
+  return db.pools
     .then(pool => {
       let dbrequest = pool.request()
-      dbrequest.input('tripID', triID)
+      dbrequest.input('email', emailAddress)
       return dbrequest
-        .query(`DELETE FROM invites WHERE trip_id = @tripID;`)
+        .query(`SELECT trip_id FROM invites WHERE email_address = @email`)
     })
+}
+
+function getTripTitlesForInvites (trips) {
+  return db.pools
+    .then(pool => {
+      let queryString = `SELECT * FROM trips WHERE id IN (`
+      trips.forEach((trip) => {
+        queryString = queryString + `'${trip.trip_id}',`
+      })
+
+      queryString = queryString.substring(0, queryString.length - 1)
+
+      queryString = queryString + `);`
+      // console.log('get trip titles QS ', queryString)
+
+      return pool.request()
+        .query(queryString)
+    })
+}
+
+/* Handle Invites */
+function handleInvites (req, res, accept) {
+  let tripID = req.body.id
+  let tripTitle = req.body.title
+  let user = req.body.user
+  deleteInvitesFromInviteTable(tripID)
     .then(result => {
       if (accept) {
-        db.pools
-          .then(pool => {
-            let dbrequest = pool.request()
-            dbrequest.input('tripID', triID)
-            dbrequest.input('tripTitle', tripTitle)
-            dbrequest.input('user', user)
-            return dbrequest
-              .query(`DELETE FROM trips WHERE id = @tripID;` +
-                `INSERT INTO trips VALUES(
-                  @tripID,
-                  @tripTitle);` +
-                `IF NOT EXISTS (SELECT * FROM groups
-              WHERE user_hash = @user
-              AND trip_id = @tripID)
-              BEGIN
-                INSERT INTO groups VALUES(
-                @user,
-                @tripID)
-              END;`)
-          })
+        acceptInvites(tripID, tripTitle, user)
           .catch(err => {
             console.log('handle invites error', err)
           })
@@ -132,6 +124,39 @@ function handleInvites (req, res, accept) {
     })
     .catch(err => {
       console.log('Delete invite error: ', err)
+    })
+}
+
+function deleteInvitesFromInviteTable (tripID) {
+  return db.pools
+    .then(pool => {
+      let dbrequest = pool.request()
+      dbrequest.input('tripID', tripID)
+      return dbrequest
+        .query(`DELETE FROM invites WHERE trip_id = @tripID;`)
+    })
+}
+
+function acceptInvites (tripID, tripTitle, user) {
+  return db.pools
+    .then(pool => {
+      let dbrequest = pool.request()
+      dbrequest.input('tripID', tripID)
+      dbrequest.input('tripTitle', tripTitle)
+      dbrequest.input('user', user)
+      return dbrequest
+        .query(`DELETE FROM trips WHERE id = @tripID;` +
+          `INSERT INTO trips VALUES(
+          @tripID,
+          @tripTitle);` +
+          `IF NOT EXISTS (SELECT * FROM groups
+      WHERE user_hash = @user
+      AND trip_id = @tripID)
+      BEGIN
+        INSERT INTO groups VALUES(
+        @user,
+        @tripID)
+      END;`)
     })
 }
 

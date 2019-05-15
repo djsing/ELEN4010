@@ -36,7 +36,7 @@ let sendInvite = function (emailAddress, tripName, invitee) {
 
   transporter.sendMail(helperOptions, (err, inf) => {
     if (err) {
-      return console.log(err)
+      return console.log('send mail error', err)
     }
     // console.log('The email got sent!')
   })
