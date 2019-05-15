@@ -92,6 +92,7 @@ function deleteUnnecessaryInfo (info) {
   delete info.image
   delete info.firstName
   delete info.lastName
+  delete info.userID
 }
 
 module.exports = {
