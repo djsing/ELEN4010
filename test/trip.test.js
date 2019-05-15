@@ -1,15 +1,29 @@
 'use strict'
+jest.mock('../app/models/db')
+let tripModel = require('../app/models/tripModel')
+
+class Trip {
+  constructor (id, title, destinations, user) {
+    this.id = id
+    this.title = title
+    this.destinationList = destinations
+    this.user = user
+  }
+}
+
+class Destination {
+  constructor (id, lat, lng, placeId, place, name, ordering) {
+    this.id = String(id)
+    this.lat = Number(lat)
+    this.lng = Number(lng)
+    this.placeId = String(placeId)
+    this.place = String(place)
+    this.name = String(name)
+    this.ordering = Number(ordering)
+  }
+}
 
 describe('testing trip class data structures', () => {
-    class Trip {
-      constructor (id, title, destinations, user) {
-        this.id = id
-        this.title = title
-        this.destinationList = destinations
-        this.user = user
-      }
-    }
-
   test('creating a trip object succeeds', () => {
     let testTrip = new Trip(12345, "My Trip", [], 'A1B2C3D4E5F6' )
     expect(testTrip.id).not.toBeNull()
@@ -20,18 +34,6 @@ describe('testing trip class data structures', () => {
 })
 
 describe('testing destination class data structures', () => {
-  class Destination {
-    constructor (id, lat, lng, placeId, place, name, ordering) {
-      this.id = String(id)
-      this.lat = Number(lat)
-      this.lng = Number(lng)
-      this.placeId = String(placeId)
-      this.place = String(place)
-      this.name = String(name)
-      this.ordering = Number(ordering)
-    }
-  }
-
   let testLatLng = {lat:0, lng: 0}
 
   test('creating a destination object succeeds', () => {
