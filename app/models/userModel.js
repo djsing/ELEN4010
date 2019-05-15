@@ -23,12 +23,7 @@ function findUser (userInfo, signin, res) {
         info.userType = 'newUser'
         // if user doesn't exist and tries to sign in
         if (signin) {
-          delete info.emailAddress
-          delete info.password
-          delete info.hash
-          delete info.image
-          delete info.firstName
-          delete info.lastName
+          deleteUnnecessaryInfo(info)
           res.send(info)
         } else {
           createUser(info, res)
@@ -38,12 +33,7 @@ function findUser (userInfo, signin, res) {
         // account that does exist and is trying to register
         if (!signin) {
           // console.log('trying to register')
-          delete info.emailAddress
-          delete info.password
-          delete info.hash
-          delete info.image
-          delete info.firstName
-          delete info.lastName
+          deleteUnnecessaryInfo(info)
           res.send(info)
         } else if (result.recordset[0].hash === info.hash) {
           // account that exists and is trying to sign in with the correct password
@@ -58,11 +48,7 @@ function findUser (userInfo, signin, res) {
           // account that exists and is trying to sign in with the wrong password
           // console.log('incorrect sign in')
           info.userType = 'incorrectUser'
-          // some info doesn't need to be sent to front-end
-          delete info.emailAddress
-          delete info.password
-          delete info.hash
-          delete info.image
+          deleteUnnecessaryInfo(info)
           res.send(info)
         }
       }
@@ -99,6 +85,16 @@ function createUser (userInfo, res) {
     })
 }
 
+function deleteUnnecessaryInfo (info) {
+  delete info.emailAddress
+  delete info.password
+  delete info.hash
+  delete info.image
+  delete info.firstName
+  delete info.lastName
+}
+
 module.exports = {
-  findUser: findUser
+  findUser: findUser,
+  deleteUnnecessaryInfo: deleteUnnecessaryInfo
 }

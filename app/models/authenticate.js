@@ -27,7 +27,6 @@ function googleUserAccountDatabaseConnection (req, res) {
 }
 
 function userAccountDatabaseConnection (req, res) {
-  // console.log('req', req)
   let userInfo = {
     firstName: req.body.firstName,
     lastName: req.body.lastName,
