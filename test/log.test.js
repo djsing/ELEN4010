@@ -5,6 +5,12 @@ beforeEach(async ()=>{
     await db.pools
 })
 
+afterAll(()=>{
+  db.pools.then(pool =>{
+    pool.close()
+  })
+})
+
 describe('testing log model', () => {
     let logItem = {
         id : '0',
