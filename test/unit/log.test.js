@@ -1,15 +1,5 @@
-let logModel = require('../app/models/logModel')
-let db = require('../app/models/db')
-
-beforeEach(async ()=>{
-    await db.pools
-})
-
-afterAll(()=>{
-  db.pools.then(pool =>{
-    pool.close()
-  })
-})
+jest.mock('../../app/models/db')
+let logModel = require('../../app/models/logModel')
 
 describe('testing log model', () => {
     let logItem = {
