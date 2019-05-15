@@ -1,5 +1,5 @@
-jest.mock('../../app/models/db')
-let authenticate = require('../../app/models/authenticate')
+jest.mock('../app/models/db')
+let authenticate = require('../app/models/authenticate')
 const crypto = require('crypto')
 
 describe('testing authentication', () => {

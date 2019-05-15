@@ -1,5 +1,5 @@
-jest.mock('../../app/models/db')
-let logModel = require('../../app/models/logModel')
+jest.mock('../app/models/db')
+let logModel = require('../app/models/logModel')
 
 describe('testing log model', () => {
     let logItem = {

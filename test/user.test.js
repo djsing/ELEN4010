@@ -1,5 +1,5 @@
-jest.mock('../../app/models/db')
-let userModel = require('../../app/models/userModel')
+jest.mock('../app/models/db')
+let userModel = require('../app/models/userModel')
 
 describe('testing userModel', () => {
   let userInfo = {
