@@ -16,12 +16,16 @@ Test Site: https://testawaywego.azurewebsites.net
 ###### Darrion Singh 1056673 ######
 ---
 
-This application has to meet the following core requirements to be deemed acceptable: <br><br>
-* Trip itineraries need to be visually represented on a map. <br>
-* Trips can be jointly planned by a group of people. A log is produced which captures all the modifications made to a trip. Each entry in the log should contain the date and time of the modification, the nature of the modification, and identify the group member who made the modification. The log can be viewed on the website. <br>
+Database: 
+DB_SERVER=awaywegoserver.database.windows.net
+DB_NAME=AwayWeGoDatabase
+DB_ADMIN=softwareprojectadmin
+DB_PASSWORD=Software3
+DB_PORT=1433
 
-For higher ratings in terms of functionality your application needs to improve on the core functionality by offering: <br><br>
-* additional functionality which adds value for the end-user and/or <br>
-* a polished user experience for the core functionality. <br>
-
-See this link for inspiration: [http://morganallanknutson.com/google/](http://morganallanknutson.com/google/)
+Test Database:
+DB_SERVER=testawaywegoserver.database.windows.net
+DB_NAME=TestAwayWeGoDatabase
+DB_ADMIN=softwareprojectadmin
+DB_PASSWORD=Software3
+DB_PORT=1433
