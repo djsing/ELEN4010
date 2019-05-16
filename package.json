@@ -61,6 +61,10 @@
     ]
   },
   "jest": {
+    "modulePathIgnorePatterns": [
+      "./app/controllers/",
+      "./app/public/js/"
+    ],
     "setupFiles": [
       "./utility/setup-jest.js"
     ],
