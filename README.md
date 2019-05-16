@@ -16,16 +16,16 @@ Test Site: https://testawaywego.azurewebsites.net
 ###### Darrion Singh 1056673 ######
 ---
 
-Database: 
-DB_SERVER=awaywegoserver.database.windows.net
-DB_NAME=AwayWeGoDatabase
-DB_ADMIN=softwareprojectadmin
-DB_PASSWORD=Software3
-DB_PORT=1433
+Database:   <br>
+      DB_SERVER=awaywegoserver.database.windows.net  <br>
+      DB_NAME=AwayWeGoDatabase  <br>
+      DB_ADMIN=softwareprojectadmin  <br>
+      DB_PASSWORD=Software3  <br>
+      DB_PORT=1433  <br>
 
-Test Database:
-DB_SERVER=testawaywegoserver.database.windows.net
-DB_NAME=TestAwayWeGoDatabase
-DB_ADMIN=softwareprojectadmin
-DB_PASSWORD=Software3
-DB_PORT=1433
+Test Database:  <br>
+      DB_SERVER=testawaywegoserver.database.windows.net  <br>
+      DB_NAME=TestAwayWeGoDatabase  <br>
+      DB_ADMIN=softwareprojectadmin  <br>
+      DB_PASSWORD=Software3  <br>
+      DB_PORT=1433  <br>
