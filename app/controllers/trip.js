@@ -92,16 +92,16 @@ function addLogEntry (eventCode) {
   let logEvent = new LogEvent(id, userHash, code, date, importance, tripId)
   newLog.push(logEvent)
   // Debugging:
-  console.log('Event with ID ',
-    logEvent.id, ': At ',
-    logEvent.date, ', ',
-    logEvent.userHash, ' performed event with code ',
-    logEvent.code, '.')
-  if (logEvent.importance) {
-    console.log('It was a major event')
-  } else {
-    console.log('It was a minor event')
-  }
+  // console.log('Event with ID ',
+  //   logEvent.id, ': At ',
+  //   logEvent.date, ', ',
+  //   logEvent.userHash, ' performed event with code ',
+  //   logEvent.code, '.')
+  // if (logEvent.importance) {
+  //   console.log('It was a major event')
+  // } else {
+  //   console.log('It was a minor event')
+  // }
 }
 
 let addDestination = function (latLng, placeId, place) {
