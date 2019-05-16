@@ -126,5 +126,6 @@ function getDestinationsQuery (tripId) {
 module.exports = {
   populateTripAndGroupTable: populateTripAndGroupTable,
   getTrips: getTrips,
-  getDestinations: getDestinations
+  getDestinations: getDestinations,
+  getTripTitlesQueryString: getTripTitlesQueryString
 }
