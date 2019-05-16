@@ -43,8 +43,7 @@ function groupMembersQuery (members) {
 }
 
 function groupMembersQueryString (members) {
-  let queryString = `SELECT first_name, last_name, image_url
-  FROM users WHERE hash IN (`
+  let queryString = `SELECT first_name, last_name, image_url FROM users WHERE hash IN (`
   members.forEach((member) => {
     queryString = queryString + `'${member.user_hash}',`
   })
