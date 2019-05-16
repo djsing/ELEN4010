@@ -4,6 +4,9 @@ Test Site:
 [![Build Status](https://travis-ci.com/witseie-elen4010/2019-005-project.svg?token=52xQs3WNRQyhnpMyQJpC&branch=development)](https://travis-ci.com/witseie-elen4010/2019-005-project)
 [![Coverage Status](https://coveralls.io/repos/github/witseie-elen4010/2019-005-project/badge.svg?branch=development&t=BTsw6J)](https://coveralls.io/github/witseie-elen4010/2019-005-project?branch=development)
 
+Main Site: https://awaywego.azurewebsites.net <br>
+Test Site: https://testawaywego.azurewebsites.net
+
 # Away We Go # 
 ## A group travel trip planning web application.##
 ### ELEN4010 Group Project ###
