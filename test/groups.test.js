@@ -23,3 +23,26 @@ describe('testing groupMembersQueryString function', () => {
       expect(groupsModel.groupMembersQueryString(testMembersArray3)).toEqual(testQS3)
     })
 })
+
+describe('testing groupMembersQuery function', () => {
+  
+  let testMembersArray1 = []
+  test('groupMembersQuery works when no members exist', async () => {
+    let response = await groupsModel.groupMembersQuery(testMembersArray1)
+    expect(response.recordset).toEqual(undefined)
+  })
+
+  let testMember1 = {user_hash: 1234}
+  let testMembersArray2 = [testMember1]
+  test('groupMembersQuery works when one member exists', async () => {
+    let response = await groupsModel.groupMembersQuery(testMembersArray2)
+    expect(response.recordset).toEqual(undefined)
+  })
+
+  let testMember2 = {user_hash: 5678}
+  let testMembersArray3 = [testMember1, testMember2]
+  test('groupMembersQuery works when two members exist', async () => {
+    let response = await groupsModel.groupMembersQuery(testMembersArray3)
+    expect(response.recordset).toEqual(undefined)
+  })
+})
