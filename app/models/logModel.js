@@ -54,16 +54,14 @@ function getLogQuery (tripId) {
       let dbrequest = pool.request()
       dbrequest.input('tripId', tripId)
       return dbrequest
-        .query(`SELECT id, userId, code, date, importance, trip_id, first_name, last_name
-        FROM log
-        JOIN users
-        ON log.userid = users.hash
-        WHERE trip_id = @tripId;`)
+        .query('SELECT id, userId, code, date, importance, trip_id, first_name, last_name FROM log JOIN users ON log.userid = users.hash WHERE trip_id = @tripId;')
     })
 }
 
 module.exports = {
   createLog: createLog,
   getLogs: getLogs,
-  createLogQueryString: createLogQueryString
+  createLogQueryString: createLogQueryString,
+  createLogQuery: createLogQuery,
+  getLogQuery: getLogQuery
 }
