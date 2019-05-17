@@ -24,3 +24,16 @@ describe('testing getTripTitlesQueryString function', () => {
         expect(tripManagerModel.getTripTitlesQueryString(testTripArray3)).toEqual(testQS3)
     })
 })
+
+describe('testing tripManagerModel query functions', () =>{
+    let tripInfo = {
+        id: 0,
+        title: 'My Trip',
+        user: 'a1s2d3f4g5h6j7k8'
+    }
+    test('testing populateTripAndGroupTableQuery', async () =>{
+        let tableResult = await tripManagerModel.populateTripAndGroupTableQuery(tripInfo)
+        expect(Object.keys(tableResult).length).toEqual(1)
+        expect(tableResult.recordset).toEqual(undefined)
+    })
+})

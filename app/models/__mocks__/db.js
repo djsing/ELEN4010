@@ -78,6 +78,11 @@ let query = function (queryString) {
         }]
       }
       break
+    case 'DELETE FROM trips WHERE id = 0; INSERT INTO trips VALUES(0, My Trip); IF NOT EXISTS (SELECT * FROM groups WHERE user_hash = a1s2d3f4g5h6j7k8 AND trip_id = 0) BEGIN INSERT INTO groups VALUES(a1s2d3f4g5h6j7k8, 0) END;':
+      result = {
+        recordset: undefined
+      }
+      break
     default: break
   }
   return new Promise((resolve, reject) => { resolve(result) })
