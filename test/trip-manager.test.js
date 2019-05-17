@@ -4,12 +4,6 @@ let tripManagerModel = require('../app/models/tripManagerModel')
 
 
 describe('testing getTripTitlesQueryString function', () => {
-    let testTripArray1 = []
-    let testQS1 = `SELECT * FROM trips WHERE id IN );`
-    test('trip query string is correct when no trips exist', () => {
-        expect(tripManagerModel.getTripTitlesQueryString(testTripArray1)).toEqual(testQS1)
-    })
-
     let testTrip1 = { trip_id: 1234 }
     let testTripArray2 = [testTrip1]
     let testQS2 = `SELECT * FROM trips WHERE id IN ('1234');`
@@ -20,7 +14,7 @@ describe('testing getTripTitlesQueryString function', () => {
     let testTrip2 = { trip_id: 5678 }
     let testTripArray3 = [testTrip1, testTrip2]
     let testQS3 = `SELECT * FROM trips WHERE id IN ('1234','5678');`
-    test('trip query string is correct when one trip exists', () => {
+    test('trip query string is correct when more than one trip exists', () => {
         expect(tripManagerModel.getTripTitlesQueryString(testTripArray3)).toEqual(testQS3)
     })
 })
@@ -45,5 +39,16 @@ describe('testing tripManagerModel query functions', () => {
         expect(groups.recordset[1].user_hash).toEqual('z1x2c3v4b5n6m7')
         expect(groups.recordset[0].trip_id).toEqual('123456789')
         expect(groups.recordset[1].trip_id).toEqual('987654321')
+    })
+
+    test('testing getTripTitlesQuery', async () => {
+        let testTrip1 = { trip_id: 1234 }
+        let testTrip2 = { trip_id: 5678 }
+        let testTripArray3 = [testTrip1, testTrip2]
+        let titles = await tripManagerModel.getTripTitlesQuery(testTripArray3)
+        expect(titles.recordset[0].id).toEqual('0')
+        expect(titles.recordset[1].id).toEqual('1')
+        expect(titles.recordset[0].title).toEqual('My Trip')
+        expect(titles.recordset[1].title).toEqual('Your Trip')
     })
 })

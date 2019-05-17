@@ -100,6 +100,17 @@ let query = function (queryString) {
       }
       break
     default: break
+
+    case `SELECT * FROM trips WHERE id IN ('1234','5678');`:
+      result = {
+        recordset: [{
+          id: '0',
+          title: 'My Trip'
+        }, {
+          id: '1',
+          title: 'Your Trip'
+        }]
+      }
   }
   return new Promise((resolve, reject) => { resolve(result) })
 }

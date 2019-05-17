@@ -118,5 +118,6 @@ module.exports = {
   getDestinations: getDestinations,
   getTripTitlesQueryString: getTripTitlesQueryString,
   populateTripAndGroupTableQuery: populateTripAndGroupTableQuery,
-  getTripsQuery: getTripsQuery
+  getTripsQuery: getTripsQuery,
+  getTripTitlesQuery: getTripTitlesQuery
 }
