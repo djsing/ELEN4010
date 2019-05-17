@@ -25,6 +25,7 @@ let query = function (queryString) {
     str = str.replace(regex, this.values[i])
   }
   this.queryString = str
+  // console.log(this.queryString)
   switch (this.queryString) {
     // Inserting does not return anything
     case `INSERT INTO log VALUES ('0','random','1','2019-01-01','True','random');`:
@@ -64,7 +65,19 @@ let query = function (queryString) {
         }]
       }
       break
-
+    case `SELECT first_name, last_name, image_url FROM users WHERE hash IN ('a1b2c3d4e5f6g7h8i9','q1w2e3r4t5y6u7i8o9');`:
+      result = {
+        recordset: [{
+          first_name: 'Darrion',
+          last_name: 'Singh',
+          image_url: 'http://googleusers.com/darrionimage.jpg'
+        }, {
+          first_name: 'Tyson',
+          last_name: 'Cross',
+          image_url: null
+        }]
+      }
+      break
     default: break
   }
   return new Promise((resolve, reject) => { resolve(result) })

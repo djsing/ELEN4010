@@ -42,4 +42,23 @@ describe('testing groupModel query functions', () => {
     expect(group.recordset[1].user_hash).toEqual('q1w2e3r4t5y6u7i8o9')
     expect(group.recordset[1].trip_id).toEqual('987654321')
   })
+
+  test('testing groupMembersQuery with single trip ID and multiple members', async () => {
+    let group = [{
+      user_hash: 'a1b2c3d4e5f6g7h8i9',
+      trip_id: '123456789'
+    }, {
+      user_hash: 'q1w2e3r4t5y6u7i8o9',
+      trip_id: '987654321'
+    }]
+    let members = await groupsModel.groupMembersQuery(group)
+    expect(members.recordset.length).toEqual(2)
+    expect(members.recordset[0].first_name).toEqual('Darrion')
+    expect(members.recordset[0].last_name).toEqual('Singh')
+    expect(members.recordset[0].image_url).toEqual('http://googleusers.com/darrionimage.jpg')
+
+    expect(members.recordset[1].first_name).toEqual('Tyson')
+    expect(members.recordset[1].last_name).toEqual('Cross')
+    expect(members.recordset[1].image_url).toEqual(null)
+  })
 })
