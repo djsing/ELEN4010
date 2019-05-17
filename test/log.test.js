@@ -22,6 +22,7 @@ describe('testing createLog', () => {
   test('testing createLogQuery', async () => {
     let queryString = logModel.createLogQueryString(log)
     let response = await logModel.createLogQuery(queryString)
+    expect(Object.keys(response).length).toEqual(1)
     expect(response.recordset).toEqual(undefined)
   })
 })
