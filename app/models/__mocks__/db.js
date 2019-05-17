@@ -99,7 +99,6 @@ let query = function (queryString) {
         }]
       }
       break
-    default: break
 
     case `SELECT * FROM trips WHERE id IN ('1234','5678');`:
       result = {
@@ -111,6 +110,33 @@ let query = function (queryString) {
           title: 'Your Trip'
         }]
       }
+      break
+
+    case `SELECT * FROM destinations WHERE trip_id = 1;`:
+      result = {
+        recordset: [{
+          id: '1',
+          lat: '0',
+          lng: '0',
+          place_id: 'place12345',
+          place: 'London',
+          name: 'Family visit',
+          ordering: 1,
+          trip_id: '1'
+        },
+        {
+          id: '2',
+          lat: '1',
+          lng: '1',
+          place_id: 'place54321',
+          place: 'Manchester',
+          name: 'Football stadium visit',
+          ordering: 2,
+          trip_id: '1'
+        }]
+      }
+      break
+    default: break
   }
   return new Promise((resolve, reject) => { resolve(result) })
 }
