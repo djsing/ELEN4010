@@ -46,6 +46,7 @@ let query = function (queryString) {
         }]
       }
       break
+
     case 'SELECT * FROM groups WHERE trip_id = 0;':
       result = {
         recordset: [{
@@ -54,6 +55,7 @@ let query = function (queryString) {
         }]
       }
       break
+
     case 'SELECT * FROM groups WHERE trip_id = 1;':
       result = {
         recordset: [{
@@ -65,6 +67,7 @@ let query = function (queryString) {
         }]
       }
       break
+
     case `SELECT first_name, last_name, image_url FROM users WHERE hash IN ('a1b2c3d4e5f6g7h8i9','q1w2e3r4t5y6u7i8o9');`:
       result = {
         recordset: [{
@@ -75,6 +78,61 @@ let query = function (queryString) {
           first_name: 'Tyson',
           last_name: 'Cross',
           image_url: null
+        }]
+      }
+      break
+
+    case 'DELETE FROM trips WHERE id = 0; INSERT INTO trips VALUES(0, My Trip); IF NOT EXISTS (SELECT * FROM groups WHERE user_hash = a1s2d3f4g5h6j7k8 AND trip_id = 0) BEGIN INSERT INTO groups VALUES(a1s2d3f4g5h6j7k8, 0) END;':
+      result = {
+        recordset: undefined
+      }
+      break
+
+    case `SELECT * FROM groups WHERE user_hash = z1x2c3v4b5n6m7;`:
+      result = {
+        recordset: [{
+          user_hash: 'z1x2c3v4b5n6m7',
+          trip_id: '123456789'
+        }, {
+          user_hash: 'z1x2c3v4b5n6m7',
+          trip_id: '987654321'
+        }]
+      }
+      break
+
+    case `SELECT * FROM trips WHERE id IN ('1234','5678');`:
+      result = {
+        recordset: [{
+          id: '0',
+          title: 'My Trip'
+        }, {
+          id: '1',
+          title: 'Your Trip'
+        }]
+      }
+      break
+
+    case `SELECT * FROM destinations WHERE trip_id = 1;`:
+      result = {
+        recordset: [{
+          id: '1',
+          lat: '0',
+          lng: '0',
+          place_id: 'place12345',
+          place: 'London',
+          name: 'Family visit',
+          ordering: 1,
+          trip_id: '1'
+        },
+        {
+          id: '2',
+          lat: '1',
+          lng: '1',
+          place_id: 'place54321',
+          place: 'Manchester',
+          name: 'Football stadium visit',
+          ordering: 2,
+          trip_id: '1'
         }]
       }
       break
