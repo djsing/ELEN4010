@@ -157,6 +157,19 @@ let query = function (queryString) {
         recordset: undefined
       }
       break
+    case 'SELECT * FROM invites WHERE email_address = \'test@test.com\' AND trip_id = \'123456\'':
+      result = {
+        recordset: [{
+          trip_id: '123456',
+          email_address: 'test@test.com'
+        }]
+      }
+      break
+    case 'INSERT INTO invites VALUES(\'123456\',\'test@test.com\');':
+      result = {
+        recordset: undefined
+      }
+      break
     default: break
   }
   return new Promise((resolve, reject) => {
