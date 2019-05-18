@@ -38,9 +38,23 @@ test('initialises the context', async () => {
 })
 
 
-test('Email address input is blank', async () => {
+test('Email address placeholder is correct', async () => {
     el = await getElementById('inputEmail')
-    actual = await el.getText()
-    expected = ''
+    actual = await el.getAttribute('placeholder')
+    expected = 'Email address'
+    expect(actual).toEqual(expected)
+})
+
+test('Password placeholder is correct', async () => {
+    el = await getElementById('inputPassword')
+    actual = await el.getAttribute('placeholder')
+    expected = 'Password'
+    expect(actual).toEqual(expected)
+})
+
+test('Remember password checkbox is not checked on page load', async () => {
+    const el = await driver.wait(until.elementLocated(By.id('customCheck1')), waitUntilTime)
+    actual = await el.isSelected()
+    expected = false
     expect(actual).toEqual(expected)
 })
