@@ -58,3 +58,18 @@ test('Remember password checkbox is not checked on page load', async () => {
     expected = false
     expect(actual).toEqual(expected)
 })
+
+test('User directed to trips page on successful sign in', async () => {
+    email = await getElementById('inputEmail')
+    email.sendKeys('r@r.com')
+    password = await getElementById('inputPassword')
+    // el = await driver.wait(until.elementLocated(By.name('inputPassword')), waitUntilTime)
+    password.sendKeys('r')
+    button = await getElementById('signInPageSignInButton')
+    button.click()
+    // wait for an element that is unique to the trip page to be found before getting the URL
+    await getElementById('pac-input')
+    let actual = await driver.getCurrentUrl()
+    expected = 'https://awaywego.azurewebsites.net/trip'
+    expect(actual).toEqual(expected)
+})
