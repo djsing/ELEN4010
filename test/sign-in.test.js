@@ -64,24 +64,24 @@ describe('testing page elements on page load', () => {
     })
 })
 
-describe('test successful sign in', () => {
-    test('User directed to trips page on successful sign in', async () => {
-        let email = await getElementById('inputEmail')
-        email.clear()
-        email.sendKeys('r@r.com')
-        let password = await getElementById('inputPassword')
-        password.clear()
-        password.sendKeys('r') // correct password for email
-        let button = await getElementById('signInPageSignInButton')
-        button.click()
+// describe('test successful sign in', () => {
+//     test('User directed to trips page on successful sign in', async () => {
+//         let email = await getElementById('inputEmail')
+//         email.clear()
+//         email.sendKeys('r@r.com')
+//         let password = await getElementById('inputPassword')
+//         password.clear()
+//         password.sendKeys('r') // correct password for email
+//         let button = await getElementById('signInPageSignInButton')
+//         button.click()
     
-        // wait for an element that is unique to the trip page to be found before getting the URL
-        await getElementById('pac-input')
-        let actual = await driver.getCurrentUrl()
-        let expected = 'https://awaywego.azurewebsites.net/trip'
-        expect(actual).toEqual(expected)
-    })
-})
+//         // wait for an element that is unique to the trip page to be found before getting the URL
+//         await getElementById('pac-input')
+//         let actual = await driver.getCurrentUrl()
+//         let expected = 'https://awaywego.azurewebsites.net/trip'
+//         expect(actual).toEqual(expected)
+//     })
+// })
 
 // describe('test failed sign in', () => {
 //     test('User not directed to trips page when password is incorrect', async () => {
