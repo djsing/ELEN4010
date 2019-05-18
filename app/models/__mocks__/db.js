@@ -170,6 +170,13 @@ let query = function (queryString) {
         recordset: undefined
       }
       break
+    case `SELECT trip_id FROM invites WHERE email_address = 'test@test.com'`:
+      result = {
+        recordset: [{
+          trip_id: '123456'
+        }]
+      }
+      break
     default: break
   }
   return new Promise((resolve, reject) => {

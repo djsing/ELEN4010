@@ -160,5 +160,6 @@ module.exports = {
   getInvites: getInvites,
   handleInvites: handleInvites,
   addInviteQuery: addInviteQuery,
-  addInviteToInviteTable: addInviteToInviteTable
+  addInviteToInviteTable: addInviteToInviteTable,
+  getTripInvitesForSpecificUserQuery: getTripInvitesForSpecificUserQuery
 }
