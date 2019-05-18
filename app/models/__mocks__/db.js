@@ -136,6 +136,11 @@ let query = function (queryString) {
         }]
       }
       break
+    case `DELETE FROM destinations WHERE trip_id = 12345;INSERT INTO destinations VALUES ('12345',0,0,'A123','My Destination','testName',1,12345);`:
+      result = {
+        recordset: undefined
+      }
+      break
     default: break
   }
   return new Promise((resolve, reject) => { resolve(result) })
