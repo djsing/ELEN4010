@@ -22,7 +22,7 @@ let query = function (queryString) {
   let str = queryString
   for (let i = 0; i < this.replacements.length; i++) {
     let regex = new RegExp(this.replacements[i], 'g')
-    str = str.replace(regex, this.values[i])
+    str = str.replace(regex, '\'' + this.values[i] + '\'')
   }
   this.queryString = str
   // console.log(this.queryString)
@@ -34,7 +34,7 @@ let query = function (queryString) {
       }
       break
     // Selecting returns results
-    case 'SELECT id, userId, code, date, importance, trip_id, first_name, last_name FROM log JOIN users ON log.userid = users.hash WHERE trip_id = 0;':
+    case 'SELECT id, userId, code, date, importance, trip_id, first_name, last_name FROM log JOIN users ON log.userid = users.hash WHERE trip_id = \'0\';':
       result = {
         recordset: [{
           id: '0',
@@ -47,7 +47,7 @@ let query = function (queryString) {
       }
       break
 
-    case 'SELECT * FROM groups WHERE trip_id = 0;':
+    case 'SELECT * FROM groups WHERE trip_id = \'0\';':
       result = {
         recordset: [{
           user_hash: 'a1b2c3d4e5f6g7h8i9',
@@ -56,7 +56,7 @@ let query = function (queryString) {
       }
       break
 
-    case 'SELECT * FROM groups WHERE trip_id = 1;':
+    case 'SELECT * FROM groups WHERE trip_id = \'1\';':
       result = {
         recordset: [{
           user_hash: 'a1b2c3d4e5f6g7h8i9',
@@ -82,13 +82,13 @@ let query = function (queryString) {
       }
       break
 
-    case 'DELETE FROM trips WHERE id = 0; INSERT INTO trips VALUES(0, My Trip); IF NOT EXISTS (SELECT * FROM groups WHERE user_hash = a1s2d3f4g5h6j7k8 AND trip_id = 0) BEGIN INSERT INTO groups VALUES(a1s2d3f4g5h6j7k8, 0) END;':
+    case 'DELETE FROM trips WHERE id = \'0\'; INSERT INTO trips VALUES(\'0\', \'My Trip\'); IF NOT EXISTS (SELECT * FROM groups WHERE user_hash = \'a1s2d3f4g5h6j7k8\' AND trip_id = \'0\') BEGIN INSERT INTO groups VALUES(\'a1s2d3f4g5h6j7k8\', \'0\') END;':
       result = {
         recordset: undefined
       }
       break
 
-    case `SELECT * FROM groups WHERE user_hash = z1x2c3v4b5n6m7;`:
+    case `SELECT * FROM groups WHERE user_hash = 'z1x2c3v4b5n6m7';`:
       result = {
         recordset: [{
           user_hash: 'z1x2c3v4b5n6m7',
@@ -112,7 +112,7 @@ let query = function (queryString) {
       }
       break
 
-    case `SELECT * FROM destinations WHERE trip_id = 1;`:
+    case `SELECT * FROM destinations WHERE trip_id = '1';`:
       result = {
         recordset: [{
           id: '1',
@@ -141,7 +141,7 @@ let query = function (queryString) {
         recordset: undefined
       }
       break
-    case 'SELECT * FROM users WHERE email_address = test@test.com':
+    case 'SELECT * FROM users WHERE email_address = \'test@test.com\'':
       result = {
         recordset: [{
           first_name: 'Some',
@@ -152,7 +152,7 @@ let query = function (queryString) {
         }]
       }
       break
-    case `INSERT INTO users VALUES(Some,Person,test@gmail.com,http://some.url.com/image.jpg,a1b2c3d4e5f6g7h8i9)`:
+    case `INSERT INTO users VALUES('Some','Person','test@gmail.com','http://some.url.com/image.jpg','a1b2c3d4e5f6g7h8i9')`:
       result = {
         recordset: undefined
       }
