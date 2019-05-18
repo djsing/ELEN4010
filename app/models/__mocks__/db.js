@@ -141,9 +141,29 @@ let query = function (queryString) {
         recordset: undefined
       }
       break
+    case 'SELECT * FROM users WHERE email_address = test@test.com':
+      result = {
+        recordset: [{
+          first_name: 'Some',
+          last_name: 'Person',
+          email_address: 'test@test.com',
+          image_url: 'http://image.com/image.jpg',
+          hash: 'q1w2e3r4t5y6u7i8o9'
+        }]
+      }
+      break
+    case `INSERT INTO users VALUES(Some,Person,test@gmail.com,http://some.url.com/image.jpg,a1b2c3d4e5f6g7h8i9)`:
+      result = {
+        recordset: undefined
+      }
+      break
     default: break
   }
-  return new Promise((resolve, reject) => { resolve(result) })
+  return new Promise((resolve, reject) => {
+    if (result === {}) {
+      reject(new Error('Invalid Query'))
+    } else resolve(result)
+  })
 }
 
 let input = function (str, type, value) {

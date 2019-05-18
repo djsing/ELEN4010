@@ -97,5 +97,7 @@ function deleteUnnecessaryInfo (info) {
 
 module.exports = {
   findUser: findUser,
-  deleteUnnecessaryInfo: deleteUnnecessaryInfo
+  deleteUnnecessaryInfo: deleteUnnecessaryInfo,
+  findUserQuery: findUserQuery,
+  createUserQuery: createUserQuery
 }
