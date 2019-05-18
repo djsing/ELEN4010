@@ -1,4 +1,7 @@
 let termsAndConditionsModel = require('../app/models/termsAndConditionsModel')
+let fs = require('fs')
+let path = require('path')
+
 
 describe('testing the model that exports the correct terms and conditions', () => {
     test('test if the preamble stord in the model is correct', () => {
@@ -27,4 +30,47 @@ describe('testing the model that exports the correct terms and conditions', () =
         ]
         expect(termsAndConditionsModel.getTermsAndCondtions().otherSites).toEqual(otherSites)
     })
+})
+
+describe('testing that the controller renders the data from the model onto the HTML page', () => {
+    describe('testing that the addTermsToSubsection function adds the neccesary information to each HTML div', () =>{
+        let testFolderRegex = /test/gi
+        let rootDir = path.resolve(__dirname).replace(testFolderRegex, '')
+        let termsAndConditionsHTMLDir = path.join(rootDir, '/app/views/terms_and_conditions.html')
+        // Read in the HTML file
+        document.body.innerHTML = fs.readFileSync(termsAndConditionsHTMLDir)
+    
+        require('../app/controllers/terms_and_conditions')
+        const $ = require('jquery')
+        
+        let addTermsToSubsection = function (subsection, termsArray, divider) {
+            let parentItemType = ''
+            if (divider === 'li') {
+            parentItemType = 'ol'
+            } else {
+            parentItemType = 'p'
+            }
+            let parentItem = document.createElement(parentItemType)
+            termsArray.forEach(element => {
+            let item = document.createElement(divider)
+            let term = document.createTextNode(element)
+            item.appendChild(term)
+            parentItem.appendChild(item)
+            })
+            subsection.append(parentItem)
+        }
+            
+        test('preamble section is added to the div with id="Preamble"', () => {  // Get the directory of where the HTML file is for the T&Cs
+            // An initial space is added to account for the fact that the preamble div's first HTML DOM child is a <p> element
+            let preambleString = ' '
+            // Construct the preamble string from the sentences returned by the model
+            termsAndConditionsModel.getTermsAndCondtions().preamble.forEach((sentence) => {
+                preambleString = preambleString + sentence
+            })
+
+            addTermsToSubsection($('#Preamble'), termsAndConditionsModel.getTermsAndCondtions().preamble, 'p')
+
+            expect($('#Preamble').text()).toEqual(preambleString) 
+        })
+    })   
 })
