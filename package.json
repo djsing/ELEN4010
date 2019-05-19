@@ -10,7 +10,8 @@
   "scripts": {
     "test": "jest",
     "start": "node index",
-    "coveralls": "jest --coverage --coverageReporters=text-lcov | coveralls"
+    "coveralls": "jest --coverage --coverageReporters=text-lcov | coveralls",
+    "build": "babel --presets es2015 -d lib/ src"
   },
   "repository": {
     "type": "git",
@@ -51,6 +52,10 @@
   },
   "devDependencies": {
     "acorn": "^6.1.1",
+    "babel-cli": "^6.26.0",
+    "babel-jest": "^24.8.0",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-es2015": "^6.24.1",
     "chromedriver": "^74.0.0",
     "coveralls": "^3.0.3",
     "geckodriver": "^1.16.2",

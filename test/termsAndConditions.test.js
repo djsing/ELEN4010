@@ -1,6 +1,7 @@
 let termsAndConditionsModel = require('../app/models/termsAndConditionsModel')
 let fs = require('fs')
 let path = require('path')
+// import addTermsToSubsection from '../app/controllers/terms_and_conditions.js'
 
 
 describe('testing the model that exports the correct terms and conditions', () => {
@@ -43,22 +44,22 @@ describe('testing that the controller renders the data from the model onto the H
         require('../app/controllers/terms_and_conditions')
         const $ = require('jquery')
         
-        let addTermsToSubsection = function (subsection, termsArray, divider) {
-            let parentItemType = ''
-            if (divider === 'li') {
-            parentItemType = 'ol'
-            } else {
-            parentItemType = 'p'
-            }
-            let parentItem = document.createElement(parentItemType)
-            termsArray.forEach(element => {
-            let item = document.createElement(divider)
-            let term = document.createTextNode(element)
-            item.appendChild(term)
-            parentItem.appendChild(item)
-            })
-            subsection.append(parentItem)
-        }
+        // let addTermsToSubsection = function (subsection, termsArray, divider) {
+        //     let parentItemType = ''
+        //     if (divider === 'li') {
+        //     parentItemType = 'ol'
+        //     } else {
+        //     parentItemType = 'p'
+        //     }
+        //     let parentItem = document.createElement(parentItemType)
+        //     termsArray.forEach(element => {
+        //     let item = document.createElement(divider)
+        //     let term = document.createTextNode(element)
+        //     item.appendChild(term)
+        //     parentItem.appendChild(item)
+        //     })
+        //     subsection.append(parentItem)
+        // }
             
         test('preamble section is added to the div with id="Preamble"', () => {  // Get the directory of where the HTML file is for the T&Cs
             // An initial space is added to account for the fact that the preamble div's first HTML DOM child is a <p> element
