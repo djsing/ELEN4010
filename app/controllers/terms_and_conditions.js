@@ -2,7 +2,7 @@
 
 const $ = window.$
 
-let addTermsToSubsection = function (subsection, termsArray, divider) {
+export default function addTermsToSubsection (subsection, termsArray, divider) {
   let parentItemType = ''
   if (divider === 'li') {
     parentItemType = 'ol'
