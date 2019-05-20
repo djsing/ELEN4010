@@ -65,6 +65,20 @@ describe('test invites modal', () => {
         let modalVisibility = invitesModal.isDisplayed()
         expect(modalVisibility).toBeTruthy()
     })
+
+    test('test if an a warning message appears after an invalid email address is entered', async () => {
+        let emailAddressField = await getElementById('emailAddressField')
+        emailAddressField.clear()
+        emailAddressField.sendKeys('invalidEmailAddress.com')
+
+        let inviteButton = await getElementById('inviteEmailAddressButton')
+        inviteButton.click()
+
+        let warningMessgae = await getElementById('inviteEmailAddressButton')
+        warningMessageVisibility = warningMessgae.isDisplayed
+        
+        expect(warningMessageVisibility).toBeTruthy()
+    })
 })
 afterAll(() => {
     driver.quit()
