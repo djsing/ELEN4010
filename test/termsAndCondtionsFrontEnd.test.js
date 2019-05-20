@@ -63,6 +63,14 @@ describe('testing if the terms and conditions on the webpage matches the text st
         let preambleText = await preambleDiv.getText()
         expect(removeHardReturnsInText(preambleText)).toEqual(expectedText) 
     })
+
+    test('Links to other websites section on the webpage is correct', async () => {
+        let expectedText = ''
+        expectedText = concatenateTextArrayToParagraph(termsAndConditionsModel.getTermsAndCondtions().otherSites)
+        let preambleDiv = await getElementById('OtherSites')
+        let preambleText = await preambleDiv.getText()
+        expect(removeHardReturnsInText(preambleText)).toEqual(expectedText) 
+    })
 })
 
 
