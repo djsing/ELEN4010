@@ -44,7 +44,8 @@ test('initialises the context', async () => {
 
 
 describe('test invites modal', () => {
-    
+    let validEmailAddress = 'validEmailAddress@validEmailAddress.com'
+    let invalidEmailAddress = 'invalidEmailAddress.com'
     
     test('Invites modal appears when "INVITE SOMEBODY TO JOIN THIS TRIP" is pressed', async () => {
         let email = await getElementById('inputEmail')
@@ -69,7 +70,7 @@ describe('test invites modal', () => {
     test('test if an a warning message appears after an invalid email address is entered', async () => {
         let emailAddressField = await getElementById('emailAddressField')
         emailAddressField.clear()
-        emailAddressField.sendKeys('invalidEmailAddress.com')
+        emailAddressField.sendKeys(invalidEmailAddress)
 
         let inviteButton = await getElementById('inviteEmailAddressButton')
         inviteButton.click()
@@ -93,10 +94,10 @@ describe('test invites modal', () => {
         
         expect(warningMessageVisibility).toBeTruthy()
     })
-    test('test if an a "group invite send" message appears after a valid email address is entered', async () => {
+    test('test if an a "group invite sent" message appears after a valid email address is entered', async () => {
         let emailAddressField = await getElementById('emailAddressField')
         emailAddressField.clear()
-        emailAddressField.sendKeys('validEmailAddress@validEmailAddress.com')
+        emailAddressField.sendKeys(validEmailAddress)
 
         let inviteButton = await getElementById('inviteEmailAddressButton')
         inviteButton.click()
@@ -104,6 +105,11 @@ describe('test invites modal', () => {
         let inviteSentMessage = await getElementById('inviteSendHeader')
         inviteSentMessageVisibility = await inviteSentMessage.isDisplayed()
         expect(inviteSentMessageVisibility).toBeTruthy()
+    })
+    test('test if the email addres in the "group invite sent" message is correct', async () => {
+        let inviteSentAddress = await getElementById('InviteEmailAddress')
+        inviteSentAddressText = await inviteSentAddress.getText()
+        expect(inviteSentAddressText).toBe(validEmailAddress)
     })
 })
 afterAll(() => {
