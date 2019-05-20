@@ -26,6 +26,10 @@ test('initialises the context', async () => {
     await driver.manage().window().setPosition(0, 0)
     await driver.manage().window().setSize(1280, 1024)
     await driver.get(rootURL)
+
+    await driver.executeScript('document.getElementById("inputEmail").setAttribute("value", "r@r.com")')
+    await driver.executeScript('document.getElementById("inputPassword").setAttribute("value", "r")')
+    await driver.executeScript('document.getElementById("signInPageSignInButton").click()')
 })
 
 async function getElementById(id) {
@@ -35,24 +39,14 @@ async function getElementById(id) {
 }
 
 
-describe('test invites modal', async ()=> {
-    // // Login 
-    // let email = await getElementById('inputEmail')
-    // email.clear()
-    // email.sendKeys('r@r.com')
-    // let password = await getElementById('inputPassword')
-    // password.clear()
-    // password.sendKeys('r') // correct password for email
-    // let button = await getElementById('signInPageSignInButton')
-    // button.click()
-    // // updateDriverURL() 
-    // test('test if invites modal pops up when "INVITE SOMEBODY TO JOIN THIS TRIP" button is pressed', async () => {
-    //     inviteSomeonePopupButton = await getElementById('inviteEditorButton')
-    //     inviteSomeonePopupButton.click() 
-    //     inviteModal = await getElementByClass('modal')
-    //     let isVisible = inviteModal.isDisplayed()
-    //     expected(isVisible).toBeTruthy()
-    // })
+describe('test invites modal', ()=> {
+    test('test if invites modal pops up when "INVITE SOMEBODY TO JOIN THIS TRIP" button is pressed', async () => {
+        inviteSomeonePopupButton = await getElementById('inviteEditorButton')
+        inviteSomeonePopupButton.click() 
+        inviteModal = await getElementByClass('modal')
+        let isVisible = inviteModal.isDisplayed()
+        expect(isVisible).toBeTruthy()
+    })
     
 })
 
