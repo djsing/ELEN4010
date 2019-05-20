@@ -8,9 +8,9 @@ require('chromedriver')
 
 require('geckodriver')
 
-const rootURL = 'https://awaywego.azurewebsites.net/sign-in'
+const rootURL = 'https://testawaywego.azurewebsites.net/sign-in'
 
-const d = new Builder().forBrowser('firefox').build()
+const d = new Builder().forBrowser('chrome').build()
 const waitUntilTime = 20000
 let driver, el, actual, expected
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 1000 * 60 * 5
