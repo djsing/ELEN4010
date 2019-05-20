@@ -81,14 +81,14 @@ $(document).ready(() => {
       contentType: 'application/json',
       data: JSON.stringify(userInfo),
       success: function (response) {
-        // console.log('reg response', response)
-        let name = JSON.stringify(response.firstName + ' ' + response.lastName)
-        window.sessionStorage.setItem('Name', name)
-        window.sessionStorage.setItem('ImageURI', JSON.stringify(response.image))
-        window.sessionStorage.setItem('Email', JSON.stringify(response.emailAddress))
-        window.sessionStorage.setItem('Hash', JSON.stringify(response.hash))
         // direct to different pages based on whether the user is new or current
         if (response.userType === 'currentUser') {
+          // console.log('reg response', response)
+          let name = JSON.stringify(response.firstName + ' ' + response.lastName)
+          window.sessionStorage.setItem('Name', name)
+          window.sessionStorage.setItem('ImageURI', JSON.stringify(response.image))
+          window.sessionStorage.setItem('Email', JSON.stringify(response.emailAddress))
+          window.sessionStorage.setItem('Hash', JSON.stringify(response.hash))
           window.location = '/trip'
         } else if (response.userType === 'incorrectUser') {
           window.alert('Your password is incorrect.')
