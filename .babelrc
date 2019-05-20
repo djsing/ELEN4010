@@ -1,4 +1,4 @@
 {
-    "presets": ["es2015"], 
-    "test": [ "jest" ]
+    "presets": ["es2015", "transform-es2015-modules-commonjs"],
+    "test": [ "jest" ],
 }
