@@ -236,7 +236,7 @@ function loadGroup (tripID, panel) {
     contentType: 'application/json',
     data: JSON.stringify({ tripID: tripID }),
     success: function (group) {
-      console.log('Onload groups: ', group)
+      // console.log('Onload groups: ', group)
       let pictureHTML, nameHTML, name, color
       for (let i = 0; i < group.length; i++) {
         name = group[i].first_name + ' ' + group[i].last_name

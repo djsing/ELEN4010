@@ -24,18 +24,7 @@ function populateTripAndGroupTableQuery (tripInfo) {
       dbrequest.input('user', tripInfo.user)
 
       return dbrequest
-        .query(`DELETE FROM trips WHERE id = @id;
-    INSERT INTO trips VALUES(
-      @id,
-      @title);
-      IF NOT EXISTS (SELECT * FROM groups
-        WHERE user_hash = @user
-        AND trip_id = @id)
-        BEGIN
-          INSERT INTO groups VALUES(
-          @user,
-          @id)
-        END;`)
+        .query(`DELETE FROM trips WHERE id = @id; INSERT INTO trips VALUES(@id, @title); IF NOT EXISTS (SELECT * FROM groups WHERE user_hash = @user AND trip_id = @id) BEGIN INSERT INTO groups VALUES(@user, @id) END;`)
     })
 }
 
@@ -126,5 +115,10 @@ function getDestinationsQuery (tripId) {
 module.exports = {
   populateTripAndGroupTable: populateTripAndGroupTable,
   getTrips: getTrips,
-  getDestinations: getDestinations
+  getDestinations: getDestinations,
+  getTripTitlesQueryString: getTripTitlesQueryString,
+  populateTripAndGroupTableQuery: populateTripAndGroupTableQuery,
+  getTripsQuery: getTripsQuery,
+  getTripTitlesQuery: getTripTitlesQuery,
+  getDestinationsQuery: getDestinationsQuery
 }

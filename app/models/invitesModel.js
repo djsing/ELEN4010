@@ -29,10 +29,7 @@ function addInviteQuery (invite) {
       dbrequest.input('id', invite.tripID)
       dbrequest.input('email', invite.emailAddress)
       return dbrequest
-        .query(`SELECT *
-      FROM invites
-      WHERE email_address = @email
-      AND trip_id = @id`)
+        .query('SELECT * FROM invites WHERE email_address = @email AND trip_id = @id')
     })
 }
 
@@ -43,9 +40,7 @@ function addInviteToInviteTable (invite) {
       dbrequest.input('id', invite.tripID)
       dbrequest.input('email', invite.emailAddress)
       return dbrequest
-        .query(`INSERT INTO invites VALUES(
-    @id,
-    @email);`)
+        .query('INSERT INTO invites VALUES(@id,@email);')
     })
 }
 
@@ -163,5 +158,8 @@ function acceptInvites (tripID, tripTitle, user) {
 module.exports = {
   addInvite: addInvite,
   getInvites: getInvites,
-  handleInvites: handleInvites
+  handleInvites: handleInvites,
+  addInviteQuery: addInviteQuery,
+  addInviteToInviteTable: addInviteToInviteTable,
+  getTripInvitesForSpecificUserQuery: getTripInvitesForSpecificUserQuery
 }
