@@ -12,7 +12,9 @@ A SCRUM-based agile devlopment workflow would benefit from a central KANBAN boar
 
 ## Decision
 
-Using the GitHib Project page with a single project for the repo, and using Issues labelled as User Stories, with columns for "To Do", "In progress", and "Completed".  We can leverage some of the automatic rules in Git to help automate some of the completetion of tasks ties to Milestones for each sprint
+Using the GitHib Project page with a single project for the repo, and using Issues labelled as User Stories, with columns for "To Do", "In progress", and "Completed".  We can leverage some of the automatic rules in Git to help automate some of the completetion of tasks ties to Milestones for each sprint:
+
+https://github.com/witseie-elen4010/2019-005-project/projects/1
 
 ## Consequences
 
