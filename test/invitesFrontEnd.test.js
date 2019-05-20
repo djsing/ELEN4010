@@ -8,13 +8,27 @@ require('chromedriver')
 
 require('geckodriver')
 
-
 const rootURL = 'https://testawaywego.azurewebsites.net/sign-in'
 
 const d = new Builder().forBrowser('chrome').build()
 const waitUntilTime = 20000
 let driver, el, actual, expected
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 1000 * 60 * 5
+
+async function getElementById(id) {
+    const el = await driver.wait(until.elementLocated(By.id(id)), waitUntilTime)
+    return await driver.wait(until.elementIsVisible(el), waitUntilTime)
+}
+
+async function getElementByClass(className) {
+    const el = await driver.wait(until.elementLocated(By.className(className)), waitUntilTime)
+    return await driver.wait(until.elementIsVisible(el), waitUntilTime)
+}
+  
+async function getElementByXPath(xpath) {
+    const el = await driver.wait(until.elementLocated(By.xpath(xpath)), waitUntilTime)
+    return await driver.wait(until.elementIsVisible(el), waitUntilTime)
+}
 
 test('waits for the driver to start', async () => {
     return d.then(_d => {
@@ -26,31 +40,32 @@ test('initialises the context', async () => {
     await driver.manage().window().setPosition(0, 0)
     await driver.manage().window().setSize(1280, 1024)
     await driver.get(rootURL)
-
-    await driver.executeScript('document.getElementById("inputEmail").setAttribute("value", "r@r.com")')
-    await driver.executeScript('document.getElementById("inputPassword").setAttribute("value", "r")')
-    await driver.executeScript('document.getElementById("signInPageSignInButton").click()')
 })
 
-async function getElementById(id) {
-    driver.get(rootURL)
-    const el = await driver.wait(until.elementLocated(By.id(id)), waitUntilTime)
-    return await driver.wait(until.elementIsVisible(el), waitUntilTime)
-}
 
-
-describe('test invites modal', ()=> {
-    test('test if invites modal pops up when "INVITE SOMEBODY TO JOIN THIS TRIP" button is pressed', async () => {
-        inviteSomeonePopupButton = await getElementById('inviteEditorButton')
-        inviteSomeonePopupButton.click() 
-        inviteModal = await getElementByClass('modal')
-        let isVisible = inviteModal.isDisplayed()
-        expect(isVisible).toBeTruthy()
-    })
+describe('test invites modal', () => {
     
+    
+    test('Invites modal appears when "INVITE SOMEBODY TO JOIN THIS TRIP" is pressed', async () => {
+        let email = await getElementById('inputEmail')
+        email.clear()
+        email.sendKeys('r@r.com')
+        let password = await getElementById('inputPassword')
+        password.clear()
+        password.sendKeys('r') // correct password for email
+        let button = await getElementById('signInPageSignInButton')
+        button.click()
+
+        // wait for an element that is unique to the trip page to be found before getting the URL
+        await getElementById('pac-input')
+
+        let inviteSomebodyButton = await getElementById('inviteEditorButton')
+        inviteSomebodyButton.click()
+        let invitesModal = await getElementByClass('modal')
+        let modalVisibility = invitesModal.isDisplayed()
+        expect(modalVisibility).toBeTruthy()
+    })
 })
-
-
 afterAll(() => {
     driver.quit()
 });
