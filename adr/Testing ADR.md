@@ -10,19 +10,19 @@ Accepted
 
 In order to holistically test the funtionality of the core aspects of the website, unit testing and end-to-end testing is used in order to test both the front-end and back-end functionality of the website. 
 
-Unit tests are used to on back-end models and database-related code in order to validate the functionality of each essential unit (which, in most cases, are functions) of the code. 
+Unit tests are used on back-end models and database-related code in order to validate the functionality of each essential unit of the code (which, in most cases, are functions). 
 
-On the front-end, various user actions on the are performed by automated testing software, and during that process, key aspects relating to the front-end side of the website are tested.
+On the front-end, various user actions are performed by automated testing software. During that process, key aspects relating to the front-end side of the website are tested.
 
 ## Decision
 
 The testing framework chosen for automated testing is Jest. This framework is because: 
 
 - It has a simple installation and configuration process for Node.js
-- Due to the its popularity as a javascript testing framework, it has a large developer-community which produces many articles, documents and forum threads (amongst many other sources of documentation and support)
+- Due to its popularity as a javascript testing framework, it has a large developer-community which produces many articles, documents and forum threads (amongst many other sources of documentation and support)
 - It has a wide variety of built-in assertion abilities (which means that there is no need for the installation of a third-party assertion library)
 
-In order to simulate in-browser user-interactions with the website, Selenium WebDriver is used. One of the key reasons why it was initially chosen is due to it's ability work with multiple, common-used browsers. Front-end testing is performed on the https://testawaywego.azurewebsites.net website since this is the website used for development. 
+In order to simulate in-browser user-interactions with the website, Selenium WebDriver is used. Front-end testing is performed on the https://testawaywego.azurewebsites.net website since it is the website used for development. 
 
 Ultimately, it was decided that all automated front-end user testing will be performed using Google Chrome as the browser. The reason for this is due to the fact that Google Chrome has the highest market share (more than 60%) globally - meaning that a majrity of the website's users will be using Google Chrome. 
 
