@@ -24,7 +24,6 @@ $(document).ready(() => {
     url: '/terms_and_conditions/data',
     type: 'GET',
     success: (data) => {
-      $('#Preamble').append(data.preamble)
       addTermsToSubsection($('#Preamble'), data.preamble, 'p')
       addTermsToSubsection($('#Accounts'), data.accounts, 'li')
       addTermsToSubsection($('#OtherSites'), data.otherSites, 'li')
