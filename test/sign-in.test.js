@@ -78,7 +78,7 @@ describe('test successful sign in', () => {
         // wait for an element that is unique to the trip page to be found before getting the URL
         await getElementById('pac-input')
         let actual = await driver.getCurrentUrl()
-        let expected = 'https://awaywego.azurewebsites.net/trip'
+        let expected = 'https://testawaywego.azurewebsites.net/trip'
         expect(actual).toEqual(expected)
     })
 })
