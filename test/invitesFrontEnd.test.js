@@ -75,9 +75,35 @@ describe('test invites modal', () => {
         inviteButton.click()
 
         let warningMessgae = await getElementById('inviteEmailAddressButton')
-        warningMessageVisibility = warningMessgae.isDisplayed
+        warningMessageVisibility = await warningMessgae.isDisplayed()
+
+        expect(warningMessageVisibility).toBeTruthy()
+    })
+
+    test('test if an a warning message appears after an invalid email address is entered', async () => {
+        let emailAddressField = await getElementById('emailAddressField')
+        emailAddressField.clear()
+        emailAddressField.sendKeys('invalidEmailAddress.com')
+
+        let inviteButton = await getElementById('inviteEmailAddressButton')
+        inviteButton.click()
+
+        let warningMessgae = await getElementById('inviteEmailAddressButton')
+        warningMessageVisibility = await warningMessgae.isDisplayed()
         
         expect(warningMessageVisibility).toBeTruthy()
+    })
+    test('test if an a "group invite send" message appears after a valid email address is entered', async () => {
+        let emailAddressField = await getElementById('emailAddressField')
+        emailAddressField.clear()
+        emailAddressField.sendKeys('validEmailAddress@validEmailAddress.com')
+
+        let inviteButton = await getElementById('inviteEmailAddressButton')
+        inviteButton.click()
+
+        let inviteSentMessage = await getElementById('inviteSendHeader')
+        inviteSentMessageVisibility = await inviteSentMessage.isDisplayed()
+        expect(inviteSentMessageVisibility).toBeTruthy()
     })
 })
 afterAll(() => {
