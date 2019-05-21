@@ -12,3 +12,8 @@ This file tests the groups model, which is responsible for querying the database
 - Testing the validity of the SQL query strings passed to the database for retrieving group members according to user hashes
 - Testing the validity of the SQL query strings passed to the database for retrieving group members according to the trip ID 
 
+## invites.test
+Thiis file contains tests for the invites model, which is responsible for querying the databse for data relating to invites sent to email addresses. These tests include: 
+- Adding invites to the invites table
+- Getting invites for a particular user
+
