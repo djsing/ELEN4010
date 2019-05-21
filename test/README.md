@@ -17,3 +17,12 @@ Thiis file contains tests for the invites model, which is responsible for queryi
 - Adding invites to the invites table
 - Getting invites for a particular user
 
+## invitesFrontEnd.test
+This file contains automated front-end testing for the invites modal on the website. This file tests: 
+- The functionality of the "INVITE SOMEBODY TO JOIN THIS TRIP" button
+- Front-end email format validation
+- The validity of the confirmation message after an email is sent
+
+
+
+
