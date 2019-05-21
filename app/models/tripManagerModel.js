@@ -7,7 +7,7 @@ function populateTripAndGroupTable (trip, res) {
   let tripInfo = trip.body
   populateTripAndGroupTableQuery(tripInfo)
     .then(result => {
-      console.log('trips and groups population result ', result)
+      // console.log('trips and groups population result ', result)
       res.send(tripInfo)
     })
     .catch(err => {

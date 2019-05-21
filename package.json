@@ -75,15 +75,12 @@
   "jest": {
     "modulePathIgnorePatterns": [
       "./app/controllers/",
+      "./app/routes/",
       "./app/public/js/"
-    ],
-    "setupFiles": [
-      "./utility/setup-jest.js"
     ],
     "coverageDirectory": "coverage",
     "collectCoverageFrom": [
       "app/**/*.js",
-      "app/public/js/*.js",
       "index.js"
     ],
     "transformIgnorePatterns": [
