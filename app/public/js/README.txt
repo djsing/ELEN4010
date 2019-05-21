@@ -1,1 +1,0 @@
-All static javascript resouces go here
