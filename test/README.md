@@ -52,7 +52,12 @@ This file contains unit-tests for the trip-manager model, which is responsible f
 - Retrieivng desitnations that are part of a trip
 
 ## trip.test 
-This file contains unit-test for the trips model, which is responsible for generating the databse query strings for the destinations table. These tests include: 
+This file contains unit-tests for the trips model, which is responsible for generating the databse query strings for the destinations table. These tests include: 
 - Adding destinations
 - Deleting destinations
+
+## user.test
+This file contains unit-tests for users model, which is responsible for generating the databse query strings for the users table. These tests include: 
+- Creating new users
+- Finding existing users 
 
