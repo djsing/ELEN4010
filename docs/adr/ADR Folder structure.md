@@ -1,6 +1,7 @@
 # 1. Folder structure
 
 Date: 2019-04-10
+Modified: 2019-05-21 (Tyson)
 
 ## Status
 
@@ -11,28 +12,28 @@ Accepted
 Having a fixed structure for a project has may advantages, limiting spread of files across multiple folders and contraining locations to known places. THere is an advantage is letting a folder strucute emerge oganically, but also a large risk, as things can break when low-level file locations change, necesitating logs of bug fixing and refactoring. Having a rigid initial structure canb lead to later restrictions, or imposed complexity.
 ## Decision
 
-The folowwing folder strucure is adopted:
+The following folder strucure is adopted:
 
-.
-├── app
-│   ├── controllers
-│   ├── log
-│   ├── models
-│   ├── public
-│   │   ├── css
-│   │   ├── img
-│   │   └── js
-│   ├── routes
-│   └── views
-├── docs
-│   ├── adr
-│   ├── misc
-│   ├── project_artifacts
-│   └── templates
-├── utility
-├── node_modules
-├── test
-└── local_only
+    .
+    ├── app
+    │   ├── controllers
+    │   ├── models
+    │   ├── public
+    │   │   ├── css
+    │   │   ├── img
+    │   │   └── js
+    │   ├── routes
+    │   └── views
+    ├── docs
+    │   ├── adr
+    │   ├── misc
+    │   ├── project_artifacts
+    │   └── templates
+    ├── node_modules
+    ├── test
+    └── local_only
+
+**Update** Removed folders originally specified that were found to not be required during project development: 'log' and 'utility'
 
 ## Consequences
 
