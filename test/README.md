@@ -45,3 +45,9 @@ This file contains automated front-end testing that the terms and conditions fro
 - Testing that the terms and conditions relating to accounts is correct
 - Testing that the terms and conditions relating to the other sites is correct
 
+## trip-manager.test
+This file contains unit-tests for the trips model, which is responsible for generating the database query stings for data relating to the trips associated with a given user. These tests include: 
+- Retrieving trip titles
+- Adding trip titles
+- Retrieivng desitnations that are part of a trip
+
