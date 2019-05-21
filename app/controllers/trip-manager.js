@@ -203,11 +203,11 @@ $(document).ready(() => {
 
 let loadTrips = function () {
   $('#tripTitleTable').empty()
-  $('#info-text').html('Loading...')
+  // $('#info-text').html('Loading...')
   setTimeout(function () {
     $('#loader').remove()
-    $('#info-text').html('           ')
-  }, 10000)
+    // $('#info-text').html('           ')
+  }, 6000)
   $('#trip-log').hide()
   $.ajax({
     url: '/trip-manager/get-data',
@@ -218,8 +218,8 @@ let loadTrips = function () {
       window.sessionStorage.setItem('tripList', JSON.stringify(res))
       tripsList = JSON.parse(window.sessionStorage.getItem('tripList'))
       if (tripsList.length === 0) {
-        $('#loader').remove()
         $('#info-text').html('No trips found')
+        $('#loader').remove()
       } else {
         for (let i = 0; i < tripsList.length; i++) {
           addTitleEntry(tripsList[i])
@@ -229,7 +229,6 @@ let loadTrips = function () {
       }
     },
     error: function (res) {
-      $('#loader').remove()
       $('#info-text').html('DB Error')
     }
   })
