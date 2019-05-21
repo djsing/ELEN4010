@@ -1,1 +1,0 @@
-This folder is for utility scripts, any binaries or executables

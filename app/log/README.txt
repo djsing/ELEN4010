@@ -1,1 +1,0 @@
-This folder is for logging of all trip activity and changes
