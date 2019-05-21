@@ -205,7 +205,7 @@ let loadTrips = function () {
   $('#tripTitleTable').empty()
   setTimeout(function () {
     $('#loader').remove()
-    $('#info-text').html('No trips found')
+    $('#info-text').html('Loading...')
   }, 10000)
   $('#trip-log').hide()
   $.ajax({
@@ -222,9 +222,9 @@ let loadTrips = function () {
       } else {
         for (let i = 0; i < tripsList.length; i++) {
           addTitleEntry(tripsList[i])
+          $('#info-text').html('(Click trip title to show details)')
         }
         $('#loader').remove()
-        $('#info-text').html('(Click trip title to show details)')
       }
     },
     error: function (res) {
