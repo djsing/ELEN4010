@@ -28,4 +28,9 @@ This file contains unit-tests for the log model, which is responsible for genera
 - Creating logs
 - Retrieving logs
 
+## sign-in.test
+This file contains automated front-end testing for the functionality of the sign-in page of the website. This file tests: 
+- The neccesary HTML DOM eleemnts are diplayed correctly for login
+- The ability to successfuly login once the corect user credentials are supplied
+
 
