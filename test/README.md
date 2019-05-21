@@ -1,6 +1,6 @@
 # Testing
 
-This folder contins all the automated testing for the core functionality of the test. The testing framework used is Jest, and the end-end testing framework used is Selenium WebDriver. This file contains an overview of the tests perfomed in every test folder. 
+This folder contains all the automated testing for the core functionality of the test. The testing framework used is Jest, and the end-end testing framework used is Selenium WebDriver. This file contains an overview of the tests performed in every test folder. 
 
 ## authenticate.test
 This file tests:
@@ -13,7 +13,7 @@ This file unit-tests the groups model, which is responsible for generating datab
 - Testing the validity of the SQL query strings passed to the database for retrieving group members according to the trip ID 
 
 ## invites.test
-Thiis file contains unit-tests for the invites model, which is responsible for generating database query strings for data relating to invites sent to email addresses. These tests include: 
+This file contains unit-tests for the invites model, which is responsible for generating database query strings for data relating to invites sent to email addresses. These tests include: 
 - Adding invites to the invites table
 - Getting invites for a particular user
 
@@ -30,11 +30,11 @@ This file contains unit-tests for the log model, which is responsible for genera
 
 ## sign-in.test
 This file contains automated front-end testing for the functionality of the sign-in page of the website. This file tests: 
-- The neccesary HTML DOM eleemnts are diplayed correctly for login
-- The ability to successfuly login once the corect user credentials are supplied
+- The necessary HTML DOM elements are displayed correctly for login
+- The ability to successfully login once the correct user credentials are supplied
 
 ## termsAndConditions.test
-This file contains unit-tests for the terms and conditions model, which is responsibile for providing terms and conditions to be rendered on the webpage. These tests include: 
+This file contains unit-tests for the terms and conditions model, which is responsible for providing terms and conditions to be rendered on the webpage. These tests include: 
 - Testing that the preamble returned is correct
 - Testing that the terms and conditions relating to accounts is correct
 - Testing that the terms and conditions relating to the other sites is correct
@@ -49,15 +49,15 @@ This file contains automated front-end testing that the terms and conditions fro
 This file contains unit-tests for the trip-manager model, which is responsible for generating the database query strings for data relating to the trips associated with a given user. These tests include: 
 - Retrieving trip titles
 - Adding trip titles
-- Retrieivng desitnations that are part of a trip
+- Retrieving destinations that are part of a trip
 
 ## trip.test 
-This file contains unit-tests for the trips model, which is responsible for generating the databse query strings for the destinations table. These tests include: 
+This file contains unit-tests for the trips model, which is responsible for generating the database query strings for the destinations table. These tests include: 
 - Adding destinations
 - Deleting destinations
 
 ## user.test
-This file contains unit-tests for users model, which is responsible for generating the databse query strings for the users table. These tests include: 
+This file contains unit-tests for users model, which is responsible for generating the database query strings for the users table. These tests include: 
 - Creating new users
 - Finding existing users 
 
