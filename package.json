@@ -80,7 +80,6 @@
     "coverageDirectory": "coverage",
     "collectCoverageFrom": [
       "app/**/*.js",
-      "app/public/js/*.js",
       "index.js"
     ],
     "transformIgnorePatterns": [
