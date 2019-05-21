@@ -29,5 +29,5 @@ Test Database:  <br>
       DB_PASSWORD=Software3  <br>
       DB_PORT=1433  <br>
 
-Travis: https://travis-ci.com/witseie-elen4010/2019-005-project
+Travis: https://travis-ci.com/witseie-elen4010/2019-005-project <br>
 Coveralls: https://coveralls.io/repos/github/witseie-elen4010/2019-005-project
