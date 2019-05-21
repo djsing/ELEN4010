@@ -203,9 +203,10 @@ $(document).ready(() => {
 
 let loadTrips = function () {
   $('#tripTitleTable').empty()
+  $('#info-text').html('Loading...')
   setTimeout(function () {
     $('#loader').remove()
-    $('#info-text').html('Loading...')
+    $('#info-text').html('           ')
   }, 10000)
   $('#trip-log').hide()
   $.ajax({
@@ -222,8 +223,8 @@ let loadTrips = function () {
       } else {
         for (let i = 0; i < tripsList.length; i++) {
           addTitleEntry(tripsList[i])
-          $('#info-text').html('(Click trip title to show details)')
         }
+        $('#info-text').html('(Click trip title to show details)')
         $('#loader').remove()
       }
     },
