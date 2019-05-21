@@ -8,11 +8,17 @@ Accepted
 
 ## Context
 
-In order to holistically test the funtionality of the core aspects of the website, unit testing and end-to-end testing is used in order to test both the front-end and back-end functionality of the website. 
+In order to holistically test the core functionality of the website, a combination of unit testing, end-to-end testing, and manual testing is used. 
 
 Unit tests are used on back-end models and database-related code in order to validate the functionality of each essential unit of the code (which, in most cases, are functions). 
 
 On the front-end, various user actions are performed by automated testing software. During that process, key aspects relating to the front-end side of the website are tested.
+
+High-level functionality is exclusively assessed and confirmed via manual user testing. This includes testing the following aspects of the website:
+
+- Marker placement on maps
+- Destinations being correctly added and drawn
+- Trips being correctly written to and received from session storage
 
 ## Decision
 
@@ -33,5 +39,10 @@ At multiple stages throughout the development process, manual testing on other m
 The major consequences of the choice to include automated front-end browser testing include:
 
  * Any tests involving front-end user testing have to be performed on a computer connected to the internet
- * The website will have to allow for "bots" to interact with it. This means that security-measures (e.g. reCAPTCHA) against harmful bots  cannot be implemented on the site. 
+ * The website will have to allow for "bots" to interact with it. This means that security measures (e.g. reCAPTCHA) against harmful bots  cannot be implemented on the site. 
  * Potential bugs in the website when viewed in other existing browsers (e.g. Opera, QQ, etc.) will not be detected in either automated or manual testing. 
+
+ The major consequences of the choice to use manual user testing for high-level functionality include:
+ 
+ * The developers save time since their time is not spent on writing complex automated tests for these high-level functionalities
+ * As a trade-off, manual tests have to be repeatedly conducted on multiple browsers and devices in order to ensure functionality is maintained at several points in time throughout the development process 
