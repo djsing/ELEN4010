@@ -37,10 +37,6 @@ test('initialises the context', async () => {
     await driver.get(rootURL)
 })
 
-// afterEach(async () => {
-//     driver.close()
-// })
-
 describe('testing page elements on page load', () => {
     test('Email address placeholder is correct', async () => {
         el = await getElementById('inputEmail')
@@ -67,10 +63,10 @@ describe('testing page elements on page load', () => {
 describe('test successful sign in', () => {
     test('User directed to trips page on successful sign in', async () => {
         let email = await getElementById('inputEmail')
-        email.clear()
+        // email.clear()
         email.sendKeys('r@r.com')
         let password = await getElementById('inputPassword')
-        password.clear()
+        // password.clear()
         password.sendKeys('r') // correct password for email
         let button = await getElementById('signInPageSignInButton')
         button.click()
