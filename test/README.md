@@ -33,4 +33,15 @@ This file contains automated front-end testing for the functionality of the sign
 - The neccesary HTML DOM eleemnts are diplayed correctly for login
 - The ability to successfuly login once the corect user credentials are supplied
 
+## termsAndConditions.test
+This file contains unit-tests for the terms and conditions model, which is responsibile for providing terms and conditions to be rendered on the webpage. These tests include: 
+- Testing that the preamble returned is correct
+- Testing that the terms and conditions relating to accounts is correct
+- Testing that the terms and conditions relating to the other sites is correct
+
+## termsAndConditionsFrontEnd.test
+This file contains automated front-end testing that the terms and conditions from the model are rendered correctly on the on the website: These tests include: 
+- Testing that the preamble returned is correct
+- Testing that the terms and conditions relating to accounts is correct
+- Testing that the terms and conditions relating to the other sites is correct
 
