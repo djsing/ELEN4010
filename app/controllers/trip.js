@@ -63,6 +63,15 @@ function randomProperty (obj) {
   return obj[ keys[ keys.length * Math.random() << 0 ] ]
 }
 
+let tripTitleisEmpty = function (tripTitle) {
+  if (tripTitle === '') {
+    return true
+  } else {
+    console.log('Trip title is ', tripTitle)
+    return false
+  }
+}
+
 // function randomLocation () {
 //   return randomProperty(countries)
 // }
@@ -566,37 +575,41 @@ let isValidEmail = function (emailAddress) {
 
 // Save trip and log to DB with Save Trip button
 $(document).on('click', '#saveTrip', function () {
-  saveTripToSessionStorage()
-  $.ajax({
-    url: '/trip/data',
-    method: 'POST',
-    contentType: 'application/json',
-    data: JSON.stringify(newTrip),
-    success: function (res) {
-      $('#success-alert').fadeTo(2000, 500).slideUp(500, function () {
-        $('#success-alert').slideUp(500)
-      })
-    }
-  })
-  $.ajax({
-    url: '/trip-manager/data',
-    method: 'POST',
-    contentType: 'application/json',
-    data: JSON.stringify(newTrip),
-    success: function (res) {
-      // console.log(res)
-    }
-  })
-  $.ajax({
-    url: '/trip/log',
-    method: 'POST',
-    contentType: 'application/json',
-    data: JSON.stringify(newLog),
-    success: function (res) {
-      // console.log(res)
-      newLog = []
-    }
-  })
+  if (tripTitleisEmpty(newTrip.title)) {
+    window.alert('This trip title has not been named.\n Please enter a title.')
+  } else {
+    saveTripToSessionStorage()
+    $.ajax({
+      url: '/trip/data',
+      method: 'POST',
+      contentType: 'application/json',
+      data: JSON.stringify(newTrip),
+      success: function (res) {
+        $('#success-alert').fadeTo(2000, 500).slideUp(500, function () {
+          $('#success-alert').slideUp(500)
+        })
+      }
+    })
+    $.ajax({
+      url: '/trip-manager/data',
+      method: 'POST',
+      contentType: 'application/json',
+      data: JSON.stringify(newTrip),
+      success: function (res) {
+        // console.log(res)
+      }
+    })
+    $.ajax({
+      url: '/trip/log',
+      method: 'POST',
+      contentType: 'application/json',
+      data: JSON.stringify(newLog),
+      success: function (res) {
+        // console.log(res)
+        newLog = []
+      }
+    })
+  }
 })
 
 // ------------
