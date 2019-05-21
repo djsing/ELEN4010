@@ -4,7 +4,7 @@ Test Site:
 [![Build Status](https://travis-ci.com/witseie-elen4010/2019-005-project.svg?token=52xQs3WNRQyhnpMyQJpC&branch=development)](https://travis-ci.com/witseie-elen4010/2019-005-project)
 
 Main Site: https://awaywego.azurewebsites.net <- Deploys from _master_ branch via Travis CI to Azure <br>
-Test Site: https://testawaywego.azurewebsites.net <- Deploys from _develoment_ branch via GitHub (default branch for PRs) <br>
+Test Site: https://testawaywego.azurewebsites.net <- Deploys from _development_ branch via GitHub (default branch for PRs) <br>
 
 # Away We Go # 
 ## A group travel trip planning web application.##
