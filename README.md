@@ -2,7 +2,6 @@ Main Site:
 [![Build Status](https://travis-ci.com/witseie-elen4010/2019-005-project.svg?token=52xQs3WNRQyhnpMyQJpC&branch=master)](https://travis-ci.com/witseie-elen4010/2019-005-project)
 Test Site:
 [![Build Status](https://travis-ci.com/witseie-elen4010/2019-005-project.svg?token=52xQs3WNRQyhnpMyQJpC&branch=development)](https://travis-ci.com/witseie-elen4010/2019-005-project)
-[![Coverage Status](https://coveralls.io/repos/github/witseie-elen4010/2019-005-project/badge.png?branch=development&t=BTsw6J)](https://coveralls.io/github/witseie-elen4010/2019-005-project?branch=development)
 
 Main Site: https://awaywego.azurewebsites.net <br>
 Test Site: https://testawaywego.azurewebsites.net
@@ -29,3 +28,6 @@ Test Database:  <br>
       DB_ADMIN=softwareprojectadmin  <br>
       DB_PASSWORD=Software3  <br>
       DB_PORT=1433  <br>
+
+Travis: https://travis-ci.com/witseie-elen4010/2019-005-project
+Coveralls: https://coveralls.io/repos/github/witseie-elen4010/2019-005-project
