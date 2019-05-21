@@ -203,6 +203,10 @@ $(document).ready(() => {
 
 let loadTrips = function () {
   $('#tripTitleTable').empty()
+  setTimeout(function () {
+    $('#loader').remove()
+    $('#info-text').html('No trips found')
+  }, 10000)
   $('#trip-log').hide()
   $.ajax({
     url: '/trip-manager/get-data',
