@@ -75,6 +75,7 @@
   "jest": {
     "modulePathIgnorePatterns": [
       "./app/controllers/",
+      "./app/routes/",
       "./app/public/js/"
     ],
     "coverageDirectory": "coverage",
