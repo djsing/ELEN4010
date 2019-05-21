@@ -224,6 +224,7 @@ let loadTrips = function () {
           addTitleEntry(tripsList[i])
         }
         $('#loader').remove()
+        $('#info-text').html('(Click trip title to show details)')
       }
     },
     error: function (res) {
