@@ -31,3 +31,6 @@ Test Database:  <br>
 
 Travis: https://travis-ci.com/witseie-elen4010/2019-005-project <br>
 Coveralls: https://coveralls.io/repos/github/witseie-elen4010/2019-005-project
+
+EDIT (13 Nov 2019): All API Keys have been destroyed for all contributors from their respective Google Developer Console.
+Note that both the Test and Main site described above have been shut down.
